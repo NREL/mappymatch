@@ -63,7 +63,7 @@ class OsrmMatcher(MatcherInterface):
 
     def match_trace(self, trace: Trace) -> MatchResult:
         coordinate_str = ""
-        for coord in trace:
+        for coord in trace.coords:
             coordinate_str += f"{coord.lon},{coord.lat};"
 
         # remove the trailing semicolon

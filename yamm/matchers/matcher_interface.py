@@ -1,10 +1,9 @@
 from typing import List
 
 from yamm.utils.abc import *
-from yamm.utils.geo import Coordinate
+from yamm.utils.trace import Trace
 
 # types
-Trace = List[Coordinate]
 LinkId = str
 MatchResult = List[LinkId]
 
