@@ -5,7 +5,7 @@ from yamm.utils.geo import Coordinate
 
 # types
 Trace = List[Coordinate]
-LinkId = int
+LinkId = str
 MatchResult = List[LinkId]
 
 
