@@ -83,3 +83,4 @@ class OsrmMatcher(MatcherInterface):
     def match_trace_batch(self, trace_batch: List[Trace]) -> List[MatchResult]:
         return [self.match_trace(t) for t in trace_batch]
 
+

@@ -1,7 +1,7 @@
 from typing import List
 
 from yamm.utils.abc import *
-from yamm.utils.trace import Trace
+from yamm.constructs.trace import Trace
 
 # types
 LinkId = str
