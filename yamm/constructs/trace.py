@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import numpy as np
+
 from csv import DictReader
 from pathlib import Path
 from typing import List
@@ -29,7 +31,16 @@ class Trace:
         self.coords = coords
 
     def __getitem__(self, i):
-        return Trace(self.coords[i])
+        new_coords = self.coords[i]
+        if isinstance(new_coords, Coordinate):
+            new_coords = [new_coords]
+        return Trace(new_coords)
+
+    def __add__(self, other: Trace) -> Trace:
+        return Trace(self.coords + other.coords)
+
+    def __len__(self):
+        return len(self.coords)
 
     @classmethod
     def from_csv(cls, file: str, project_xy: bool = False) -> Trace:
@@ -86,3 +97,8 @@ class Trace:
             coords = [Coordinate(lat=lat, lon=lon) for lat, lon in zip(lats, lons)]
 
         return Trace(coords)
+
+    def downsample(self, npoints: int) -> Trace:
+        coords = self.coords
+        new_coords = [coords[0]] + [coords[i] for i in np.linspace(1, len(coords) - 1, npoints - 2).astype(int)] + [coords[-1]]
+        return Trace(new_coords)

@@ -44,7 +44,10 @@ def get_distance(point: Point, segment: Tuple[Point, Point]):
     c = Point(segment[1].x, segment[1].y)
 
     t = (a.x - b.x) * (c.x - b.x) + (a.y - b.y) * (c.y - b.y)
-    t = t / ((c.x - b.x) ** 2 + (c.y - b.y) ** 2)
+    try:
+        t = t / ((c.x - b.x) ** 2 + (c.y - b.y) ** 2)
+    except ZeroDivisionError:
+        t = 1
 
     if 0 < t < 1:
         pcoords = Point(t * (c.x - b.x) + b.x, t * (c.y - b.y) + b.y)
