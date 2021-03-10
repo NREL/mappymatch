@@ -1,4 +1,5 @@
-from typing import List, Optional
+from typing import List, Optional, Union
+from pathlib import Path
 
 import networkx as nx
 import numpy as np
@@ -9,14 +10,12 @@ from yamm.constructs.road import Road
 from yamm.maps.map_interface import MapInterface
 from yamm.utils.geo import road_to_coord_dist
 
-Path = List[Road]
-
 
 class NetworkXMap(MapInterface):
     DISTANCE_WEIGHT = "meters"
     TIME_WEIGHT = "minutes"
 
-    def __init__(self, graph_file: str):
+    def __init__(self, graph_file: Union[str, Path]):
         self.g = nx.read_gpickle(graph_file)
 
         self._nodes = [nid for nid in self.g.nodes()]
@@ -79,7 +78,7 @@ class NetworkXMap(MapInterface):
         i = np.argmin([road_to_coord_dist(r, coord) for r in roads])
         return roads[i]
 
-    def shortest_path(self, origin: Coordinate, destination: Coordinate, weight: Optional[str] = None) -> Path:
+    def shortest_path(self, origin: Coordinate, destination: Coordinate, weight: Optional[str] = None) -> List[Road]:
         """
         computes the shortest path between an origin and a destination
 

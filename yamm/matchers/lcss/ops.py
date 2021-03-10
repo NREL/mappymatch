@@ -1,13 +1,20 @@
-import numpy as np
+from typing import List
 
-from yamm.constructs.match import Match
+import logging
+
 from yamm.constructs.trace import Trace
+from yamm.maps.map_interface import MapInterface
 from yamm.maps.networkx_map import Path
-from yamm.matchers.lcss.constructs import TrajectorySegment, CuttingPoint
-from yamm.utils.geo import road_to_coord_dist, coord_to_coord_dist
+from yamm.matchers.lcss.constructs import TrajectorySegment, TrajectoryScheme
+from yamm.matchers.lcss.utils import merge
+from yamm.utils.geo import road_to_coord_dist
+
+log = logging.getLogger(__name__)
+
+DEFAULT_DISTANCE_EPSILON = 10
 
 
-def score(trace: Trace, path: Path, distance_epsilon=10) -> float:
+def score(trace: Trace, path: Path, distance_epsilon=DEFAULT_DISTANCE_EPSILON) -> float:
     """
     computes the similarity score between a trace and a path
 
@@ -46,89 +53,116 @@ def score(trace: Trace, path: Path, distance_epsilon=10) -> float:
     return sim_score
 
 
-def score_and_match(trajectory_segment: TrajectorySegment, distance_epsilon=10) -> TrajectorySegment:
+def new_path(
+        road_map: MapInterface,
+        trace: Trace,
+) -> Path:
     """
-    computes the score of a trace, pair matching and also matches the coordinates to the nearest road.
+    Computes a shortest time and shortest distance path and returns the path that
+    most closely matches the trace.
 
-    :param trajectory_segment:
-    :param distance_epsilon:
+    :param road_map:
+    :param trace:
 
     :return:
     """
+    if len(trace) < 1:
+        return []
+
+    origin = trace.coords[0]
+    destination = trace.coords[-1]
+
+    # todo: make the weight parameter specific to the road map
+    time_path = road_map.shortest_path(origin, destination, weight="minutes")
+    dist_path = road_map.shortest_path(origin, destination, weight="meters")
+
+    time_score = score(trace, time_path)
+    dist_score = score(trace, dist_path)
+
+    if time_score < dist_score:
+        return time_path
+    else:
+        return dist_path
+
+
+def split_trajectory_segment(road_map: MapInterface, trajectory_segment: TrajectorySegment) -> List[TrajectorySegment]:
+    """
+    Splits a trajectory segment based on the provided cutting points.
+
+    Merge back any segments that are too short
+
+    :param road_map: the road map to match to
+    :param trajectory_segment: the trajectory segment to split
+
+    :return: a list of split segments or the original segment if it can't be split
+    """
     trace = trajectory_segment.trace
-    path = trajectory_segment.path
+    cutting_points = trajectory_segment.cutting_points
 
-    m = len(trace)
-    n = len(path)
+    def _short_segment(ts: TrajectorySegment):
+        if len(ts.trace) < 20 or len(ts.path) < 5:
+            return True
+        return False
 
-    matched_roads = []
+    if len(trace) < 20:
+        # segment is too short to split
+        return [trajectory_segment]
+    elif len(cutting_points) < 1:
+        # no points to cut
+        return [trajectory_segment]
 
-    if m < 10:
-        # todo: find a better way to handle this edge case
-        raise Exception(f"traces of less than 10 points can't be matched")
-    elif n < 2:
-        # this likely means the trace starts and ends at the same point;
-        return trajectory_segment.set_score(0)
+    o = trace.coords[0]
+    d = trace.coords[-1]
 
-    C = [[0 for i in range(n + 1)] for j in range(m + 1)]
+    new_paths = []
+    new_traces = []
 
-    for i in range(1, m + 1):
-        nearest_road = None
-        min_dist = np.inf
-        coord = trace.coords[i - 1]
-        for j in range(1, n + 1):
-            road = path[j - 1]
+    # start
+    scp = cutting_points[0]
+    new_trace = trace[:scp.trace_index]
+    new_paths.append(new_path(road_map, new_trace))
+    new_traces.append(new_trace)
 
-            dt = road_to_coord_dist(road, coord)
+    # mids
+    for i in range(len(cutting_points) - 1):
+        cp = cutting_points[i]
+        ncp = cutting_points[i + 1]
+        new_trace = trace[cp.trace_index:ncp.trace_index]
+        new_paths.append(new_path(road_map, new_trace))
+        new_traces.append(new_trace)
 
-            if dt < min_dist:
-                min_dist = dt
-                nearest_road = road
+    # end
+    ecp = cutting_points[-1]
+    new_trace = trace[ecp.trace_index:]
+    new_paths.append(new_path(road_map, new_trace))
+    new_traces.append(new_trace)
 
-            if dt < distance_epsilon:
-                point_similarity = 1 - (dt / distance_epsilon)
-            else:
-                point_similarity = 0
+    if not any(new_paths):
+        # can't split
+        return [trajectory_segment]
+    elif not any(new_traces):
+        # can't split
+        return [trajectory_segment]
+    else:
+        segments = [TrajectorySegment(t, p) for t, p in zip(new_traces, new_paths)]
 
-            C[i][j] = max((C[i - 1][j - 1] + point_similarity), C[i][j - 1], C[i - 1][j])
+    merged_segments = merge(segments, _short_segment)
 
-        if not nearest_road:
-            # todo: maybe we just return None?
-            raise Exception(f"could not find nearest road for coord {coord}")
-
-        matched_roads.append(Match(nearest_road.road_id, min_dist))
-
-    sim_score = C[m][n] / float(min(m, n))
-
-    return trajectory_segment.set_score(sim_score).set_matches(matched_roads)
+    return merged_segments
 
 
-def compute_cutting_points(trajectory_segment, distance_epsilon=100):
-    cutting_thresh = 10
+def same_trajectory_scheme(
+        scheme1: TrajectoryScheme,
+        scheme2: TrajectoryScheme) -> bool:
+    """
+    compares two trajectory schemes for equality
 
-    cutting_points = []
+    :param scheme1:
+    :param scheme2:
 
-    if not trajectory_segment.matches:
-        # no matches computed, let's just split the trajectory based on the furthest points
-        start = trajectory_segment.trace.coords[0]
-        end = trajectory_segment.trace.coords[-1]
-        p1 = np.argmax([coord_to_coord_dist(start, c) for c in trajectory_segment.trace.coords])
-        p2 = np.argmax([coord_to_coord_dist(end, c) for c in trajectory_segment.trace.coords])
+    :return: are the schemes the same?
+    """
+    same_paths = all(map(lambda a, b: a.path == b.path, scheme1, scheme2))
+    same_traces = all(map(lambda a, b: a.trace.coords == b.trace.coords, scheme1, scheme2))
 
-        cp1 = CuttingPoint(p1, trajectory_segment.trace.coords[p1])
-        cp2 = CuttingPoint(p2, trajectory_segment.trace.coords[p2])
-        return trajectory_segment.set_cutting_points([cp1, cp2])
-
-    # find furthest point
-    i = np.argmax([m.distance for m in trajectory_segment.matches])
-    cutting_points.append(CuttingPoint(i, trajectory_segment.trace.coords[i]))
-
-    # collect points that are close to the distance threshold
-    for i, m in enumerate(trajectory_segment.matches):
-        if abs(m.distance - distance_epsilon) < cutting_thresh:
-            cutting_points.append(CuttingPoint(i, trajectory_segment.trace.coords[i]))
-
-    sorted_cuts = sorted(cutting_points, key=lambda c: c.trace_index)
-    compressed_cuts = list(compress(sorted_cuts))
-
-    return trajectory_segment.set_cutting_points(compressed_cuts)
+    return same_paths and same_traces

@@ -1,7 +1,7 @@
 import functools as ft
 from itertools import groupby
 from operator import itemgetter
-from typing import List, Callable, Any
+from typing import List, Callable, Any, Generator
 
 
 def forward_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
@@ -69,7 +69,7 @@ def reverse_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
     :param merge_list: the list to merge
     :param condition: the merge condition
 
-    :return: a generator of the merged items
+    :return: a list of the merged items
     """
     items = []
 
@@ -102,6 +102,14 @@ def reverse_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
 
 
 def merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
+    """
+    combines the forward and reverse merges to catch edge cases at the tail ends of the list
+
+    :param merge_list: the list to merge
+    :param condition: the merge condition
+
+    :return: a list of the merged items
+    """
     f_merge = forward_merge(merge_list, condition)
 
     if any(map(condition, f_merge)):
@@ -110,7 +118,15 @@ def merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
         return f_merge
 
 
-def compress(cp):
-    for k, g in groupby(enumerate(cp), lambda x: x[0] - x[1].trace_index):
+def compress(cutting_points: List) -> Generator:
+    """
+    compress a list of cutting points if they happen to be directly adjacent to another
+
+    :param cutting_points: the list of cutting points to compress
+
+    :return: the compressed list of cutting points
+    """
+    sorted_cuts = sorted(cutting_points, key=lambda c: c.trace_index)
+    for k, g in groupby(enumerate(sorted_cuts), lambda x: x[0] - x[1].trace_index):
         all_cps = list(map(itemgetter(1), g))
         yield all_cps[int(len(all_cps) / 2)]
