@@ -1,11 +1,10 @@
 from typing import List
 
+from yamm.constructs.match import Match
 from yamm.utils.abc import *
 from yamm.constructs.trace import Trace
 
-# types
-LinkId = str
-MatchResult = List[LinkId]
+MatchResult = List[Match]
 
 
 class MatcherInterface(metaclass=ABCMeta):

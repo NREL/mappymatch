@@ -15,18 +15,7 @@ valid_longitude_names = {'longitude', 'Longitude', 'Lon', 'Lon', 'long', 'Long'}
 
 
 class Trace:
-    def __init__(self, coords: List[Coordinate], project_xy: bool = False):
-        if project_xy:
-            base_crs = CRS(4326)
-            xy_crs = CRS(3857)
-            transformer = Transformer.from_crs(base_crs, xy_crs)
-
-            lats = [c.lat for c in coords]
-            lons = [c.lon for c in coords]
-
-            lat_proj, lon_proj = transformer.transform(lats, lons)
-
-            coords = [Coordinate(lat=lat, lon=lon, x=x, y=y) for x, y, lat, lon in zip(lat_proj, lon_proj, lats, lons)]
+    def __init__(self, coords: List[Coordinate]):
 
         self.coords = coords
 
@@ -43,7 +32,7 @@ class Trace:
         return len(self.coords)
 
     @classmethod
-    def from_csv(cls, file: str, project_xy: bool = False) -> Trace:
+    def from_csv(cls, file: str, project_xy: bool = True) -> Trace:
         """
         Builds a trace from a csv file.
 
