@@ -1,7 +1,35 @@
 import math
 
+import numpy as np
+
+from yamm.constructs.bbox import BoundingBox
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.road import Road
+from yamm.constructs.trace import Trace
+
+
+def compute_bounding_box(trace: Trace, padding: float = 0) -> BoundingBox:
+    """
+    computes a bounding box surrounding a trace by taking the minimum and maximum x and y
+
+    :param trace: the trace to compute the bounding box for
+    :param padding: how much padding (in meters) to add to the box
+
+    :return: the computed bounding box
+    """
+    x = [c.x for c in trace.coords]
+    y = [c.y for c in trace.coords]
+
+    min_x = np.min(x) - padding
+    min_y = np.min(y) - padding
+
+    max_x = np.max(x) + padding
+    max_y = np.max(y) + padding
+
+    southwest_corner = Coordinate.from_xy(min_x, min_y)
+    northeast_corner = Coordinate.from_xy(max_x, max_y)
+
+    return BoundingBox(southwest_corner=southwest_corner, northeast_corner=northeast_corner)
 
 
 def road_to_coord_dist(road: Road, coord: Coordinate) -> float:

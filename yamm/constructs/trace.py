@@ -32,14 +32,16 @@ class Trace:
         return len(self.coords)
 
     @classmethod
-    def from_csv(cls, file: str, project_xy: bool = True) -> Trace:
+    def from_csv(cls, file: str) -> Trace:
         """
         Builds a trace from a csv file.
 
         Expects the file to have latitude / longitude information in the epsg 4326 format
 
+        Automatically projects each coordinate to epsg 3857 as well
+
         :param file: the file to load
-        :param project_xy: should the trace include the XY projection?
+
         :return: the trace
         """
         filepath = Path(file)
@@ -74,16 +76,13 @@ class Trace:
                 lats.append(float(row[lat_name]))
                 lons.append(float(row[lon_name]))
 
-        if project_xy:
-            base_crs = CRS(4326)
-            xy_crs = CRS(3857)
-            transformer = Transformer.from_crs(base_crs, xy_crs)
+        base_crs = CRS(4326)
+        xy_crs = CRS(3857)
+        transformer = Transformer.from_crs(base_crs, xy_crs)
 
-            lat_proj, lon_proj = transformer.transform(lats, lons)
+        lat_proj, lon_proj = transformer.transform(lats, lons)
 
-            coords = [Coordinate(lat=lat, lon=lon, x=x, y=y) for x, y, lat, lon in zip(lat_proj, lon_proj, lats, lons)]
-        else:
-            coords = [Coordinate(lat=lat, lon=lon) for lat, lon in zip(lats, lons)]
+        coords = [Coordinate(lat=lat, lon=lon, x=x, y=y) for x, y, lat, lon in zip(lat_proj, lon_proj, lats, lons)]
 
         return Trace(coords)
 

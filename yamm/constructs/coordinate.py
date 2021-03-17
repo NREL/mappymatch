@@ -1,13 +1,16 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 
 from pyproj import CRS, Transformer
+
+LATLON_CRS = CRS(4326)
+XY_CRS = CRS(3857)
 
 
 class Coordinate(NamedTuple):
     """
-    coordinate with epsg 4326 representation and optional epsg 3857 representation
+    coordinate with epsg 4326 representation and epsg 3857 representation
     """
 
     # epsg 4326
@@ -15,12 +18,35 @@ class Coordinate(NamedTuple):
     lon: float
 
     # epsg 3857
-    x: Optional[float] = None
-    y: Optional[float] = None
+    x: float
+    y: float
 
-    def project_xy(self) -> Coordinate:
-        base_crs = CRS(4326)
-        xy_crs = CRS(3857)
-        transformer = Transformer.from_crs(base_crs, xy_crs)
-        x, y = transformer.transform(self.lat, self.lon)
-        return Coordinate(lat=self.lat, lon=self.lon, x=x, y=y)
+    @classmethod
+    def from_latlon(cls, lat: float, lon: float) -> Coordinate:
+        """
+        build a coordinate from only latitude and longitude
+
+        :param lat:
+        :param lon:
+
+        :return:
+        """
+        transformer = Transformer.from_crs(LATLON_CRS, XY_CRS)
+        x, y = transformer.transform(lat, lon)
+
+        return Coordinate(lat=lat, lon=lon, x=x, y=y)
+
+    @classmethod
+    def from_xy(cls, x: float, y: float) -> Coordinate:
+        """
+        build a coordinate from only x and y
+
+        :param x:
+        :param y:
+
+        :return:
+        """
+        transformer = Transformer.from_crs(XY_CRS, LATLON_CRS)
+        lon, lat = transformer.transform(x, y)
+
+        return Coordinate(lat=lat, lon=lon, x=x, y=y)

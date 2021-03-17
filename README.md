@@ -26,7 +26,7 @@ from yamm.constructs.trace import Trace
 
 matcher = OsrmMatcher()
 
-trace = Trace.from_csv("resources/sample_trace_1.csv")
+trace = Trace.from_csv("resources/traces/sample_trace_1.csv")
 
 # only match first 5 points
 matches = matcher.match_trace(trace[:5])
@@ -50,7 +50,7 @@ road_map = NetworkXMap("resources/austin_tomtom_network.pickle")
 
 matcher = LCSSMatcher(road_map)
 
-trace = Trace.from_csv("resources/sample_trace_1.csv")
+trace = Trace.from_csv("resources/traces/sample_trace_1.csv")
 
 matches = matcher.match_trace(trace)
 ```
