@@ -1,13 +1,13 @@
-from typing import List, Optional, Union
 from pathlib import Path
+from typing import List, Optional, Union
 
 import networkx as nx
 import numpy as np
 from scipy.spatial import cKDTree
 from sqlalchemy.future import Engine
 
-from yamm.constructs.geofence import Geofence
 from yamm.constructs.coordinate import Coordinate
+from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
 from yamm.maps.map_interface import MapInterface
 from yamm.utils.geo import road_to_coord_dist
@@ -18,8 +18,7 @@ from yamm.utils.tomtom import (
 )
 
 
-
-class NetworkXMap(MapInterface):
+class TomTomMap(MapInterface):
     DISTANCE_WEIGHT = "meters"
     TIME_WEIGHT = "minutes"
 
