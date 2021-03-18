@@ -19,8 +19,7 @@ class TestBoundingBox(TestCase):
 
         bbox = compute_bounding_box(mock_trace)
 
-        self.assertEquals(bbox.southwest_corner, mock_coords[0])
-        self.assertEquals(bbox.northeast_corner, mock_coords[-1])
+        self.assertEqual(bbox.geometry.bounds, (0, 0, 2, 2))
 
     def test_compute_bounding_box_w_padding(self):
         # the proper bounding box for this with padding of 5 is a box with corners at -5,-5 and 7,5
@@ -34,7 +33,4 @@ class TestBoundingBox(TestCase):
 
         bbox = compute_bounding_box(mock_trace, padding=5)
 
-        self.assertEquals(bbox.southwest_corner.x, -5)
-        self.assertEquals(bbox.southwest_corner.y, -5)
-        self.assertEquals(bbox.northeast_corner.x, 7)
-        self.assertEquals(bbox.northeast_corner.y, 5)
+        self.assertEqual(bbox.geometry.bounds, (-5, -5, 7, 5))

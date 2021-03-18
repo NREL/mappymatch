@@ -30,13 +30,15 @@ setup(
         "networkx",
         "scipy",
         "pyproj",
+        "shapely",
+        "sqlalchemy",
+        "geopandas",
     ],
     extras_require={
         "optional": [
             "osmnx",
             "requests",
             "rtree",
-            "sqlalchemy",
             "psycopg2",
         ],
         "plot": [

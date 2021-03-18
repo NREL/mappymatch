@@ -1,14 +1,16 @@
 import math
 
 import numpy as np
+from shapely.geometry import box
 
-from yamm.constructs.bbox import BoundingBox
 from yamm.constructs.coordinate import Coordinate
+from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
 from yamm.constructs.trace import Trace
+from yamm.utils.crs import XY_CRS
 
 
-def compute_bounding_box(trace: Trace, padding: float = 0) -> BoundingBox:
+def compute_bounding_box(trace: Trace, padding: float = 0) -> Geofence:
     """
     computes a bounding box surrounding a trace by taking the minimum and maximum x and y
 
@@ -26,10 +28,9 @@ def compute_bounding_box(trace: Trace, padding: float = 0) -> BoundingBox:
     max_x = np.max(x) + padding
     max_y = np.max(y) + padding
 
-    southwest_corner = Coordinate.from_xy(min_x, min_y)
-    northeast_corner = Coordinate.from_xy(max_x, max_y)
+    bbox = box(min_x, min_y, max_x, max_y)
 
-    return BoundingBox(southwest_corner=southwest_corner, northeast_corner=northeast_corner)
+    return Geofence(crs=XY_CRS, geometry=bbox)
 
 
 def road_to_coord_dist(road: Road, coord: Coordinate) -> float:

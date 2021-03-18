@@ -4,19 +4,27 @@ from pathlib import Path
 import networkx as nx
 import numpy as np
 from scipy.spatial import cKDTree
+from sqlalchemy.future import Engine
 
+from yamm.constructs.geofence import Geofence
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.road import Road
 from yamm.maps.map_interface import MapInterface
 from yamm.utils.geo import road_to_coord_dist
+from yamm.utils.tomtom import (
+    compress_tomtom_nx_graph,
+    get_tomtom_gdf,
+    tomtom_gdf_to_nx_graph
+)
+
 
 
 class NetworkXMap(MapInterface):
     DISTANCE_WEIGHT = "meters"
     TIME_WEIGHT = "minutes"
 
-    def __init__(self, graph_file: Union[str, Path]):
-        self.g = nx.read_gpickle(graph_file)
+    def __init__(self, graph: nx.MultiDiGraph):
+        self.g = graph
 
         self._nodes = [nid for nid in self.g.nodes()]
         self.kdtree = self._build_kdtree()
@@ -30,6 +38,39 @@ class NetworkXMap(MapInterface):
     def _get_nearest_node(self, coord: Coordinate) -> str:
         _, i = self.kdtree.query([coord.lat, coord.lon])
         return self._nodes[i]
+
+    @classmethod
+    def from_file(cls, file: Union[str, Path]):
+        """
+        Build a NetworkXMap instance from a file
+
+        :param file: the graph pickle file to load
+
+        :return: a NetworkXMap instance
+        """
+        p = Path(file)
+        if not p.suffix == ".pickle":
+            raise TypeError(f"NetworkXMap only supports pickle files")
+
+        g = nx.read_gpickle(file)
+
+        return NetworkXMap(g)
+
+    @classmethod
+    def from_sql(cls, sql_connection: Engine, geofence: Geofence):
+        """
+        Loads a network from a sql database using the bounding box.
+
+        :param sql_connection: the sql connection to build the network from.
+        :param geofence: the boundary to specify what subset of the network to download.
+
+        :return: a NetworkXMap instance
+        """
+        gdf = get_tomtom_gdf(sql_connection, geofence)
+        g = tomtom_gdf_to_nx_graph(gdf)
+        compressed_g = compress_tomtom_nx_graph(g)
+
+        return NetworkXMap(compressed_g)
 
     @property
     def roads(self) -> List[Road]:

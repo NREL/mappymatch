@@ -1,6 +1,8 @@
-from typing import NamedTuple
+from __future__ import annotations
+from typing import NamedTuple, TYPE_CHECKING
 
-from yamm.constructs.coordinate import Coordinate
+if TYPE_CHECKING:
+    from yamm.constructs.coordinate import Coordinate
 
 
 class Road(NamedTuple):
