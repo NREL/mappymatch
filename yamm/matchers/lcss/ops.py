@@ -2,9 +2,9 @@ from typing import List
 
 import logging
 
+from yamm.constructs.road import Road
 from yamm.constructs.trace import Trace
 from yamm.maps.map_interface import MapInterface
-from yamm.maps.networkx_map import Path
 from yamm.matchers.lcss.constructs import TrajectorySegment, TrajectoryScheme
 from yamm.matchers.lcss.utils import merge
 from yamm.utils.geo import road_to_coord_dist
@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 DEFAULT_DISTANCE_EPSILON = 10
 
 
-def score(trace: Trace, path: Path, distance_epsilon=DEFAULT_DISTANCE_EPSILON) -> float:
+def score(trace: Trace, path: List[Road], distance_epsilon=DEFAULT_DISTANCE_EPSILON) -> float:
     """
     computes the similarity score between a trace and a path
 
@@ -56,7 +56,7 @@ def score(trace: Trace, path: Path, distance_epsilon=DEFAULT_DISTANCE_EPSILON) -
 def new_path(
         road_map: MapInterface,
         trace: Trace,
-) -> Path:
+) -> List[Road]:
     """
     Computes a shortest time and shortest distance path and returns the path that
     most closely matches the trace.

@@ -4,8 +4,6 @@ from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.road import Road
 from yamm.utils.abc import *
 
-Path = List[Road]
-
 
 class MapInterface(metaclass=ABCMeta):
     """
@@ -21,7 +19,7 @@ class MapInterface(metaclass=ABCMeta):
         """
 
     @abstractmethod
-    def shortest_path(self, origin: Coordinate, destination: Coordinate, weight: Optional[str] = None) -> Path:
+    def shortest_path(self, origin: Coordinate, destination: Coordinate, weight: Optional[str] = None) -> List[Road]:
         """
         computes the shortest path on the road network
 

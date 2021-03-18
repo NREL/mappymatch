@@ -8,8 +8,8 @@ import random
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.match import Match
+from yamm.constructs.road import Road
 from yamm.constructs.trace import Trace
-from yamm.maps.networkx_map import Path
 from yamm.matchers.lcss.utils import compress
 from yamm.utils.geo import road_to_coord_dist, coord_to_coord_dist
 
@@ -26,7 +26,7 @@ class TrajectorySegment(NamedTuple):
     represents a trace and path matching
     """
     trace: Trace
-    path: Path
+    path: List[Road]
 
     matches: List[Match] = []
 
@@ -35,7 +35,9 @@ class TrajectorySegment(NamedTuple):
 
     cutting_points: List[CuttingPoint] = []
 
-    distance_epsilon: float = 100.0
+    distance_epsilon: float = 10
+
+    similarity_cutoff: float = 0.8
 
     def __add__(self, other):
         new_traces = self.trace + other.trace
@@ -43,7 +45,7 @@ class TrajectorySegment(NamedTuple):
         return TrajectorySegment(new_traces, new_paths)
 
     def set_score(self, score):
-        if score > 0.6:
+        if score > self.similarity_cutoff:
             similar = True
         else:
             similar = False

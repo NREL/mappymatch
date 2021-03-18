@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import NamedTuple
 
 from pyproj import Transformer
+from shapely.geometry import Point
 
 from yamm.utils.crs import LATLON_CRS, XY_CRS
 
@@ -20,6 +21,8 @@ class Coordinate(NamedTuple):
     x: float
     y: float
 
+    geom: Point
+
     @classmethod
     def from_latlon(cls, lat: float, lon: float) -> Coordinate:
         """
@@ -33,7 +36,7 @@ class Coordinate(NamedTuple):
         transformer = Transformer.from_crs(LATLON_CRS, XY_CRS)
         x, y = transformer.transform(lat, lon)
 
-        return Coordinate(lat=lat, lon=lon, x=x, y=y)
+        return Coordinate(lat=lat, lon=lon, x=x, y=y, geom=Point(x, y))
 
     @classmethod
     def from_xy(cls, x: float, y: float) -> Coordinate:
@@ -46,6 +49,6 @@ class Coordinate(NamedTuple):
         :return:
         """
         transformer = Transformer.from_crs(XY_CRS, LATLON_CRS)
-        lon, lat = transformer.transform(x, y)
+        lat, lon = transformer.transform(x, y)
 
-        return Coordinate(lat=lat, lon=lon, x=x, y=y)
+        return Coordinate(lat=lat, lon=lon, x=x, y=y, geom=Point(x, y))

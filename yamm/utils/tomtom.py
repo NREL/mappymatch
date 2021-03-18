@@ -1,6 +1,7 @@
 import geopandas as gpd
 import networkx as nx
 from pyproj import Transformer
+from shapely.geometry import LineString
 from sqlalchemy.future import Engine
 
 from yamm.constructs.geofence import Geofence
@@ -76,6 +77,7 @@ def tomtom_gdf_to_nx_graph(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiDiGrap
     gdf['f_lat'] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[0][1])
     gdf['t_lon'] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[-1][0])
     gdf['t_lat'] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[-1][1])
+    gdf = gdf.to_crs(XY_CRS)
     oneway_ft = gdf[gdf.oneway == 'FT']
     oneway_tf = gdf[gdf.oneway == 'TF']
     twoway = gdf[~(gdf.oneway == 'FT') & ~(gdf.oneway == 'TF')]
@@ -84,48 +86,56 @@ def tomtom_gdf_to_nx_graph(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiDiGrap
         (t, f, -k, {
             'meters': mt,
             'minutes': mn,
-        }) for t, f, k, mt, mn in zip(
+            'geom': LineString(reversed(g.coords)),
+        }) for t, f, k, mt, mn, g in zip(
             twoway.t_jnctid.values,
             twoway.f_jnctid.values,
             twoway.id,
             twoway.meters.values,
             twoway.minutes.values,
+            twoway.wkb_geometry.values,
         )
     ]
     twoway_edges_ft = [
         (f, t, k, {
             'meters': mt,
             'minutes': mn,
-        }) for t, f, k, mt, mn in zip(
+            'geom': g,
+        }) for t, f, k, mt, mn, g in zip(
             twoway.t_jnctid.values,
             twoway.f_jnctid.values,
             twoway.id,
             twoway.meters.values,
             twoway.minutes.values,
+            twoway.wkb_geometry.values,
         )
     ]
     oneway_edges_ft = [
         (f, t, k, {
             'meters': mt,
             'minutes': mn,
-        }) for t, f, k, mt, mn in zip(
+            'geom': g,
+        }) for t, f, k, mt, mn, g in zip(
             oneway_ft.t_jnctid.values,
             oneway_ft.f_jnctid.values,
             oneway_ft.id,
             oneway_ft.meters.values,
             oneway_ft.minutes.values,
+            oneway_ft.wkb_geometry.values,
         )
     ]
     oneway_edges_tf = [
         (t, f, -k, {
             'meters': mt,
             'minutes': mn,
-        }) for t, f, k, mt, mn in zip(
+            'geom': LineString(reversed(g.coords)),
+        }) for t, f, k, mt, mn, g in zip(
             oneway_tf.t_jnctid.values,
             oneway_tf.f_jnctid.values,
             oneway_tf.id,
             oneway_tf.meters.values,
             oneway_tf.minutes.values,
+            oneway_tf.wkb_geometry.values,
         )
     ]
 

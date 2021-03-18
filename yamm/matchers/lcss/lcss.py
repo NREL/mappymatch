@@ -61,7 +61,8 @@ class LCSSMatcher(MatcherInterface):
         joined_segment = ft.reduce(lambda acc, x: acc + x, scheme).score_and_match()
 
         # todo: only return the matches
-        return joined_segment.matches
+        return joined_segment
+        # return joined_segment.matches
 
     def match_trace_batch(self, trace_batch: List[Trace]) -> List[MatchResult]:
         return [self.match_trace(t) for t in trace_batch]

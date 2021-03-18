@@ -10,9 +10,7 @@ from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
 from yamm.maps.map_interface import MapInterface
-from yamm.utils.geo import road_to_coord_dist
 from yamm.utils.tomtom import (
-    compress_tomtom_nx_graph,
     get_tomtom_gdf,
     tomtom_gdf_to_nx_graph
 )
@@ -29,13 +27,13 @@ class TomTomMap(MapInterface):
         self.kdtree = self._build_kdtree()
 
     def _build_kdtree(self) -> cKDTree:
-        points = [(self.g.nodes[nid]['lat'], self.g.nodes[nid]['lon']) for nid in self._nodes]
+        points = [(self.g.nodes[nid]['x'], self.g.nodes[nid]['y']) for nid in self._nodes]
         tree = cKDTree(np.array(points))
 
         return tree
 
     def _get_nearest_node(self, coord: Coordinate) -> str:
-        _, i = self.kdtree.query([coord.lat, coord.lon])
+        _, i = self.kdtree.query([coord.x, coord.y])
         return self._nodes[i]
 
     @classmethod
@@ -49,11 +47,11 @@ class TomTomMap(MapInterface):
         """
         p = Path(file)
         if not p.suffix == ".pickle":
-            raise TypeError(f"NetworkXMap only supports pickle files")
+            raise TypeError(f"TomTomMap only supports pickle files")
 
         g = nx.read_gpickle(file)
 
-        return NetworkXMap(g)
+        return TomTomMap(g)
 
     @classmethod
     def from_sql(cls, sql_connection: Engine, geofence: Geofence):
@@ -67,9 +65,11 @@ class TomTomMap(MapInterface):
         """
         gdf = get_tomtom_gdf(sql_connection, geofence)
         g = tomtom_gdf_to_nx_graph(gdf)
-        compressed_g = compress_tomtom_nx_graph(g)
 
-        return NetworkXMap(compressed_g)
+        return TomTomMap(g)
+
+    def to_file(self, outfile: str):
+        nx.write_gpickle(self.g, outfile)
 
     @property
     def roads(self) -> List[Road]:
@@ -79,13 +79,10 @@ class TomTomMap(MapInterface):
         :return:
         """
         roads = []
-        for u, v in self.g.edges():
-            u_node = self.g.nodes[u]
-            v_node = self.g.nodes[v]
+        for _, _, k, d in self.g.edges(data=True, keys=True):
             roads.append(Road(
-                road_id=str((u, v)),
-                start=Coordinate(lat=u_node['lat'], lon=u_node['lon'], x=u_node['x'], y=u_node['y']),
-                end=Coordinate(lat=v_node['lat'], lon=v_node['lon'], x=v_node['x'], y=v_node['y']),
+                road_id=k,
+                geom=d['geom'],
             ))
 
         return roads
@@ -97,26 +94,27 @@ class TomTomMap(MapInterface):
         :param coord:
         :return:
         """
-        nearest_node = self._get_nearest_node(coord)
-
-        edges_to_consider = list(self.g.out_edges(nearest_node)) + list(self.g.in_edges(nearest_node))
-
-        if not edges_to_consider:
-            raise Exception("nearest node does not have any edges")
-
-        roads = []
-        for u, v in edges_to_consider:
-            road = Road(
-                road_id=str((u, v)),
-                start=Coordinate(self.g.nodes[u]['lat'], self.g.nodes[u]['lon'], self.g.nodes[u]['x'],
-                                 self.g.nodes[u]['y']),
-                end=Coordinate(self.g.nodes[v]['lat'], self.g.nodes[v]['lon'], self.g.nodes[v]['x'],
-                               self.g.nodes[v]['y']),
-            )
-            roads.append(road)
-
-        i = np.argmin([road_to_coord_dist(r, coord) for r in roads])
-        return roads[i]
+        raise NotImplementedError("not implemented")
+        # nearest_node = self._get_nearest_node(coord)
+        #
+        # edges_to_consider = list(self.g.out_edges(nearest_node)) + list(self.g.in_edges(nearest_node))
+        #
+        # if not edges_to_consider:
+        #     raise Exception("nearest node does not have any edges")
+        #
+        # roads = []
+        # for u, v in edges_to_consider:
+        #     road = Road(
+        #         road_id=str((u, v)),
+        #         start=Coordinate(self.g.nodes[u]['lat'], self.g.nodes[u]['lon'], self.g.nodes[u]['x'],
+        #                          self.g.nodes[u]['y']),
+        #         end=Coordinate(self.g.nodes[v]['lat'], self.g.nodes[v]['lon'], self.g.nodes[v]['x'],
+        #                        self.g.nodes[v]['y']),
+        #     )
+        #     roads.append(road)
+        #
+        # i = np.argmin([road_to_coord_dist(r, coord) for r in roads])
+        # return roads[i]
 
     def shortest_path(self, origin: Coordinate, destination: Coordinate, weight: Optional[str] = None) -> List[Road]:
         """
@@ -144,21 +142,13 @@ class TomTomMap(MapInterface):
         for i in range(1, len(nx_route)):
             road_start_node = nx_route[i - 1]
             road_end_node = nx_route[i]
-            road_id = f"({road_start_node},{road_end_node})"
 
-            road_start_coord = Coordinate(
-                lat=self.g.nodes[road_start_node]['lat'],
-                lon=self.g.nodes[road_start_node]['lon'],
-                x=self.g.nodes[road_start_node]['x'],
-                y=self.g.nodes[road_start_node]['y'],
-            )
-            road_end_coord = Coordinate(
-                lat=self.g.nodes[road_end_node]['lat'],
-                lon=self.g.nodes[road_end_node]['lon'],
-                x=self.g.nodes[road_end_node]['x'],
-                y=self.g.nodes[road_end_node]['y'],
-            )
+            edge_data = self.g.get_edge_data(road_start_node, road_end_node)
 
-            path.append(Road(road_id, road_start_coord, road_end_coord))
+            road_id = list(edge_data.keys())[0]
+
+            geom = edge_data[road_id]['geom']
+
+            path.append(Road(road_id, geom))
 
         return path

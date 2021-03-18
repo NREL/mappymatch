@@ -1,16 +1,32 @@
 import math
+from typing import Tuple
 
 import numpy as np
+from pyproj import Transformer
 from shapely.geometry import box
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
 from yamm.constructs.trace import Trace
-from yamm.utils.crs import XY_CRS
+from yamm.utils.crs import XY_CRS, LATLON_CRS
 
 
-def compute_bounding_box(trace: Trace, padding: float = 0) -> Geofence:
+def xy_to_latlon(x: float, y: float) -> Tuple[float, float]:
+    transformer = Transformer.from_crs(XY_CRS, LATLON_CRS)
+    lat, lon = transformer.transform(x, y)
+
+    return lat, lon
+
+
+def latlon_to_xy(lat: float, lon: float) -> Tuple[float, float]:
+    transformer = Transformer.from_crs(LATLON_CRS, XY_CRS)
+    x, y = transformer.transform(lat, lon)
+
+    return x, y
+
+
+def geofence_from_trace(trace: Trace, padding: float = 0) -> Geofence:
     """
     computes a bounding box surrounding a trace by taking the minimum and maximum x and y
 
@@ -28,9 +44,12 @@ def compute_bounding_box(trace: Trace, padding: float = 0) -> Geofence:
     max_x = np.max(x) + padding
     max_y = np.max(y) + padding
 
-    bbox = box(min_x, min_y, max_x, max_y)
+    min_lat, min_lon = xy_to_latlon(min_x, min_y)
+    max_lat, max_lon = xy_to_latlon(max_x, max_y)
 
-    return Geofence(crs=XY_CRS, geometry=bbox)
+    bbox = box(min_lon, min_lat, max_lon, max_lat)
+
+    return Geofence(crs=LATLON_CRS, geometry=bbox)
 
 
 def road_to_coord_dist(road: Road, coord: Coordinate) -> float:
@@ -43,25 +62,7 @@ def road_to_coord_dist(road: Road, coord: Coordinate) -> float:
     :return: the distance
     """
 
-    lx = road.end.x - road.start.x
-    ly = road.end.y - road.start.y
-
-    denom = max(lx * lx + ly * ly, 0.00000001)
-
-    u = ((coord.x - road.start.x) * lx + (coord.y - road.start.y) * ly) / denom
-
-    if u > 1:
-        u = 1
-    elif u < 0:
-        u = 0
-
-    x = road.start.x + u * lx
-    y = road.start.y + u * ly
-
-    dx = x - coord.x
-    dy = y - coord.y
-
-    dist = math.sqrt(dx * dx + dy * dy)
+    dist = coord.geom.distance(road.geom)
 
     return dist
 

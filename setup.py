@@ -32,6 +32,7 @@ setup(
         "pyproj",
         "shapely",
         "sqlalchemy",
+        "psycopg2",
         "geopandas",
     ],
     extras_require={
@@ -39,7 +40,6 @@ setup(
             "osmnx",
             "requests",
             "rtree",
-            "psycopg2",
         ],
         "plot": [
             "folium",

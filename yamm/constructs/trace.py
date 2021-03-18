@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import List
 
 from pyproj import CRS, Transformer
+from shapely.geometry import Point
 
 from yamm.constructs.coordinate import Coordinate
 
@@ -82,7 +83,8 @@ class Trace:
 
         lat_proj, lon_proj = transformer.transform(lats, lons)
 
-        coords = [Coordinate(lat=lat, lon=lon, x=x, y=y) for x, y, lat, lon in zip(lat_proj, lon_proj, lats, lons)]
+        coords = [Coordinate(lat=lat, lon=lon, x=x, y=y, geom=Point(x, y)) for x, y, lat, lon in zip(lat_proj, lon_proj, lats, lons)]
+
 
         return Trace(coords)
 
