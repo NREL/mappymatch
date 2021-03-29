@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import NamedTuple
 
-from pyproj import Transformer
+from pyproj import Transformer, CRS
 from shapely.geometry import Point
 
 from yamm.utils.crs import LATLON_CRS, XY_CRS
@@ -10,18 +10,11 @@ from yamm.utils.crs import LATLON_CRS, XY_CRS
 
 class Coordinate(NamedTuple):
     """
-    coordinate with epsg 4326 representation and epsg 3857 representation
+    coordinate a CRS and a geometry
     """
 
-    # epsg 4326
-    lat: float
-    lon: float
-
-    # epsg 3857
-    x: float
-    y: float
-
     geom: Point
+    crs: CRS
 
     @classmethod
     def from_latlon(cls, lat: float, lon: float) -> Coordinate:
@@ -33,10 +26,7 @@ class Coordinate(NamedTuple):
 
         :return:
         """
-        transformer = Transformer.from_crs(LATLON_CRS, XY_CRS)
-        x, y = transformer.transform(lat, lon)
-
-        return Coordinate(lat=lat, lon=lon, x=x, y=y, geom=Point(x, y))
+        return Coordinate(geom=Point(lon, lat), crs=LATLON_CRS)
 
     @classmethod
     def from_xy(cls, x: float, y: float) -> Coordinate:
@@ -48,7 +38,18 @@ class Coordinate(NamedTuple):
 
         :return:
         """
-        transformer = Transformer.from_crs(XY_CRS, LATLON_CRS)
-        lat, lon = transformer.transform(x, y)
+        return Coordinate(geom=Point(x, y), crs=XY_CRS)
 
-        return Coordinate(lat=lat, lon=lon, x=x, y=y, geom=Point(x, y))
+    @property
+    def x(self) -> float:
+        return self.geom.x
+
+    @property
+    def y(self) -> float:
+        return self.geom.y
+
+    def to_crs(self, new_crs: CRS) -> Coordinate:
+        transformer = Transformer.from_crs(self.crs, new_crs)
+        new_x, new_y = transformer.transform(self.geom.x, self.geom.y)
+
+        return Coordinate(geom=Point(new_x, new_y), crs=new_crs)

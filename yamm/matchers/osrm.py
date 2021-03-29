@@ -2,7 +2,9 @@ import logging
 
 import requests
 
+from yamm.constructs.road import Road
 from yamm.matchers.matcher_interface import *
+from yamm.utils.crs import LATLON_CRS
 from yamm.utils.url import multiurljoin
 
 log = logging.getLogger(__name__)
@@ -10,7 +12,7 @@ log = logging.getLogger(__name__)
 DEFAULT_OSRM_ADDRESS = "http://router.project-osrm.org"
 
 
-def parse_osrm_json(j: dict) -> List[LinkId]:
+def parse_osrm_json(j: dict) -> List[Match]:
     """
     parse the json response from the osrm match service
 
@@ -35,7 +37,7 @@ def parse_osrm_json(j: dict) -> List[LinkId]:
     if not legs:
         raise ValueError("could not find any link legs in response")
 
-    def _parse_leg(d: dict) -> LinkId:
+    def _parse_leg(d: dict) -> Match:
         annotation = d.get("annotation")
         if not annotation:
             raise ValueError("leg has no annotation information")
@@ -43,7 +45,11 @@ def parse_osrm_json(j: dict) -> List[LinkId]:
         if not nodes:
             raise ValueError('leg has no osm node information')
         link_id = f"({nodes[0]},{nodes[1]})"
-        return link_id
+
+        # todo: we need to get geometry and distance info from OSRM if available
+        road = Road(road_id=link_id, geom=None)
+        match = Match(road=road, coordinate=None, distance=None)
+        return match
 
     return [_parse_leg(d) for d in legs]
 
@@ -62,17 +68,22 @@ class OsrmMatcher(MatcherInterface):
         self.osrm_api_base = multiurljoin([osrm_address, "match", osrm_version, osrm_profile])
 
     def match_trace(self, trace: Trace) -> MatchResult:
+        if not trace.crs == LATLON_CRS:
+            raise TypeError(f"this matcher requires traces to be in the CRS of EPSG:{LATLON_CRS.to_epsg()} "
+                            f"but found EPSG:{trace.crs.to_epsg()}")
+
         if len(trace) > 100:
             trace = trace.downsample(100)
 
         coordinate_str = ""
         for coord in trace.coords:
-            coordinate_str += f"{coord.lon},{coord.lat};"
+            coordinate_str += f"{coord.x},{coord.y};"
 
         # remove the trailing semicolon
         coordinate_str = coordinate_str[:-1]
 
         osrm_request = self.osrm_api_base + coordinate_str + "?annotations=true"
+        print(osrm_request)
 
         r = requests.get(osrm_request)
 

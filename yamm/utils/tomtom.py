@@ -8,23 +8,6 @@ from yamm.constructs.geofence import Geofence
 from yamm.utils.crs import LATLON_CRS, XY_CRS
 
 
-def compress_tomtom_nx_graph(graph: nx.MultiDiGraph) -> nx.MultiDiGraph:
-    """
-    compress the tomtom_nx_graph by removing certain attributes
-
-    :param graph: the graph to compress
-
-    :return: the compressed graph
-    """
-
-    # remove the link geometry to save space
-    for _, _, data in graph.edges(data=True):
-        if 'geom' in data:
-            del (data['geom'])
-
-    return graph
-
-
 def get_tomtom_gdf(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame:
     """
     Pull TomTom road links and return a geo dataframe
@@ -50,11 +33,11 @@ def get_tomtom_gdf(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame:
     )
 
     raw_gdf = raw_gdf[
-        (raw_gdf.rdcond == 1) &
-        (raw_gdf.frc < 7) &
-        (raw_gdf.backrd == 0) &
-        (raw_gdf.privaterd == 0) &
-        (raw_gdf.roughrd == 0)
+        (raw_gdf.rdcond < 2) &
+        (raw_gdf.frc < 8)
+        # (raw_gdf.backrd == 0) &
+        # (raw_gdf.privaterd == 0) &
+        # (raw_gdf.roughrd == 0)
         ].fillna(0)
 
     return raw_gdf

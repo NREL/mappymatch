@@ -1,6 +1,8 @@
 import functools as ft
 
 import logging
+from multiprocessing import Pool
+from typing import Optional
 
 from yamm.maps.map_interface import MapInterface
 from yamm.matchers.lcss.constructs import TrajectorySegment
@@ -22,17 +24,25 @@ class LCSSMatcher(MatcherInterface):
 
     def __init__(
             self,
-            road_map: MapInterface
+            road_map: MapInterface,
+            distance_epsilon: float = 50,
+            similarity_cutoff: float = 0.9,
     ):
         self.map = road_map
+        self.distance_epsilon = distance_epsilon
+        self.similarity_cutoff = similarity_cutoff
 
-    def match_trace(self, trace: Trace) -> MatchResult:
+    def match_trace(self, trace: Trace, road_map: Optional[MapInterface] = None) -> MatchResult:
+        if not road_map:
+            road_map = self.map
+            
+        de = self.distance_epsilon
         initial_segment = TrajectorySegment(
             trace=trace,
-            path=new_path(self.map, trace)
-        ).score_and_match().compute_cutting_points()
+            path=new_path(road_map, trace, de)
+        ).score_and_match(de).compute_cutting_points(de)
 
-        initial_scheme = split_trajectory_segment(self.map, initial_segment)
+        initial_scheme = split_trajectory_segment(road_map, initial_segment, de)
 
         scheme = initial_scheme
 
@@ -40,13 +50,13 @@ class LCSSMatcher(MatcherInterface):
         while n < 10:
             next_scheme = []
             for segment in scheme:
-                scored_segment = segment.score_and_match().compute_cutting_points()
-                if scored_segment.similar:
+                scored_segment = segment.score_and_match(de).compute_cutting_points(de)
+                if scored_segment.score >= self.similarity_cutoff:
                     next_scheme.append(scored_segment)
                 else:
                     # split and check the score
-                    new_split = split_trajectory_segment(self.map, scored_segment)
-                    joined_segment = ft.reduce(lambda acc, x: acc + x, new_split).score_and_match()
+                    new_split = split_trajectory_segment(road_map, scored_segment, de)
+                    joined_segment = ft.reduce(lambda acc, x: acc + x, new_split).score_and_match(de)
                     if joined_segment.score > scored_segment.score:
                         # we found a better fit
                         next_scheme.extend(new_split)
@@ -58,11 +68,19 @@ class LCSSMatcher(MatcherInterface):
 
             scheme = next_scheme
 
-        joined_segment = ft.reduce(lambda acc, x: acc + x, scheme).score_and_match()
+        joined_segment = ft.reduce(lambda acc, x: acc + x, scheme).score_and_match(de)
 
-        # todo: only return the matches
-        return joined_segment
-        # return joined_segment.matches
+        return joined_segment.matches
 
-    def match_trace_batch(self, trace_batch: List[Trace]) -> List[MatchResult]:
-        return [self.match_trace(t) for t in trace_batch]
+    def match_trace_batch(
+            self,
+            trace_batch: List[Trace],
+            processes: int = 1,
+    ) -> List[MatchResult]:
+        if processes > 1:
+            results = [self.match_trace(t) for t in trace_batch]
+        else:
+            with Pool(processes=processes) as p:
+                results = p.map(self.match_trace, trace_batch)
+
+        return results

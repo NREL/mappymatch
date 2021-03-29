@@ -1,39 +1,44 @@
 from __future__ import annotations
 
-import numpy as np
-
 from csv import DictReader
 from pathlib import Path
 from typing import List
 
+import numpy as np
 from pyproj import CRS, Transformer
-from shapely.geometry import Point
 
 from yamm.constructs.coordinate import Coordinate
+from yamm.utils.crs import LATLON_CRS, XY_CRS
 
-valid_latitude_names = {'latitude', 'Latitude', 'lat', 'Lat'}
-valid_longitude_names = {'longitude', 'Longitude', 'Lon', 'Lon', 'long', 'Long'}
+valid_latitude_names = {'latitude', 'Latitude', 'lat', 'Lat', "Latitude [degrees]"}
+valid_longitude_names = {'longitude', 'Longitude', 'Lon', 'Lon', 'long', 'Long', "Longitude [degrees]"}
 
 
 class Trace:
-    def __init__(self, coords: List[Coordinate]):
+    def __init__(self, coords: List[Coordinate], crs: CRS = XY_CRS):
+        if any(map(lambda c: c.crs != crs, coords)):
+            raise TypeError(f"CRS of the coordinates no not match CRS of the trace ({crs.to_epsg()})")
 
         self.coords = coords
+        self.crs = crs
 
     def __getitem__(self, i):
         new_coords = self.coords[i]
         if isinstance(new_coords, Coordinate):
             new_coords = [new_coords]
-        return Trace(new_coords)
+
+        new_coords
+        return Trace(new_coords, self.crs)
 
     def __add__(self, other: Trace) -> Trace:
-        return Trace(self.coords + other.coords)
+        new_coords = self.coords + other.coords
+        return Trace(new_coords, self.crs)
 
     def __len__(self):
         return len(self.coords)
 
     @classmethod
-    def from_csv(cls, file: str) -> Trace:
+    def from_csv(cls, file: str, xy: bool = True) -> Trace:
         """
         Builds a trace from a csv file.
 
@@ -42,6 +47,7 @@ class Trace:
         Automatically projects each coordinate to epsg 3857 as well
 
         :param file: the file to load
+        :param xy: should the trace be projected to x, y?
 
         :return: the trace
         """
@@ -77,18 +83,23 @@ class Trace:
                 lats.append(float(row[lat_name]))
                 lons.append(float(row[lon_name]))
 
-        base_crs = CRS(4326)
-        xy_crs = CRS(3857)
-        transformer = Transformer.from_crs(base_crs, xy_crs)
+        if xy:
+            transformer = Transformer.from_crs(LATLON_CRS, XY_CRS)
 
-        lat_proj, lon_proj = transformer.transform(lats, lons)
+            lat_proj, lon_proj = transformer.transform(lats, lons)
 
-        coords = [Coordinate(lat=lat, lon=lon, x=x, y=y, geom=Point(x, y)) for x, y, lat, lon in zip(lat_proj, lon_proj, lats, lons)]
+            coords = [Coordinate.from_xy(x, y) for x, y in zip(lat_proj, lon_proj)]
+            crs = XY_CRS
+        else:
+            coords = [Coordinate.from_latlon(lat, lon) for lat, lon in zip(lats, lons)]
+            crs = LATLON_CRS
 
-
-        return Trace(coords)
+        return Trace(coords, crs)
 
     def downsample(self, npoints: int) -> Trace:
         coords = self.coords
-        new_coords = [coords[0]] + [coords[i] for i in np.linspace(1, len(coords) - 1, npoints - 2).astype(int)] + [coords[-1]]
-        return Trace(new_coords)
+        new_coords = [coords[0]] + [coords[i] for i in np.linspace(1, len(coords) - 1, npoints - 2).astype(int)] + [
+            coords[-1]]
+        self.coords = new_coords
+
+        return self

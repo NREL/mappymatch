@@ -1,6 +1,5 @@
-from typing import List
-
 import logging
+from typing import List
 
 from yamm.constructs.road import Road
 from yamm.constructs.trace import Trace
@@ -11,10 +10,8 @@ from yamm.utils.geo import road_to_coord_dist
 
 log = logging.getLogger(__name__)
 
-DEFAULT_DISTANCE_EPSILON = 10
 
-
-def score(trace: Trace, path: List[Road], distance_epsilon=DEFAULT_DISTANCE_EPSILON) -> float:
+def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
     """
     computes the similarity score between a trace and a path
 
@@ -56,6 +53,7 @@ def score(trace: Trace, path: List[Road], distance_epsilon=DEFAULT_DISTANCE_EPSI
 def new_path(
         road_map: MapInterface,
         trace: Trace,
+        distance_epsilon: float,
 ) -> List[Road]:
     """
     Computes a shortest time and shortest distance path and returns the path that
@@ -63,6 +61,7 @@ def new_path(
 
     :param road_map:
     :param trace:
+    :param distance_epsilon:
 
     :return:
     """
@@ -76,16 +75,20 @@ def new_path(
     time_path = road_map.shortest_path(origin, destination, weight="minutes")
     dist_path = road_map.shortest_path(origin, destination, weight="meters")
 
-    time_score = score(trace, time_path)
-    dist_score = score(trace, dist_path)
+    time_score = score(trace, time_path, distance_epsilon)
+    dist_score = score(trace, dist_path, distance_epsilon)
 
-    if time_score < dist_score:
-        return time_path
-    else:
+    if dist_score > time_score:
         return dist_path
+    else:
+        return time_path
 
 
-def split_trajectory_segment(road_map: MapInterface, trajectory_segment: TrajectorySegment) -> List[TrajectorySegment]:
+def split_trajectory_segment(
+        road_map: MapInterface,
+        trajectory_segment: TrajectorySegment,
+        distance_epsilon: float,
+) -> List[TrajectorySegment]:
     """
     Splits a trajectory segment based on the provided cutting points.
 
@@ -93,6 +96,7 @@ def split_trajectory_segment(road_map: MapInterface, trajectory_segment: Traject
 
     :param road_map: the road map to match to
     :param trajectory_segment: the trajectory segment to split
+    :param distance_epsilon: the distance epsilon
 
     :return: a list of split segments or the original segment if it can't be split
     """
@@ -100,11 +104,11 @@ def split_trajectory_segment(road_map: MapInterface, trajectory_segment: Traject
     cutting_points = trajectory_segment.cutting_points
 
     def _short_segment(ts: TrajectorySegment):
-        if len(ts.trace) < 20 or len(ts.path) < 5:
+        if len(ts.trace) < 10 or len(ts.path) < 5:
             return True
         return False
 
-    if len(trace) < 20:
+    if len(trace) < 10:
         # segment is too short to split
         return [trajectory_segment]
     elif len(cutting_points) < 1:
@@ -120,7 +124,7 @@ def split_trajectory_segment(road_map: MapInterface, trajectory_segment: Traject
     # start
     scp = cutting_points[0]
     new_trace = trace[:scp.trace_index]
-    new_paths.append(new_path(road_map, new_trace))
+    new_paths.append(new_path(road_map, new_trace, distance_epsilon))
     new_traces.append(new_trace)
 
     # mids
@@ -128,13 +132,13 @@ def split_trajectory_segment(road_map: MapInterface, trajectory_segment: Traject
         cp = cutting_points[i]
         ncp = cutting_points[i + 1]
         new_trace = trace[cp.trace_index:ncp.trace_index]
-        new_paths.append(new_path(road_map, new_trace))
+        new_paths.append(new_path(road_map, new_trace, distance_epsilon))
         new_traces.append(new_trace)
 
     # end
     ecp = cutting_points[-1]
     new_trace = trace[ecp.trace_index:]
-    new_paths.append(new_path(road_map, new_trace))
+    new_paths.append(new_path(road_map, new_trace, distance_epsilon))
     new_traces.append(new_trace)
 
     if not any(new_paths):

@@ -4,7 +4,6 @@ import logging
 from typing import NamedTuple, List
 
 import numpy as np
-import random
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.match import Match
@@ -31,26 +30,16 @@ class TrajectorySegment(NamedTuple):
     matches: List[Match] = []
 
     score: float = 0
-    similar: bool = False
 
     cutting_points: List[CuttingPoint] = []
-
-    distance_epsilon: float = 10
-
-    similarity_cutoff: float = 0.8
 
     def __add__(self, other):
         new_traces = self.trace + other.trace
         new_paths = self.path + other.path
         return TrajectorySegment(new_traces, new_paths)
 
-    def set_score(self, score):
-        if score > self.similarity_cutoff:
-            similar = True
-        else:
-            similar = False
-
-        return self._replace(score=score, similar=similar)
+    def set_score(self, score: float):
+        return self._replace(score=score)
 
     def set_cutting_points(self, cutting_points):
         return self._replace(cutting_points=cutting_points)
@@ -58,9 +47,11 @@ class TrajectorySegment(NamedTuple):
     def set_matches(self, matches):
         return self._replace(matches=matches)
 
-    def score_and_match(self) -> TrajectorySegment:
+    def score_and_match(self, distance_epsilon: float) -> TrajectorySegment:
         """
         computes the score of a trace, pair matching and also matches the coordinates to the nearest road.
+
+        :param distance_epsilon
         
         return: updated trajectory segment with a score and matched points
         """
@@ -94,8 +85,8 @@ class TrajectorySegment(NamedTuple):
                     min_dist = dt
                     nearest_road = road
 
-                if dt < self.distance_epsilon:
-                    point_similarity = 1 - (dt / self.distance_epsilon)
+                if dt < distance_epsilon:
+                    point_similarity = 1 - (dt / distance_epsilon)
                 else:
                     point_similarity = 0
 
@@ -106,7 +97,7 @@ class TrajectorySegment(NamedTuple):
                 raise Exception(f"could not find nearest road for coord {coord}")
 
             match = Match(
-                road_id=nearest_road.road_id,
+                road=nearest_road,
                 distance=min_dist,
                 coordinate=coord,
             )
@@ -116,7 +107,7 @@ class TrajectorySegment(NamedTuple):
 
         return self.set_score(sim_score).set_matches(matched_roads)
 
-    def compute_cutting_points(self) -> TrajectorySegment:
+    def compute_cutting_points(self, distance_epsilon: float) -> TrajectorySegment:
         """
         Computes the cutting points for a trajectory segment by:
          - computing the furthest point 
@@ -124,7 +115,7 @@ class TrajectorySegment(NamedTuple):
 
         :return: the updated trajectory segment with cutting points 
         """
-        cutting_thresh = 10
+        cutting_thresh = 5
 
         cutting_points = []
 
@@ -145,14 +136,14 @@ class TrajectorySegment(NamedTuple):
 
         # collect points that are close to the distance threshold
         for i, m in enumerate(self.matches):
-            if abs(m.distance - self.distance_epsilon) < cutting_thresh:
+            if abs(m.distance - distance_epsilon) < cutting_thresh:
                 cutting_points.append(CuttingPoint(i, self.trace.coords[i]))
 
-        # add N random points
-        N = 2
-        for _ in range(N):
-            cpi = random.randint(0, len(self.trace)-1)
-            cutting_points.append(CuttingPoint(cpi, self.trace.coords[i]))
+        # # add N random points
+        # N = 2
+        # for _ in range(N):
+        #     cpi = random.randint(0, len(self.trace)-1)
+        #     cutting_points.append(CuttingPoint(cpi, self.trace.coords[i]))
 
         compressed_cuts = list(compress(cutting_points))
 
