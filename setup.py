@@ -34,12 +34,12 @@ setup(
         "sqlalchemy",
         "psycopg2",
         "geopandas",
+        "rtree",
     ],
     extras_require={
         "optional": [
             "osmnx",
             "requests",
-            "rtree",
         ],
         "plot": [
             "folium",
