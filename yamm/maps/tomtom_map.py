@@ -138,6 +138,7 @@ class TomTomMap(MapInterface):
             attempts += 1
 
         if len(roads) < 1:
+            # todo: maybe we return an empty list and then the matcher can add a 'no-match' entry for the point
             raise Exception(f"could not find a matching road within {search_size} meters; check the road network")
 
         if k > len(roads):
