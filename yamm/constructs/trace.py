@@ -16,9 +16,6 @@ valid_longitude_names = {'longitude', 'Longitude', 'Lon', 'Lon', 'long', 'Long',
 
 class Trace:
     def __init__(self, coords: List[Coordinate], crs: CRS = XY_CRS):
-        if coords[0].crs != crs:
-            raise TypeError(f"CRS of coords does not match CRS of the trace ({crs.to_epsg()})")
-
         self.coords = coords
         self.crs = crs
 
