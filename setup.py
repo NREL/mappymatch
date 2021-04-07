@@ -40,6 +40,7 @@ setup(
         "optional": [
             "osmnx",
             "requests",
+            "tqdm",
         ],
         "plot": [
             "folium",
