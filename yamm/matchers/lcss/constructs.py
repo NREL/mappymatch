@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import random
 from typing import NamedTuple, List
 
 import numpy as np
@@ -107,16 +108,23 @@ class TrajectorySegment(NamedTuple):
 
         return self.set_score(sim_score).set_matches(matched_roads)
 
-    def compute_cutting_points(self, distance_epsilon: float) -> TrajectorySegment:
+    def compute_cutting_points(
+            self,
+            distance_epsilon: float,
+            cutting_thresh: float,
+            random_cuts: int,
+    ) -> TrajectorySegment:
         """
         Computes the cutting points for a trajectory segment by:
          - computing the furthest point 
          - adding points that are close to the distance epsilon
 
+        :param distance_epsilon:
+        :param cutting_thresh:
+        :param random_cuts:
+
         :return: the updated trajectory segment with cutting points 
         """
-        cutting_thresh = 5
-
         cutting_points = []
 
         if not self.matches:
@@ -139,11 +147,10 @@ class TrajectorySegment(NamedTuple):
             if abs(m.distance - distance_epsilon) < cutting_thresh:
                 cutting_points.append(CuttingPoint(i, self.trace.coords[i]))
 
-        # # add N random points
-        # N = 2
-        # for _ in range(N):
-        #     cpi = random.randint(0, len(self.trace)-1)
-        #     cutting_points.append(CuttingPoint(cpi, self.trace.coords[i]))
+        # add random points
+        for _ in range(random_cuts):
+            cpi = random.randint(0, len(self.trace)-1)
+            cutting_points.append(CuttingPoint(cpi, self.trace.coords[i]))
 
         compressed_cuts = list(compress(cutting_points))
 

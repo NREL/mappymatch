@@ -25,22 +25,28 @@ class LCSSMatcher(MatcherInterface):
     def __init__(
             self,
             road_map: MapInterface,
-            distance_epsilon: float = 50,
+            distance_epsilon: float = 50.0,
             similarity_cutoff: float = 0.9,
+            cutting_threshold: float = 10.0,
+            random_cuts: int = 1,
     ):
         self.map = road_map
         self.distance_epsilon = distance_epsilon
         self.similarity_cutoff = similarity_cutoff
+        self.cutting_threshold = cutting_threshold
+        self.random_cuts = random_cuts
 
     def match_trace(self, trace: Trace, road_map: Optional[MapInterface] = None) -> MatchResult:
         if not road_map:
             road_map = self.map
             
         de = self.distance_epsilon
+        ct = self.cutting_threshold
+        rc = self.random_cuts
         initial_segment = TrajectorySegment(
             trace=trace,
             path=new_path(road_map, trace, de)
-        ).score_and_match(de).compute_cutting_points(de)
+        ).score_and_match(de).compute_cutting_points(de, ct, rc)
 
         initial_scheme = split_trajectory_segment(road_map, initial_segment, de)
 
@@ -50,7 +56,7 @@ class LCSSMatcher(MatcherInterface):
         while n < 10:
             next_scheme = []
             for segment in scheme:
-                scored_segment = segment.score_and_match(de).compute_cutting_points(de)
+                scored_segment = segment.score_and_match(de).compute_cutting_points(de, ct, rc)
                 if scored_segment.score >= self.similarity_cutoff:
                     next_scheme.append(scored_segment)
                 else:
