@@ -10,6 +10,7 @@ from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
 from yamm.maps.map_interface import MapInterface
+from yamm.utils.crs import LATLON_CRS
 from yamm.utils.tomtom import (
     get_tomtom_gdf,
     tomtom_gdf_to_nx_graph
@@ -67,6 +68,8 @@ class TomTomMap(MapInterface):
 
         :return: a NetworkXMap instance
         """
+        if geofence.crs != LATLON_CRS:
+            raise TypeError(f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}")
         gdf = get_tomtom_gdf(sql_connection, geofence)
         g = tomtom_gdf_to_nx_graph(gdf)
 
