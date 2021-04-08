@@ -43,10 +43,10 @@ Transportation Research Record: Journal of the Transportation Research Board 264
 usage:
 ```python
 from yamm.matchers.lcss.lcss import LCSSMatcher
-from yamm.maps.networkx_map import NetworkXMap
+from yamm.maps.tomtom_map import TomTomMap 
 from yamm.constructs.trace import Trace
 
-road_map = NetworkXMap("resources/austin_tomtom_network.pickle")
+road_map = TomTomMap("resources/austin_tomtom_network.pickle")
 
 matcher = LCSSMatcher(road_map)
 
