@@ -75,8 +75,8 @@ class TomTomMap(MapInterface):
 
         return TomTomMap(g)
 
-    def to_file(self, outfile: str):
-        nx.write_gpickle(self.g, outfile)
+    def to_file(self, outfile: Union[str, Path]):
+        nx.write_gpickle(self.g, str(outfile))
 
     @property
     def roads(self) -> List[Road]:
