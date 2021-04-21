@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from csv import DictReader
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 from pyproj import CRS, Transformer
@@ -34,7 +34,13 @@ class Trace:
         return len(self.coords)
 
     @classmethod
-    def from_csv(cls, file: str, xy: bool = True) -> Trace:
+    def from_csv(
+            cls,
+            file: str,
+            xy: bool = True,
+            lat_column: Optional[str] = None,
+            lon_column: Optional[str] = None,
+    ) -> Trace:
         """
         Builds a trace from a csv file.
 
@@ -44,6 +50,8 @@ class Trace:
 
         :param file: the file to load
         :param xy: should the trace be projected to x, y?
+        :param lat_column: the name of the latitude column
+        :param lon_column: the name of the longitude column
 
         :return: the trace
         """
@@ -61,14 +69,18 @@ class Trace:
             lat_name_set = valid_latitude_names.intersection(set(reader.fieldnames))
             lon_name_set = valid_longitude_names.intersection(set(reader.fieldnames))
 
-            if len(lat_name_set) == 0:
+            if lat_column:
+                lat_name = lat_column
+            elif len(lat_name_set) == 0:
                 raise ValueError(f"could not find latitude information from fields {set(reader.fieldnames)}")
             elif len(lat_name_set) > 1:
                 raise ValueError("found multiple instances of latitude; please only provide one")
             else:
                 lat_name = list(lat_name_set)[0]
 
-            if len(lon_name_set) == 0:
+            if lon_column:
+                lon_name = lon_column
+            elif len(lon_name_set) == 0:
                 raise ValueError(f"could not find longitude information from fields {set(reader.fieldnames)}")
             elif len(lon_name_set) > 1:
                 raise ValueError("found multiple instances of longitude; please only provide one")
