@@ -44,7 +44,7 @@ def plot_matches(trace: Trace, matches: List[Match], road_map: MapInterface):
     gdf = gpd.GeoDataFrame(df, geometry=df.geom, crs=XY_CRS).drop(columns=["geom"])
     gdf = gdf.to_crs(LATLON_CRS)
 
-    mid_i = int(len(trace) / 2)
+    mid_i = int(len(trace.coords) / 2)
     mid_coord = trace.coords[mid_i].to_crs(LATLON_CRS)
 
     fmap = folium.Map(location=[mid_coord.x, mid_coord.y], zoom_start=11)

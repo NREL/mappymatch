@@ -21,7 +21,7 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
 
     :return:
     """
-    m = len(trace)
+    m = len(trace.coords)
     n = len(path)
 
     if m < 2:
@@ -65,7 +65,7 @@ def new_path(
 
     :return:
     """
-    if len(trace) < 1:
+    if len(trace.coords) < 1:
         return []
 
     origin = trace.coords[0]
@@ -108,7 +108,7 @@ def split_trajectory_segment(
             return True
         return False
 
-    if len(trace) < 10:
+    if len(trace.coords) < 10:
         # segment is too short to split
         return [trajectory_segment]
     elif len(cutting_points) < 1:

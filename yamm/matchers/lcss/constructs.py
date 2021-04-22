@@ -59,7 +59,7 @@ class TrajectorySegment(NamedTuple):
         trace = self.trace
         path = self.path
 
-        m = len(trace)
+        m = len(trace.coords)
         n = len(path)
 
         matched_roads = []

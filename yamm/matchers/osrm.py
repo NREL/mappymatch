@@ -72,7 +72,7 @@ class OsrmMatcher(MatcherInterface):
             raise TypeError(f"this matcher requires traces to be in the CRS of EPSG:{LATLON_CRS.to_epsg()} "
                             f"but found EPSG:{trace.crs.to_epsg()}")
 
-        if len(trace) > 100:
+        if len(trace.coords) > 100:
             trace = trace.downsample(100)
 
         coordinate_str = ""

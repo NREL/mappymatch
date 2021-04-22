@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from csv import DictReader
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, NamedTuple
 
 import numpy as np
 from pyproj import CRS, Transformer
@@ -15,6 +15,9 @@ valid_longitude_names = {'longitude', 'Longitude', 'Lon', 'Lon', 'long', 'Long',
 
 
 class Trace:
+    coords: List[Coordinate]
+    crs: CRS
+
     def __init__(self, coords: List[Coordinate], crs: CRS = XY_CRS):
         self.coords = coords
         self.crs = crs
@@ -102,12 +105,16 @@ class Trace:
             coords = [Coordinate.from_latlon(lat, lon) for lat, lon in zip(lats, lons)]
             crs = LATLON_CRS
 
-        return Trace(coords, crs)
+        trace = Trace(
+            coords=coords,
+            crs=crs
+        )
+
+        return trace
 
     def downsample(self, npoints: int) -> Trace:
-        coords = self.coords
-        new_coords = [coords[0]] + [coords[i] for i in np.linspace(1, len(coords) - 1, npoints - 2).astype(int)] + [
-            coords[-1]]
-        self.coords = new_coords
+        new_coords = [self.coords[0]] + [self.coords[i] for i in
+                                         np.linspace(1, len(self.coords) - 1, npoints - 2).astype(int)] + [
+                         self.coords[-1]]
 
-        return self
+        return Trace(new_coords, self.crs)
