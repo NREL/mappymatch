@@ -39,7 +39,7 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
             dt = road_to_coord_dist(road, coord)
 
             if dt < distance_epsilon:
-                point_similarity = 1 - (dt / distance_epsilon)
+                point_similarity = 1 - dt / distance_epsilon
             else:
                 point_similarity = 0
 

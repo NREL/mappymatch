@@ -98,7 +98,7 @@ def reverse_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
         for item in merge_items:
             items.append(item)
 
-    return items
+    return list(reversed(items))
 
 
 def merge(merge_list: List, condition: Callable[[Any], bool]) -> List:

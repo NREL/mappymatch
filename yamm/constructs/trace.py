@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from csv import DictReader
 from pathlib import Path
-from typing import List, Optional, NamedTuple
+from typing import List, Optional, Union
 
 import numpy as np
 from pyproj import CRS, Transformer
@@ -39,7 +39,7 @@ class Trace:
     @classmethod
     def from_csv(
             cls,
-            file: str,
+            file: Union[str, Path],
             xy: bool = True,
             lat_column: Optional[str] = None,
             lon_column: Optional[str] = None,
