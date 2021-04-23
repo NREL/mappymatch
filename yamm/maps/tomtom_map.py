@@ -3,7 +3,7 @@ from typing import List, Optional, Union
 
 import networkx as nx
 import rtree
-from shapely.geometry import LineString
+from shapely.geometry import LineString, Point
 from sqlalchemy.future import Engine
 
 from yamm.constructs.coordinate import Coordinate
@@ -11,6 +11,7 @@ from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
 from yamm.maps.map_interface import MapInterface
 from yamm.utils.crs import LATLON_CRS
+from yamm.utils.geo import coord_to_coord_dist
 from yamm.utils.tomtom import (
     get_tomtom_gdf,
     tomtom_gdf_to_nx_graph
@@ -156,10 +157,24 @@ class TomTomMap(MapInterface):
         :return:
         """
         origin_road = self.nearest_roads(origin)[0]
+
+        u_dist = Point(origin_road.geom.coords[0]).distance(origin.geom)
+        v_dist = Point(origin_road.geom.coords[-1]).distance(origin.geom)
+
+        if u_dist <= v_dist:
+            origin_id = origin_road.metadata['u']
+        else:
+            origin_id = origin_road.metadata['v']
+
         dest_road = self.nearest_roads(destination)[0]
 
-        origin_id = origin_road.metadata['u']
-        dest_id = dest_road.metadata['v']
+        u_dist = Point(dest_road.geom.coords[0]).distance(destination.geom)
+        v_dist = Point(dest_road.geom.coords[-1]).distance(destination.geom)
+
+        if u_dist <= v_dist:
+            dest_id = dest_road.metadata['u']
+        else:
+            dest_id = dest_road.metadata['v']
 
         if not weight:
             weight = self.TIME_WEIGHT
