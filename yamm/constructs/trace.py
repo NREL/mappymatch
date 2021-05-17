@@ -118,3 +118,30 @@ class Trace:
                          self.coords[-1]]
 
         return Trace(new_coords, self.crs)
+
+    def to_crs(self, new_crs: CRS) -> Trace:
+        """
+        converts the crs of a trace to a new crs
+
+        :param new_crs: the crs to convert the trace to
+        :return: the new trace
+        """
+        transformer = Transformer.from_crs(self.crs, new_crs)
+
+        if self.crs == LATLON_CRS:
+            x = [c.y for c in self.coords]
+            y = [c.x for c in self.coords]
+        else:
+            x = [c.x for c in self.coords]
+            y = [c.y for c in self.coords]
+
+        new_x, new_y = transformer.transform(x, y)
+
+        if new_crs == XY_CRS:
+            new_coords = [Coordinate.from_xy(x, y) for x, y in zip(new_x, new_y)]
+        elif new_crs == LATLON_CRS:
+            new_coords = [Coordinate.from_latlon(x, y) for x, y in zip(new_x, new_y)]
+        else:
+            raise ValueError("incompatible crs to convert to")
+
+        return Trace(coords=new_coords, crs=new_crs)
