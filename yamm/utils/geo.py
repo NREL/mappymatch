@@ -1,9 +1,10 @@
 from typing import Tuple
 
+import geopandas as gpd
 import numpy as np
 from pyproj import Transformer
 from rtree import index
-from shapely.geometry import box
+from shapely.ops import cascaded_union, transform
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.geofence import Geofence
@@ -41,35 +42,32 @@ def latlon_to_xy(lat: float, lon: float) -> Tuple[float, float]:
     return x, y
 
 
-def geofence_from_trace(trace: Trace, padding: float = 0, xy: bool = False) -> Geofence:
+def geofence_from_trace(trace: Trace, padding: float = 0, xy: bool = False, buffer_res: int = 16) -> Geofence:
     """
     computes a bounding box surrounding a trace by taking the minimum and maximum x and y
 
     :param trace: the trace to compute the bounding box for
     :param padding: how much padding (in meters) to add to the box
     :param xy: should the geofence be projected to xy?
+    :param buffer_res: should the geofence be projected to xy?
 
     :return: the computed bounding box
     """
-    x = [c.x for c in trace.coords]
-    y = [c.y for c in trace.coords]
 
-    min_x = np.min(x) - padding
-    min_y = np.min(y) - padding
+    if trace.crs != XY_CRS:
+        trace = trace.to_crs(XY_CRS)
 
-    max_x = np.max(x) + padding
-    max_y = np.max(y) + padding
+    coords_df = gpd.GeoSeries([c.geom for c in trace.coords])
+
+    polygon = cascaded_union(coords_df.buffer(padding, buffer_res))
 
     if xy:
-        bbox = box(min_x, min_y, max_x, max_y)
-        return Geofence(crs=XY_CRS, geometry=bbox)
+        return Geofence(crs=XY_CRS, geometry=polygon)
 
-    min_lat, min_lon = xy_to_latlon(min_x, min_y)
-    max_lat, max_lon = xy_to_latlon(max_x, max_y)
+    project = Transformer.from_crs(XY_CRS, LATLON_CRS, always_xy=True).transform
+    polygon = transform(project, polygon)
 
-    bbox = box(min_lon, min_lat, max_lon, max_lat)
-
-    return Geofence(crs=LATLON_CRS, geometry=bbox)
+    return Geofence(crs=LATLON_CRS, geometry=polygon)
 
 
 def road_to_coord_dist(road: Road, coord: Coordinate) -> float:
