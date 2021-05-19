@@ -42,7 +42,7 @@ def latlon_to_xy(lat: float, lon: float) -> Tuple[float, float]:
     return x, y
 
 
-def geofence_from_trace(trace: Trace, padding: float = 0, xy: bool = False, buffer_res: int = 16) -> Geofence:
+def geofence_from_trace(trace: Trace, padding: float = 15, xy: bool = False, buffer_res: int = 16) -> Geofence:
     """
     computes a bounding box surrounding a trace by taking the minimum and maximum x and y
 
@@ -57,9 +57,9 @@ def geofence_from_trace(trace: Trace, padding: float = 0, xy: bool = False, buff
     if trace.crs != XY_CRS:
         trace = trace.to_crs(XY_CRS)
 
-    coords_df = gpd.GeoSeries([c.geom for c in trace.coords])
+    coords = gpd.GeoSeries([c.geom for c in trace.coords])
 
-    polygon = cascaded_union(coords_df.buffer(padding, buffer_res))
+    polygon = cascaded_union(coords.buffer(padding, buffer_res))
 
     if xy:
         return Geofence(crs=XY_CRS, geometry=polygon)
