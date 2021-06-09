@@ -4,7 +4,8 @@ import geopandas as gpd
 import numpy as np
 from pyproj import Transformer
 from rtree import index
-from shapely.ops import cascaded_union, transform
+from shapely.geometry import LineString
+from shapely.ops import transform
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.geofence import Geofence
@@ -57,9 +58,9 @@ def geofence_from_trace(trace: Trace, padding: float = 15, xy: bool = False, buf
     if trace.crs != XY_CRS:
         trace = trace.to_crs(XY_CRS)
 
-    coords = gpd.GeoSeries([c.geom for c in trace.coords])
+    trace_line_string = LineString([c.geom for c in trace.coords])
 
-    polygon = cascaded_union(coords.buffer(padding, buffer_res))
+    polygon = trace_line_string.buffer(padding, buffer_res)
 
     if xy:
         return Geofence(crs=XY_CRS, geometry=polygon)
