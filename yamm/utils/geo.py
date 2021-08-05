@@ -1,7 +1,5 @@
 from typing import Tuple
 
-import geopandas as gpd
-import numpy as np
 from pyproj import Transformer
 from rtree import index
 from shapely.geometry import LineString
@@ -43,7 +41,7 @@ def latlon_to_xy(lat: float, lon: float) -> Tuple[float, float]:
     return x, y
 
 
-def geofence_from_trace(trace: Trace, padding: float = 15, xy: bool = False, buffer_res: int = 16) -> Geofence:
+def geofence_from_trace(trace: Trace, padding: float = 15, xy: bool = False, buffer_res: int = 2) -> Geofence:
     """
     computes a bounding box surrounding a trace by taking the minimum and maximum x and y
 
