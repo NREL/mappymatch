@@ -11,7 +11,6 @@ from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
 from yamm.maps.map_interface import MapInterface
 from yamm.utils.crs import LATLON_CRS
-from yamm.utils.geo import coord_to_coord_dist
 from yamm.utils.tomtom import (
     get_tomtom_gdf,
     tomtom_gdf_to_nx_graph
@@ -19,7 +18,7 @@ from yamm.utils.tomtom import (
 
 
 class TomTomMap(MapInterface):
-    DISTANCE_WEIGHT = "meters"
+    DISTANCE_WEIGHT = "kilometers"
     TIME_WEIGHT = "minutes"
     SEARCH_BOX_SIZE = 200  # meters
 
@@ -132,7 +131,7 @@ class TomTomMap(MapInterface):
 
         roads = _find_roads(search_size)
         attempts = 0
-        while len(roads) < 1 and attempts < 10:
+        while len(roads) < 1 and attempts < 4:
             # if we don't find any roads nearby, we'll double our search size
             search_size = search_size * 2
             roads = _find_roads(search_size)

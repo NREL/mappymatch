@@ -12,6 +12,33 @@ from yamm.maps.map_interface import MapInterface
 from yamm.utils.crs import XY_CRS, LATLON_CRS
 
 
+def plot_geofence(geofence, m=None):
+    if not geofence.crs == LATLON_CRS:
+        raise NotImplementedError("can currently only plot a geofence with lat lon crs")
+
+    if not m:
+        c = geofence.geometry.centroid.coords[0]
+        m = folium.Map(location=[c[1], c[0]], zoom_start=11)
+
+    folium.GeoJson(geofence.geometry).add_to(m)
+
+    return m
+
+
+def plot_trace(trace, m=None, color='red'):
+    if not trace.crs == LATLON_CRS:
+        trace = trace.to_crs(LATLON_CRS)
+
+    if not m:
+        mid_coord = trace.coords[int(len(trace) / 2)]
+        m = folium.Map(location=[mid_coord.y, mid_coord.x], zoom_start=11)
+
+    for c in trace.coords:
+        folium.Circle(location=(c.y, c.x), radius=5, color=color).add_to(m)
+
+    return m
+
+
 def plot_matches(trace: Trace, matches: List[Match], road_map: MapInterface, npoints: int):
     """
     plots a trace and the relevant matches on a folium map
