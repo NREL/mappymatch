@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Union
 
 import numpy as np
 import pandas as pd
-from pyproj import CRS, Transformer
+from geopandas import GeoDataFrame, points_from_xy
+from pyproj import CRS
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.utils.crs import LATLON_CRS, XY_CRS
@@ -15,26 +16,43 @@ valid_longitude_names = {'longitude', 'Longitude', 'Lon', 'Lon', 'long', 'Long',
 
 
 class Trace:
+    _frame: GeoDataFrame
+
     coords: List[Coordinate]
     crs: CRS
 
-    def __init__(self, coords: List[Coordinate], crs: CRS = XY_CRS):
-        self.coords = coords
-        self.crs = crs
+    def __init__(self, frame: GeoDataFrame):
+        self._frame = frame
 
     def __getitem__(self, i):
-        new_coords = self.coords[i]
-        if isinstance(new_coords, Coordinate):
-            new_coords = [new_coords]
-
-        return Trace(new_coords, self.crs)
+        if isinstance(i, int):
+            i = [i]
+        new_frame = self._frame.iloc[i]
+        return Trace(new_frame)
 
     def __add__(self, other: Trace) -> Trace:
-        new_coords = self.coords + other.coords
-        return Trace(new_coords, self.crs)
+        if self.crs != other.crs:
+            raise TypeError(f"cannot add two traces together with different crs")
+        new_frame = self._frame.append(other._frame)
+        return Trace(new_frame)
 
     def __len__(self):
-        return len(self.coords)
+        return len(self._frame)
+
+    @property
+    def coords(self) -> List[Coordinate]:
+        coords = [Coordinate(g, self.crs) for g in self._frame.geometry]
+        return coords
+
+    @property
+    def crs(self) -> CRS:
+        return self._frame.crs
+
+    @classmethod
+    def from_coords(cls, coords: List[Coordinate]) -> Trace:
+        frame = GeoDataFrame([{'geometry': c.geom} for c in coords], crs=coords[0].crs)
+        frame.crs = coords[0].crs
+        return Trace(frame)
 
     @classmethod
     def from_dataframe(
@@ -58,18 +76,15 @@ class Trace:
 
         :return: the trace built from the dataframe
         """
-        lats = dataframe[lat_column]
-        lons = dataframe[lon_column]
+        frame = GeoDataFrame(
+            geometry=points_from_xy(dataframe[lon_column], dataframe[lat_column]),
+            index=dataframe.index,
+            crs=LATLON_CRS,
+        )
         if xy:
-            transformer = Transformer.from_crs(LATLON_CRS, XY_CRS)
-            lat_proj, lon_proj = transformer.transform(lats, lons)
-            coords = [Coordinate.from_xy(x, y) for x, y in zip(lat_proj, lon_proj)]
-            crs = XY_CRS
-        else:
-            coords = [Coordinate.from_latlon(lat, lon) for lat, lon in zip(lats, lons)]
-            crs = LATLON_CRS
+            frame = frame.to_crs(XY_CRS)
 
-        return Trace(coords, crs)
+        return Trace(frame)
 
     @classmethod
     def from_csv(
@@ -104,11 +119,11 @@ class Trace:
         return Trace.from_dataframe(df, xy, lat_column, lon_column)
 
     def downsample(self, npoints: int) -> Trace:
-        new_coords = [self.coords[0]] + [self.coords[i] for i in
-                                         np.linspace(1, len(self.coords) - 1, npoints - 2).astype(int)] + [
-                         self.coords[-1]]
+        s = list(np.linspace(0, len(self._frame) - 1, npoints).astype(int))
 
-        return Trace(new_coords, self.crs)
+        new_frame = self._frame.iloc[s]
+
+        return Trace(new_frame)
 
     def to_crs(self, new_crs: CRS) -> Trace:
         """
@@ -117,22 +132,5 @@ class Trace:
         :param new_crs: the crs to convert the trace to
         :return: the new trace
         """
-        transformer = Transformer.from_crs(self.crs, new_crs)
-
-        if self.crs == LATLON_CRS:
-            x = [c.y for c in self.coords]
-            y = [c.x for c in self.coords]
-        else:
-            x = [c.x for c in self.coords]
-            y = [c.y for c in self.coords]
-
-        new_x, new_y = transformer.transform(x, y)
-
-        if new_crs == XY_CRS:
-            new_coords = [Coordinate.from_xy(x, y) for x, y in zip(new_x, new_y)]
-        elif new_crs == LATLON_CRS:
-            new_coords = [Coordinate.from_latlon(x, y) for x, y in zip(new_x, new_y)]
-        else:
-            raise ValueError("incompatible crs to convert to")
-
-        return Trace(coords=new_coords, crs=new_crs)
+        new_frame = self._frame.to_crs(new_crs)
+        return Trace(new_frame)

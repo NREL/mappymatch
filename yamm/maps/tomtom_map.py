@@ -131,7 +131,7 @@ class TomTomMap(MapInterface):
 
         roads = _find_roads(search_size)
         attempts = 0
-        while len(roads) < 1 and attempts < 4:
+        while len(roads) < 1 and attempts < 6:
             # if we don't find any roads nearby, we'll double our search size
             search_size = search_size * 2
             roads = _find_roads(search_size)
