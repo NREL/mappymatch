@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from typing import NamedTuple
+from typing import NamedTuple, Any
 
 from pyproj import Transformer, CRS
 from shapely.geometry import Point
 
-from yamm.utils.crs import LATLON_CRS, XY_CRS
+CoordinateId: Any
 
 
 class Coordinate(NamedTuple):
@@ -13,32 +13,12 @@ class Coordinate(NamedTuple):
     coordinate a CRS and a geometry
     """
 
+    coordinate_id: CoordinateId
     geom: Point
     crs: CRS
 
-    @classmethod
-    def from_latlon(cls, lat: float, lon: float) -> Coordinate:
-        """
-        build a coordinate from only latitude and longitude
-
-        :param lat:
-        :param lon:
-
-        :return:
-        """
-        return Coordinate(geom=Point(lon, lat), crs=LATLON_CRS)
-
-    @classmethod
-    def from_xy(cls, x: float, y: float) -> Coordinate:
-        """
-        build a coordinate from only x and y
-
-        :param x:
-        :param y:
-
-        :return:
-        """
-        return Coordinate(geom=Point(x, y), crs=XY_CRS)
+    def __repr__(self):
+        return f"Coordinate(coordinate_id={self.coordinate_id}, x={self.x}, y={self.y}, crs={self.crs.to_authority()})"
 
     @property
     def x(self) -> float:
@@ -52,4 +32,4 @@ class Coordinate(NamedTuple):
         transformer = Transformer.from_crs(self.crs, new_crs)
         new_x, new_y = transformer.transform(self.geom.x, self.geom.y)
 
-        return Coordinate(geom=Point(new_x, new_y), crs=new_crs)
+        return Coordinate(coordinate_id=self.coordinate_id, geom=Point(new_x, new_y), crs=new_crs)

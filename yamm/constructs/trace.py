@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import List, Union
+from typing import List, Union, Optional
 
 import numpy as np
 import pandas as pd
-from geopandas import GeoDataFrame, points_from_xy
+from geopandas import GeoDataFrame, points_from_xy, read_file
 from pyproj import CRS
 
 from yamm.constructs.coordinate import Coordinate
@@ -40,8 +40,12 @@ class Trace:
         return len(self._frame)
 
     @property
+    def index(self) -> pd.Index:
+        return self._frame.index
+
+    @property
     def coords(self) -> List[Coordinate]:
-        coords = [Coordinate(g, self.crs) for g in self._frame.geometry]
+        coords = [Coordinate(i, g, self.crs) for i, g in zip(self._frame.index, self._frame.geometry)]
         return coords
 
     @property
@@ -118,10 +122,39 @@ class Trace:
 
         return Trace.from_dataframe(df, xy, lat_column, lon_column)
 
+    @classmethod
+    def from_geojson(
+            cls,
+            file: Union[str, Path],
+            index_property: Optional[str] = None,
+            xy: bool = True
+    ):
+        filepath = Path(file)
+        frame = read_file(filepath)
+        if index_property in frame.columns:
+            frame = frame.set_index(index_property)
+
+        if xy:
+            frame = frame.to_crs(XY_CRS)
+
+        return Trace(frame)
+
     def downsample(self, npoints: int) -> Trace:
         s = list(np.linspace(0, len(self._frame) - 1, npoints).astype(int))
 
         new_frame = self._frame.iloc[s]
+
+        return Trace(new_frame)
+
+    def drop(self, index=List) -> Trace:
+        """
+        remove points from the trace specified by the index parameter
+
+        :param index: the index of points to drop (0 based index)
+
+        :return: the trace with the points removed
+        """
+        new_frame = self._frame.drop(index)
 
         return Trace(new_frame)
 

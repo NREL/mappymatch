@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Union
 
 import networkx as nx
 import rtree
@@ -9,7 +9,7 @@ from sqlalchemy.future import Engine
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
-from yamm.maps.map_interface import MapInterface
+from yamm.maps.map_interface import MapInterface, PathWeight
 from yamm.utils.crs import LATLON_CRS
 from yamm.utils.tomtom import (
     get_tomtom_gdf,
@@ -95,22 +95,43 @@ class TomTomMap(MapInterface):
 
         return roads
 
+    def coordinate_outside_boundary(self, coord: Coordinate, max_distance: float = 3000) -> bool:
+        """
+        test if there is a road within the max distance
+
+        :param coord:
+        :param max_distance:
+
+        :return:
+        """
+        pbox = (coord.x - max_distance, coord.y - max_distance, coord.x + max_distance, coord.y + max_distance)
+        hits = self.rtree.intersection(pbox, objects="raw")
+
+        try:
+            _ = next(hits)
+            # if there is a hit we're not outside the boundary
+            return False
+        except StopIteration:
+            # no hits so we're outside the boundary
+            return True
+
     def nearest_roads(
             self,
             coord: Coordinate,
             k: int = 1,
             search_size: float = 200,
+            max_distance: float = 3000,
     ) -> List[Road]:
         """
         a helper function to get the nearest road.
 
         :param coord:
         :param k: how many roads to return
-        :param search_size: how far to search for a road
+        :param search_size: distance in meters used to construct search bounding box
+        :param max_distance: maximum distance to search for
 
         :return:
         """
-
         def _find_roads(box_size):
             pbox = (coord.x - box_size, coord.y - box_size, coord.x + box_size, coord.y + box_size)
             hits = self.rtree.intersection(pbox, objects="raw")
@@ -131,14 +152,13 @@ class TomTomMap(MapInterface):
 
         roads = _find_roads(search_size)
         attempts = 0
-        while len(roads) < 1 and attempts < 6:
+        while len(roads) < 1 and search_size <= max_distance:
             # if we don't find any roads nearby, we'll double our search size
             search_size = search_size * 2
             roads = _find_roads(search_size)
             attempts += 1
 
         if len(roads) < 1:
-            # todo: maybe we return an empty list and then the matcher can add a 'no-match' entry for the point
             raise Exception(f"could not find a matching road within {search_size} meters; check the road network")
 
         if k > len(roads):
@@ -146,7 +166,8 @@ class TomTomMap(MapInterface):
 
         return roads[:k]
 
-    def shortest_path(self, origin: Coordinate, destination: Coordinate, weight: Optional[str] = None) -> List[Road]:
+    def shortest_path(self, origin: Coordinate, destination: Coordinate, weight: PathWeight = PathWeight.TIME) -> List[
+        Road]:
         """
         computes the shortest path between an origin and a destination
 
@@ -155,7 +176,18 @@ class TomTomMap(MapInterface):
         :param weight:
         :return:
         """
-        origin_road = self.nearest_roads(origin)[0]
+        origin_roads = self.nearest_roads(origin)
+        dest_roads = self.nearest_roads(destination)
+
+        if len(origin_roads) == 0:
+            return []
+        else:
+            origin_road = origin_roads[0]
+
+        if len(dest_roads) == 0:
+            return []
+        else:
+            dest_road = dest_roads[0]
 
         u_dist = Point(origin_road.geom.coords[0]).distance(origin.geom)
         v_dist = Point(origin_road.geom.coords[-1]).distance(origin.geom)
@@ -165,8 +197,6 @@ class TomTomMap(MapInterface):
         else:
             origin_id = origin_road.metadata['v']
 
-        dest_road = self.nearest_roads(destination)[0]
-
         u_dist = Point(dest_road.geom.coords[0]).distance(destination.geom)
         v_dist = Point(dest_road.geom.coords[-1]).distance(destination.geom)
 
@@ -175,14 +205,18 @@ class TomTomMap(MapInterface):
         else:
             dest_id = dest_road.metadata['v']
 
-        if not weight:
-            weight = self.TIME_WEIGHT
+        if weight == PathWeight.DISTANCE:
+            weight_string = self.DISTANCE_WEIGHT
+        elif weight == PathWeight.TIME:
+            weight_string = self.TIME_WEIGHT
+        else:
+            raise TypeError(f"path weight {weight.name} is not supported by the TomTomMap")
 
         nx_route = nx.shortest_path(
             self.g,
             origin_id,
             dest_id,
-            weight=weight,
+            weight=weight_string,
         )
 
         path = []

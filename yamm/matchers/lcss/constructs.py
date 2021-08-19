@@ -6,7 +6,6 @@ from typing import NamedTuple, List
 
 import numpy as np
 
-from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.match import Match
 from yamm.constructs.road import Road
 from yamm.constructs.trace import Trace
@@ -18,7 +17,6 @@ log = logging.getLogger(__name__)
 
 class CuttingPoint(NamedTuple):
     trace_index: int
-    coordinate: Coordinate
 
 
 class TrajectorySegment(NamedTuple):
@@ -48,12 +46,15 @@ class TrajectorySegment(NamedTuple):
     def set_matches(self, matches):
         return self._replace(matches=matches)
 
-    def score_and_match(self, distance_epsilon: float) -> TrajectorySegment:
+    def score_and_match(
+            self,
+            distance_epsilon: float,
+    ) -> TrajectorySegment:
         """
         computes the score of a trace, pair matching and also matches the coordinates to the nearest road.
 
         :param distance_epsilon
-        
+
         return: updated trajectory segment with a score and matched points
         """
         trace = self.trace
@@ -64,9 +65,9 @@ class TrajectorySegment(NamedTuple):
 
         matched_roads = []
 
-        if m < 10:
+        if m < 2:
             # todo: find a better way to handle this edge case
-            raise Exception(f"traces of less than 10 points can't be matched")
+            raise Exception(f"traces of less than 2 points can't be matched")
         elif n < 2:
             # this likely means the trace starts and ends at the same point;
             return self.set_score(0)
@@ -92,10 +93,6 @@ class TrajectorySegment(NamedTuple):
                     point_similarity = 0
 
                 C[i][j] = max((C[i - 1][j - 1] + point_similarity), C[i][j - 1], C[i - 1][j])
-
-            if not nearest_road:
-                # todo: maybe we just return None?
-                raise Exception(f"could not find nearest road for coord {coord}")
 
             match = Match(
                 road=nearest_road,
@@ -128,29 +125,38 @@ class TrajectorySegment(NamedTuple):
         cutting_points = []
 
         if not self.matches:
-            # no matches computed, let's just split the trajectory based on the furthest points
+            # no matches computed, possible edge cases:
+            # 1. trace starts and ends in the same location: pick points far from the start and end
             start = self.trace.coords[0]
             end = self.trace.coords[-1]
-            p1 = np.argmax([coord_to_coord_dist(start, c) for c in self.trace.coords])
-            p2 = np.argmax([coord_to_coord_dist(end, c) for c in self.trace.coords])
 
-            cp1 = CuttingPoint(p1, self.trace.coords[p1])
-            cp2 = CuttingPoint(p2, self.trace.coords[p2])
-            return self.set_cutting_points([cp1, cp2])
+            if start.geom.distance(end.geom) < 0.1:
+                p1 = np.argmax([coord_to_coord_dist(start, c) for c in self.trace.coords])
+                p2 = np.argmax([coord_to_coord_dist(end, c) for c in self.trace.coords])
 
-        # find furthest point
-        i = np.argmax([m.distance for m in self.matches])
-        cutting_points.append(CuttingPoint(i, self.trace.coords[i]))
+                cp1 = CuttingPoint(p1)
+                cp2 = CuttingPoint(p2)
 
-        # collect points that are close to the distance threshold
-        for i, m in enumerate(self.matches):
-            if abs(m.distance - distance_epsilon) < cutting_thresh:
-                cutting_points.append(CuttingPoint(i, self.trace.coords[i]))
+                cutting_points.extend([cp1, cp2])
+            else:
+                # just pick the middle point on the trace:
+                mid = int(len(self.trace) / 2)
+                cp = CuttingPoint(mid)
+                cutting_points.append(cp)
+        else:
+            # find furthest point
+            i = np.argmax([m.distance for m in self.matches])
+            cutting_points.append(CuttingPoint(i))
+
+            # collect points that are close to the distance threshold
+            for i, m in enumerate(self.matches):
+                if abs(m.distance - distance_epsilon) < cutting_thresh:
+                    cutting_points.append(CuttingPoint(i))
 
         # add random points
         for _ in range(random_cuts):
-            cpi = random.randint(0, len(self.trace)-1)
-            cutting_points.append(CuttingPoint(cpi, self.trace.coords[i]))
+            cpi = random.randint(0, len(self.trace) - 1)
+            cutting_points.append(CuttingPoint(cpi))
 
         compressed_cuts = list(compress(cutting_points))
 
