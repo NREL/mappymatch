@@ -13,8 +13,8 @@ def remove_bad_start_from_trace(trace: Trace, distance_threshold: float):
     :return: the new trace
     """
     def _trim_frame(frame):
-        for index in frame.index:
-            rows = frame.loc[index:index + 1]
+        for index in range(len(frame)):
+            rows = frame.iloc[index:index + 2]
 
             if len(rows) < 2:
                 return frame
@@ -25,7 +25,7 @@ def remove_bad_start_from_trace(trace: Trace, distance_threshold: float):
             if current_point != next_point:
                 dist = current_point.distance(next_point)
                 if dist > distance_threshold:
-                    return frame.loc[index + 1:]
+                    return frame.iloc[index + 1:]
                 else:
                     return frame
 
