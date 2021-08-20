@@ -22,8 +22,6 @@ class Trace:
     crs: CRS
 
     def __init__(self, frame: GeoDataFrame):
-        if len(frame) < 2:
-            raise ValueError("A trace must have at least 2 points")
         self._frame = frame
 
     def __getitem__(self, i):
