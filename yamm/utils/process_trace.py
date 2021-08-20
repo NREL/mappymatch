@@ -3,7 +3,7 @@ from __future__ import annotations
 from yamm.constructs.trace import Trace
 
 
-def preprocess_trace(trace: Trace, distance_threshold):
+def remove_bad_start_from_trace(trace: Trace, distance_threshold: float):
     """
     remove points at the beginning of a trace if there is a gap larger than the distance threshold
 
