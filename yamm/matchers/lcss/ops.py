@@ -11,30 +11,6 @@ from yamm.utils.geo import road_to_coord_dist
 log = logging.getLogger(__name__)
 
 
-def remove_bad_points(
-        trace: Trace,
-        road_map: MapInterface,
-        distance_threshold: float = 3000,
-) -> Tuple[List[int], Trace]:
-    """
-    remove points that fall outside the road network
-
-    :param trace: the trace
-    :param road_map: the road map
-    :param distance_threshold: any point outside of this threshold will be discarded
-
-    :return: the index of the removed points and the new trace
-    """
-    bad_points_index = []
-    for c in trace.coords:
-        if road_map.coordinate_outside_boundary(c, max_distance=distance_threshold):
-            bad_points_index.append(c.coordinate_id)
-
-    sub_trace = trace.drop(bad_points_index)
-
-    return bad_points_index, sub_trace
-
-
 def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
     """
     computes the similarity score between a trace and a path

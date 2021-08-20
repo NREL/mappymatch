@@ -6,7 +6,7 @@ from typing import Optional
 
 from yamm.maps.map_interface import MapInterface
 from yamm.matchers.lcss.constructs import TrajectorySegment
-from yamm.matchers.lcss.ops import new_path, split_trajectory_segment, same_trajectory_scheme, remove_bad_points
+from yamm.matchers.lcss.ops import new_path, split_trajectory_segment, same_trajectory_scheme
 from yamm.matchers.matcher_interface import *
 
 log = logging.getLogger(__name__)
@@ -41,11 +41,6 @@ class LCSSMatcher(MatcherInterface):
     def match_trace(self, trace: Trace, road_map: Optional[MapInterface] = None) -> MatchResult:
         if not road_map:
             road_map = self.map
-
-        # bad_points_i, sub_trace = remove_bad_points(trace, road_map, distance_threshold=self.distance_threshold)
-        #
-        # if bad_points_i:
-        #     log.warning(f"removed {len(bad_points_i)} from the trace for falling outside the road network")
 
         de = self.distance_epsilon
         ct = self.cutting_threshold
