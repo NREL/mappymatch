@@ -45,8 +45,7 @@ class LCSSMatcher(MatcherInterface):
         bad_points_i, sub_trace = remove_bad_points(trace, road_map, distance_threshold=self.distance_threshold)
 
         if bad_points_i:
-            log.warning(f"removed the following coordinate ids from the trace for falling outside the boundary of the "
-                        f"road network: {bad_points_i}")
+            log.warning(f"removed {len(bad_points_i)} from the trace for falling outside the road network")
 
         de = self.distance_epsilon
         ct = self.cutting_threshold
