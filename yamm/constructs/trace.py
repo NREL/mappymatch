@@ -22,6 +22,8 @@ class Trace:
     crs: CRS
 
     def __init__(self, frame: GeoDataFrame):
+        if len(frame) < 2:
+            raise ValueError("A trace must have at least 2 points")
         self._frame = frame
 
     def __getitem__(self, i):
@@ -56,6 +58,31 @@ class Trace:
     def from_coords(cls, coords: List[Coordinate]) -> Trace:
         frame = GeoDataFrame([{'geometry': c.geom} for c in coords], crs=coords[0].crs)
         frame.crs = coords[0].crs
+        return Trace(frame)
+
+    @classmethod
+    def from_geo_dataframe(
+            cls,
+            frame: GeoDataFrame,
+            xy: bool = True,
+    ) -> Trace:
+        """
+        Builds a trace from a pandas dataframe
+
+        Expects the dataframe to have latitude / longitude information in the epsg 4326 format
+
+        Automatically projects each coordinate to epsg 3857 as well
+
+        :param frame: geopandas dataframe with _one_ trace
+        :param xy: should the trace be projected to epsg 3857?
+
+        :return: the trace built from the dataframe
+        """
+        # get rid of any extra info besides geometry and index
+        frame = GeoDataFrame(geometry=frame.geometry, index=frame.index)
+        if xy:
+            frame = frame.to_crs(XY_CRS)
+
         return Trace(frame)
 
     @classmethod

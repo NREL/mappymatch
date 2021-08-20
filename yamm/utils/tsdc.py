@@ -1,3 +1,4 @@
+import geopandas as gpd
 import pandas as pd
 from shapely.geometry import box
 
@@ -12,9 +13,13 @@ def get_trace(sampno, vehno, table, engine):
     where sampno={sampno} and vehno={vehno}
     order by time_local
     """
-    trip_df = pd.read_sql(q, engine)
-
-    return Trace.from_dataframe(trip_df, lat_column="latitude", lon_column="longitude")
+    try:
+        trip_gdf = gpd.GeoDataFrame.from_postgis(q, engine)
+        return Trace.from_geo_dataframe(trip_gdf)
+    except ValueError:
+        # table might not have geometry
+        trip_df = pd.read_sql(q, engine)
+        return Trace.from_dataframe(trip_df, lat_column="latitude", lon_column="longitude")
 
 
 def compute_bbox_from_table(table, padding, engine):
