@@ -1,14 +1,38 @@
 import logging
-from typing import List
+from typing import List, Tuple
 
 from yamm.constructs.road import Road
 from yamm.constructs.trace import Trace
-from yamm.maps.map_interface import MapInterface
+from yamm.maps.map_interface import MapInterface, PathWeight
 from yamm.matchers.lcss.constructs import TrajectorySegment, TrajectoryScheme
 from yamm.matchers.lcss.utils import merge
 from yamm.utils.geo import road_to_coord_dist
 
 log = logging.getLogger(__name__)
+
+
+def remove_bad_points(
+        trace: Trace,
+        road_map: MapInterface,
+        distance_threshold: float = 3000,
+) -> Tuple[List[int], Trace]:
+    """
+    remove points that fall outside the road network
+
+    :param trace: the trace
+    :param road_map: the road map
+    :param distance_threshold: any point outside of this threshold will be discarded
+
+    :return: the index of the removed points and the new trace
+    """
+    bad_points_index = []
+    for c in trace.coords:
+        if road_map.coordinate_outside_boundary(c, max_distance=distance_threshold):
+            bad_points_index.append(c.coordinate_id)
+
+    sub_trace = trace.drop(bad_points_index)
+
+    return bad_points_index, sub_trace
 
 
 def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
@@ -71,9 +95,11 @@ def new_path(
     origin = trace.coords[0]
     destination = trace.coords[-1]
 
-    # todo: make the weight parameter specific to the road map
-    time_path = road_map.shortest_path(origin, destination, weight="minutes")
-    dist_path = road_map.shortest_path(origin, destination, weight="meters")
+    time_path = road_map.shortest_path(origin, destination, weight=PathWeight.TIME)
+    dist_path = road_map.shortest_path(origin, destination, weight=PathWeight.DISTANCE)
+
+    if not time_path and not dist_path:
+        return []
 
     time_score = score(trace, time_path, distance_epsilon)
     dist_score = score(trace, dist_path, distance_epsilon)
@@ -104,11 +130,11 @@ def split_trajectory_segment(
     cutting_points = trajectory_segment.cutting_points
 
     def _short_segment(ts: TrajectorySegment):
-        if len(ts.trace) < 10 or len(ts.path) < 5:
+        if len(ts.trace) < 2 or len(ts.path) < 1:
             return True
         return False
 
-    if len(trace.coords) < 10:
+    if len(trace.coords) < 2:
         # segment is too short to split
         return [trajectory_segment]
     elif len(cutting_points) < 1:

@@ -2,10 +2,9 @@ import geopandas as gpd
 import pandas as pd
 from shapely.geometry import box
 
-from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.geofence import Geofence
 from yamm.constructs.trace import Trace
-from yamm.utils.crs import LATLON_CRS, XY_CRS
+from yamm.utils.crs import LATLON_CRS
 
 
 def get_trace(sampno, vehno, table, engine):
@@ -14,15 +13,13 @@ def get_trace(sampno, vehno, table, engine):
     where sampno={sampno} and vehno={vehno}
     order by time_local
     """
-    trip_df = pd.read_sql(q, engine)
-
-    gdf = gpd.GeoDataFrame(trip_df, geometry=gpd.points_from_xy(trip_df.longitude, trip_df.latitude), crs=LATLON_CRS)
-    gdf = gdf.to_crs(XY_CRS)
-
-    coords = [Coordinate(geom=g, crs=XY_CRS) for g in gdf.geometry]
-    crs = XY_CRS
-
-    return Trace(coords, crs)
+    try:
+        trip_gdf = gpd.GeoDataFrame.from_postgis(q, engine)
+        return Trace.from_geo_dataframe(trip_gdf)
+    except ValueError:
+        # table might not have geometry
+        trip_df = pd.read_sql(q, engine)
+        return Trace.from_dataframe(trip_df, lat_column="latitude", lon_column="longitude")
 
 
 def compute_bbox_from_table(table, padding, engine):

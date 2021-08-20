@@ -55,7 +55,6 @@ def plot_matches(trace: Trace, matches: List[Match], road_map: MapInterface, npo
         d = {}
 
         d['road_id'] = m.road.road_id
-
         metadata = m.road.metadata
         u = metadata['u']
         v = metadata['v']
@@ -75,12 +74,12 @@ def plot_matches(trace: Trace, matches: List[Match], road_map: MapInterface, npo
         d['distance'] = m.distance
         return d
 
-    road_df = pd.DataFrame([match_to_road(m) for m in matches])
+    road_df = pd.DataFrame([match_to_road(m) for m in matches if m.road])
     road_df = road_df.loc[road_df.road_id.shift() != road_df.road_id]
     road_gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=XY_CRS).drop(columns=["geom"])
     road_gdf = road_gdf.to_crs(LATLON_CRS)
 
-    coord_df = pd.DataFrame([match_to_coord(m) for m in matches])
+    coord_df = pd.DataFrame([match_to_coord(m) for m in matches if m.road])
     index = [i for i in np.linspace(1, len(coord_df.index) - 1, npoints - 2).astype(int)]
     coord_df = coord_df.loc[index]
 

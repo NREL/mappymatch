@@ -6,7 +6,7 @@ from typing import Optional
 
 from yamm.maps.map_interface import MapInterface
 from yamm.matchers.lcss.constructs import TrajectorySegment
-from yamm.matchers.lcss.ops import new_path, split_trajectory_segment, same_trajectory_scheme
+from yamm.matchers.lcss.ops import new_path, split_trajectory_segment, same_trajectory_scheme, remove_bad_points
 from yamm.matchers.matcher_interface import *
 
 log = logging.getLogger(__name__)
@@ -28,18 +28,25 @@ class LCSSMatcher(MatcherInterface):
             distance_epsilon: float = 50.0,
             similarity_cutoff: float = 0.9,
             cutting_threshold: float = 10.0,
-            random_cuts: int = 1,
+            random_cuts: int = 0,
+            distance_threshold: float = 3000,
     ):
         self.map = road_map
         self.distance_epsilon = distance_epsilon
         self.similarity_cutoff = similarity_cutoff
         self.cutting_threshold = cutting_threshold
         self.random_cuts = random_cuts
+        self.distance_threshold = distance_threshold
 
     def match_trace(self, trace: Trace, road_map: Optional[MapInterface] = None) -> MatchResult:
         if not road_map:
             road_map = self.map
-            
+
+        # bad_points_i, sub_trace = remove_bad_points(trace, road_map, distance_threshold=self.distance_threshold)
+        #
+        # if bad_points_i:
+        #     log.warning(f"removed {len(bad_points_i)} from the trace for falling outside the road network")
+
         de = self.distance_epsilon
         ct = self.cutting_threshold
         rc = self.random_cuts
@@ -49,7 +56,6 @@ class LCSSMatcher(MatcherInterface):
         ).score_and_match(de).compute_cutting_points(de, ct, rc)
 
         initial_scheme = split_trajectory_segment(road_map, initial_segment, de)
-
         scheme = initial_scheme
 
         n = 0
