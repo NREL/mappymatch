@@ -49,6 +49,7 @@ class TrajectorySegment(NamedTuple):
     def score_and_match(
             self,
             distance_epsilon: float,
+            max_distance: float = 3000,
     ) -> TrajectorySegment:
         """
         computes the score of a trace, pair matching and also matches the coordinates to the nearest road.
@@ -69,8 +70,10 @@ class TrajectorySegment(NamedTuple):
             # todo: find a better way to handle this edge case
             raise Exception(f"traces of less than 2 points can't be matched")
         elif n < 2:
-            # this likely means the trace starts and ends at the same point;
-            return self.set_score(0)
+            # a path was not found for this segment; might not be matchable;
+            # we set a score of zero and return a set of no-matches
+            matches = [Match(road=None, distance=np.inf, coordinate=c) for c in self.trace.coords]
+            return self.set_score(0).set_matches(matches)
 
         C = [[0 for i in range(n + 1)] for j in range(m + 1)]
 
@@ -93,6 +96,10 @@ class TrajectorySegment(NamedTuple):
                     point_similarity = 0
 
                 C[i][j] = max((C[i - 1][j - 1] + point_similarity), C[i][j - 1], C[i - 1][j])
+
+            if min_dist > max_distance:
+                nearest_road = None
+                min_dist = np.inf
 
             match = Match(
                 road=nearest_road,
@@ -124,8 +131,10 @@ class TrajectorySegment(NamedTuple):
         """
         cutting_points = []
 
-        if not self.matches:
-            # no matches computed, possible edge cases:
+        no_match = all([not m.road for m in self.matches])
+
+        if not self.path or no_match:
+            # no path computed or no matches found, possible edge cases:
             # 1. trace starts and ends in the same location: pick points far from the start and end
             start = self.trace.coords[0]
             end = self.trace.coords[-1]
@@ -139,19 +148,20 @@ class TrajectorySegment(NamedTuple):
 
                 cutting_points.extend([cp1, cp2])
             else:
-                # just pick the middle point on the trace:
+                # pick the middle point on the trace:
                 mid = int(len(self.trace) / 2)
                 cp = CuttingPoint(mid)
                 cutting_points.append(cp)
         else:
             # find furthest point
-            i = np.argmax([m.distance for m in self.matches])
+            i = np.argmax([m.distance for m in self.matches if m.road])
             cutting_points.append(CuttingPoint(i))
 
             # collect points that are close to the distance threshold
             for i, m in enumerate(self.matches):
-                if abs(m.distance - distance_epsilon) < cutting_thresh:
-                    cutting_points.append(CuttingPoint(i))
+                if m.road:
+                    if abs(m.distance - distance_epsilon) < cutting_thresh:
+                        cutting_points.append(CuttingPoint(i))
 
         # add random points
         for _ in range(random_cuts):

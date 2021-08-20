@@ -42,17 +42,17 @@ class LCSSMatcher(MatcherInterface):
         if not road_map:
             road_map = self.map
 
-        bad_points_i, sub_trace = remove_bad_points(trace, road_map, distance_threshold=self.distance_threshold)
-
-        if bad_points_i:
-            log.warning(f"removed {len(bad_points_i)} from the trace for falling outside the road network")
+        # bad_points_i, sub_trace = remove_bad_points(trace, road_map, distance_threshold=self.distance_threshold)
+        #
+        # if bad_points_i:
+        #     log.warning(f"removed {len(bad_points_i)} from the trace for falling outside the road network")
 
         de = self.distance_epsilon
         ct = self.cutting_threshold
         rc = self.random_cuts
         initial_segment = TrajectorySegment(
-            trace=sub_trace,
-            path=new_path(road_map, sub_trace, de)
+            trace=trace,
+            path=new_path(road_map, trace, de)
         ).score_and_match(de).compute_cutting_points(de, ct, rc)
 
         initial_scheme = split_trajectory_segment(road_map, initial_segment, de)

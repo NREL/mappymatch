@@ -130,7 +130,7 @@ def split_trajectory_segment(
     cutting_points = trajectory_segment.cutting_points
 
     def _short_segment(ts: TrajectorySegment):
-        if len(ts.trace) < 10 or len(ts.path) < 5:
+        if len(ts.trace) < 2 or len(ts.path) < 1:
             return True
         return False
 

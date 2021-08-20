@@ -158,8 +158,8 @@ class TomTomMap(MapInterface):
             roads = _find_roads(search_size)
             attempts += 1
 
-        if len(roads) < 1:
-            raise Exception(f"could not find a matching road within {search_size} meters; check the road network")
+        # if len(roads) < 1:
+        #     raise Exception(f"could not find a matching road within {search_size} meters; check the road network")
 
         if k > len(roads):
             k = len(roads)
