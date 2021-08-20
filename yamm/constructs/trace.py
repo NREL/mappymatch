@@ -65,11 +65,9 @@ class Trace:
             xy: bool = True,
     ) -> Trace:
         """
-        Builds a trace from a pandas dataframe
+        Builds a trace from a geopandas dataframe
 
-        Expects the dataframe to have latitude / longitude information in the epsg 4326 format
-
-        Automatically projects each coordinate to epsg 3857 as well
+        Expects the dataframe to have geometry column
 
         :param frame: geopandas dataframe with _one_ trace
         :param xy: should the trace be projected to epsg 3857?
