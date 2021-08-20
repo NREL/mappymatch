@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from functools import cached_property
 from pathlib import Path
 from typing import List, Union, Optional
 
@@ -43,7 +44,7 @@ class Trace:
     def index(self) -> pd.Index:
         return self._frame.index
 
-    @property
+    @cached_property
     def coords(self) -> List[Coordinate]:
         coords = [Coordinate(i, g, self.crs) for i, g in zip(self._frame.index, self._frame.geometry)]
         return coords
