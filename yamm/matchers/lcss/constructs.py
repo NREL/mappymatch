@@ -55,6 +55,7 @@ class TrajectorySegment(NamedTuple):
         computes the score of a trace, pair matching and also matches the coordinates to the nearest road.
 
         :param distance_epsilon
+        :param max_distance
 
         return: updated trajectory segment with a score and matched points
         """

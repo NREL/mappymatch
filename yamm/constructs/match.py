@@ -12,6 +12,9 @@ class Match(NamedTuple):
     coordinate: Coordinate
     distance: float
 
+    def set_coordinate(self, c: Coordinate):
+        return self._replace(coordinate=c)
+
     def to_json(self) -> dict:
         out = {
             'road_id': self.road.road_id if self.road else None,
