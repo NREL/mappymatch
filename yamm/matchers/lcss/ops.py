@@ -246,8 +246,6 @@ def add_matches_for_stationary_points(
 
     :return:
     """
-    if not matches:
-        return matches
     matches = deepcopy(matches)
 
     for si in stationary_index:
