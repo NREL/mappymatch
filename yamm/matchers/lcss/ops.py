@@ -203,7 +203,7 @@ def find_stationary_points(trace: Trace) -> List[StationaryIndex]:
         else:
             # there is distance between this point and the previous
             if index:
-                l_index = list(index)
+                l_index = sorted(list(index))
                 cids = [coords[li].coordinate_id for li in l_index]
                 si = StationaryIndex(l_index, cids)
                 index_collections.append(si)
@@ -211,7 +211,7 @@ def find_stationary_points(trace: Trace) -> List[StationaryIndex]:
 
     # catch any group of points at the end
     if index:
-        l_index = list(index)
+        l_index = sorted(list(index))
         cids = [coords[li].coordinate_id for li in l_index]
         si = StationaryIndex(l_index, cids)
         index_collections.append(si)
@@ -249,7 +249,8 @@ def add_matches_for_stationary_points(
     matches = deepcopy(matches)
 
     for si in stationary_index:
-        m = matches[si.i_index[0]]
+        mi = si.i_index[0]
+        m = matches[mi]
         new_matches = [m.set_coordinate(Coordinate(ci, geom=m.coordinate.geom, crs=m.coordinate.crs)) for ci in
                        si.c_index[1:]]
         matches[si.i_index[1]:si.i_index[1]] = new_matches
