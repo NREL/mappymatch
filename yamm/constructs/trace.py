@@ -54,12 +54,6 @@ class Trace:
         return self._frame.crs
 
     @classmethod
-    def from_coords(cls, coords: List[Coordinate]) -> Trace:
-        frame = GeoDataFrame([{'geometry': c.geom} for c in coords], crs=coords[0].crs)
-        frame.crs = coords[0].crs
-        return Trace(frame)
-
-    @classmethod
     def from_geo_dataframe(
             cls,
             frame: GeoDataFrame,

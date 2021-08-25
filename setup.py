@@ -34,12 +34,13 @@ setup(
         "pandas",
         "geopandas",
         "pygeos",
+        "psycopg2-binary",
+        "tqdm",
     ],
     extras_require={
         "optional": [
             "osmnx",
             "requests",
-            "tqdm",
         ],
         "plot": [
             "folium",
