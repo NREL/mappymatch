@@ -10,20 +10,9 @@ Clone the repo, setup a python environment with python >= 3.8 and pip install th
 git clone https://github.nrel.gov/MBAP/yamm.git
 conda create -n yamm python=3.9
 cd yamm/
-pip install -e ."[plot]"
-```
-
-### on eagle 
-Note, there has been more success in using the `environment.yml` file for installing this package on
-eagle.
-
-```
-git clone https://github.nrel.gov/MBAP/yamm.git
-conda env create -f environment.yml
-conda activate yamm
-cd yamm/
 pip install -e .
 ```
+
 
 
 ## Examples
