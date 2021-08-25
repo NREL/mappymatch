@@ -31,7 +31,6 @@ setup(
         "pyproj",
         "shapely",
         "sqlalchemy",
-        "psycopg2",
         "pandas",
         "geopandas",
         "pygeos",
