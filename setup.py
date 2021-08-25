@@ -9,7 +9,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="yamm",
-    version="0.1.0",
+    version="0.2.0",
     description=
     "yamm is a package for map matching",
     long_description=long_description,
@@ -28,19 +28,19 @@ setup(
     install_requires=[
         "numpy",
         "networkx",
-        "scipy",
         "pyproj",
         "shapely",
         "sqlalchemy",
-        "psycopg2",
+        "pandas",
         "geopandas",
-        "rtree",
+        "pygeos",
+        "psycopg2-binary",
+        "tqdm",
     ],
     extras_require={
         "optional": [
             "osmnx",
             "requests",
-            "tqdm",
         ],
         "plot": [
             "folium",

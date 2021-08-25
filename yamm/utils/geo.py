@@ -1,7 +1,6 @@
 from typing import Tuple
 
 from pyproj import Transformer
-from rtree import index
 from shapely.geometry import LineString
 from shapely.ops import transform
 
@@ -9,22 +8,7 @@ from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
 from yamm.constructs.trace import Trace
-from yamm.maps.map_interface import MapInterface
 from yamm.utils.crs import XY_CRS, LATLON_CRS
-
-
-def build_rtree(road_map: MapInterface):
-    """
-    builds an rtree index from a map connection.
-    """
-    items = []
-
-    for i, road in enumerate(road_map.roads):
-        rid = road.road_id
-        segment = list(road.geom.coords)
-        box = road.geom.bounds
-        items.append((i, box, (rid, segment)))
-    return index.Index(items)
 
 
 def xy_to_latlon(x: float, y: float) -> Tuple[float, float]:
