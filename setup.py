@@ -32,6 +32,7 @@ setup(
         "shapely",
         "sqlalchemy",
         "psycopg2",
+        "pandas",
         "geopandas",
         "pygeos",
     ],
