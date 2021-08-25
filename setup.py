@@ -34,7 +34,7 @@ setup(
         "sqlalchemy",
         "psycopg2",
         "geopandas",
-        "rtree",
+        "pygeos",
     ],
     extras_require={
         "optional": [
