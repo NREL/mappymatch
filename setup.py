@@ -28,7 +28,6 @@ setup(
     install_requires=[
         "numpy",
         "networkx",
-        "scipy",
         "pyproj",
         "shapely",
         "sqlalchemy",
