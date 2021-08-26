@@ -1,21 +1,19 @@
-from functools import cached_property
 from pathlib import Path
 from typing import List, Union
 
 import networkx as nx
 from pygeos import STRtree, Geometry
-from shapely.geometry import Point
 from sqlalchemy.future import Engine
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
 from yamm.maps.map_interface import MapInterface, PathWeight
-from yamm.utils.crs import LATLON_CRS
-from yamm.utils.tomtom import (
-    get_tomtom_gdf,
-    tomtom_gdf_to_nx_graph
+from yamm.maps.tomtom.utils import (
+    get_tomtom_gdf_2021,
+    tomtom_gdf_to_nx_graph_2021, get_tomtom_gdf_2017, tomtom_gdf_to_nx_graph_2017
 )
+from yamm.utils.crs import LATLON_CRS
 
 
 class TomTomMap(MapInterface):
@@ -58,19 +56,27 @@ class TomTomMap(MapInterface):
         return TomTomMap(g)
 
     @classmethod
-    def from_sql(cls, sql_connection: Engine, geofence: Geofence):
+    def from_sql(cls, sql_connection: Engine, geofence: Geofence, vintage: Union[int, str] = "2021"):
         """
         Loads a network from a sql database using the bounding box.
 
         :param sql_connection: the sql connection to build the network from.
         :param geofence: the boundary to specify what subset of the network to download.
+        :param vintage: which vintage of tomtom to use? 2017 or 2021
 
         :return: a NetworkXMap instance
         """
         if geofence.crs != LATLON_CRS:
             raise TypeError(f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}")
-        gdf = get_tomtom_gdf(sql_connection, geofence)
-        g = tomtom_gdf_to_nx_graph(gdf)
+
+        if vintage in [2021, "2021"]:
+            gdf = get_tomtom_gdf_2021(sql_connection, geofence)
+            g = tomtom_gdf_to_nx_graph_2021(gdf)
+        elif vintage in [2017, "2017"]:
+            gdf = get_tomtom_gdf_2017(sql_connection, geofence)
+            g = tomtom_gdf_to_nx_graph_2017(gdf)
+        else:
+            raise TypeError(f"vintage {vintage} not supported by TomTomMap; try 2021 or 2017")
 
         return TomTomMap(g)
 

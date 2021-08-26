@@ -46,7 +46,7 @@ Transportation Research Record: Journal of the Transportation Research Board 264
 usage:
 ```python
 from yamm.matchers.lcss.lcss import LCSSMatcher
-from yamm.maps.tomtom_map import TomTomMap 
+from yamm.maps.tomtom.tomtom_map import TomTomMap 
 from yamm.constructs.trace import Trace
 
 road_map = TomTomMap("resources/austin_tomtom_network.pickle")

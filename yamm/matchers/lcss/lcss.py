@@ -30,7 +30,7 @@ class LCSSMatcher(MatcherInterface):
             similarity_cutoff: float = 0.9,
             cutting_threshold: float = 10.0,
             random_cuts: int = 0,
-            distance_threshold: float = 3000,
+            distance_threshold: float = 10000,
     ):
         self.road_map = road_map
         self.distance_epsilon = distance_epsilon
@@ -48,10 +48,11 @@ class LCSSMatcher(MatcherInterface):
         de = self.distance_epsilon
         ct = self.cutting_threshold
         rc = self.random_cuts
+        dt = self.distance_threshold
         initial_segment = TrajectorySegment(
             trace=sub_trace,
             path=new_path(road_map, sub_trace, de)
-        ).score_and_match(de).compute_cutting_points(de, ct, rc)
+        ).score_and_match(de, dt).compute_cutting_points(de, ct, rc)
 
         initial_scheme = split_trajectory_segment(road_map, initial_segment, de)
         scheme = initial_scheme
@@ -60,13 +61,13 @@ class LCSSMatcher(MatcherInterface):
         while n < 10:
             next_scheme = []
             for segment in scheme:
-                scored_segment = segment.score_and_match(de).compute_cutting_points(de, ct, rc)
+                scored_segment = segment.score_and_match(de, dt).compute_cutting_points(de, ct, rc)
                 if scored_segment.score >= self.similarity_cutoff:
                     next_scheme.append(scored_segment)
                 else:
                     # split and check the score
                     new_split = split_trajectory_segment(road_map, scored_segment, de)
-                    joined_segment = ft.reduce(lambda acc, x: acc + x, new_split).score_and_match(de)
+                    joined_segment = ft.reduce(lambda acc, x: acc + x, new_split).score_and_match(de, dt)
                     if joined_segment.score > scored_segment.score:
                         # we found a better fit
                         next_scheme.extend(new_split)
@@ -78,7 +79,7 @@ class LCSSMatcher(MatcherInterface):
 
             scheme = next_scheme
 
-        joined_segment = ft.reduce(lambda acc, x: acc + x, scheme).score_and_match(de)
+        joined_segment = ft.reduce(lambda acc, x: acc + x, scheme).score_and_match(de, dt)
 
         matches = joined_segment.matches
 

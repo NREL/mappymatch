@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import folium
 import geopandas as gpd
@@ -25,7 +25,7 @@ def plot_geofence(geofence, m=None):
     return m
 
 
-def plot_trace(trace, m=None, color='red'):
+def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
     if not trace.crs == LATLON_CRS:
         trace = trace.to_crs(LATLON_CRS)
 
@@ -33,28 +33,27 @@ def plot_trace(trace, m=None, color='red'):
         mid_coord = trace.coords[int(len(trace) / 2)]
         m = folium.Map(location=[mid_coord.y, mid_coord.x], zoom_start=11)
 
-    for c in trace.coords:
-        folium.Circle(location=(c.y, c.x), radius=5, color=color).add_to(m)
+    for i, c in enumerate(trace.coords):
+        folium.Circle(location=(c.y, c.x), radius=5, color=point_color, tooltip=i).add_to(m)
+
+    folium.PolyLine([(p.y, p.x) for p in trace.coords], color=line_color).add_to(m)
 
     return m
 
 
-def plot_matches(trace: Trace, matches: List[Match], road_map: MapInterface, npoints: int):
+def plot_matches(matches: List[Match], road_map: MapInterface):
     """
     plots a trace and the relevant matches on a folium map
 
-    :param trace: the trace
     :param matches: the matches
     :param road_map: the road map
-    :param npoints: how many trace points to plot? useful in you have a large trace
 
     :return: the folium map
     """
 
     def match_to_road(m):
-        d = {}
+        d = {'road_id': m.road.road_id}
 
-        d['road_id'] = m.road.road_id
         metadata = m.road.metadata
         u = metadata['u']
         v = metadata['v']
@@ -67,11 +66,8 @@ def plot_matches(trace: Trace, matches: List[Match], road_map: MapInterface, npo
         return d
 
     def match_to_coord(m):
-        d = {}
+        d = {'road_id': m.road.road_id, 'geom': Point(m.coordinate.x, m.coordinate.y), 'distance': m.distance}
 
-        d['road_id'] = m.road.road_id
-        d['geom'] = Point(m.coordinate.x, m.coordinate.y)
-        d['distance'] = m.distance
         return d
 
     road_df = pd.DataFrame([match_to_road(m) for m in matches if m.road])
@@ -80,16 +76,14 @@ def plot_matches(trace: Trace, matches: List[Match], road_map: MapInterface, npo
     road_gdf = road_gdf.to_crs(LATLON_CRS)
 
     coord_df = pd.DataFrame([match_to_coord(m) for m in matches if m.road])
-    index = [i for i in np.linspace(1, len(coord_df.index) - 1, npoints - 2).astype(int)]
-    coord_df = coord_df.loc[index]
 
     coord_gdf = gpd.GeoDataFrame(coord_df, geometry=coord_df.geom, crs=XY_CRS).drop(columns=["geom"])
     coord_gdf = coord_gdf.to_crs(LATLON_CRS)
 
-    mid_i = int(len(trace) / 2)
-    mid_coord = trace.coords[mid_i].to_crs(LATLON_CRS)
+    mid_i = int(len(coord_gdf) / 2)
+    mid_coord = coord_gdf.iloc[mid_i].geometry
 
-    fmap = folium.Map(location=[mid_coord.x, mid_coord.y], zoom_start=11)
+    fmap = folium.Map(location=[mid_coord.y, mid_coord.x], zoom_start=11)
 
     for coord in coord_gdf.itertuples():
         folium.Circle(location=(coord.geometry.y, coord.geometry.x), radius=5,
@@ -100,3 +94,19 @@ def plot_matches(trace: Trace, matches: List[Match], road_map: MapInterface, npo
             fmap)
 
     return fmap
+
+
+def plot_map(tmap: MapInterface, m=None):
+    roads = list(tmap.g.edges(data=True))
+    road_df = pd.DataFrame([r[2] for r in roads])
+    gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=XY_CRS).drop(columns=["geom"])
+    gdf = gdf.to_crs(LATLON_CRS)
+
+    if not m:
+        c = gdf.iloc[int(len(gdf) / 2)].geometry.centroid.coords[0]
+        m = folium.Map(location=[c[1], c[0]], zoom_start=11)
+
+    for t in gdf.itertuples():
+        folium.PolyLine([(lat, lon) for lon, lat in t.geometry.coords], color="red").add_to(m)
+
+    return m

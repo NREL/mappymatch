@@ -49,7 +49,7 @@ class TrajectorySegment(NamedTuple):
     def score_and_match(
             self,
             distance_epsilon: float,
-            max_distance: float = 3000,
+            max_distance: float,
     ) -> TrajectorySegment:
         """
         computes the score of a trace, pair matching and also matches the coordinates to the nearest road.
