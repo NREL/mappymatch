@@ -78,6 +78,9 @@ class TrajectorySegment(NamedTuple):
 
         C = [[0 for i in range(n + 1)] for j in range(m + 1)]
 
+        f = trace._frame
+        distances = np.array([f.distance(r.geom).values for r in path])
+
         for i in range(1, m + 1):
             nearest_road = None
             min_dist = np.inf
@@ -85,7 +88,8 @@ class TrajectorySegment(NamedTuple):
             for j in range(1, n + 1):
                 road = path[j - 1]
 
-                dt = road_to_coord_dist(road, coord)
+                # dt = road_to_coord_dist(road, coord)
+                dt = distances[j - 1][i - 1]
 
                 if dt < min_dist:
                     min_dist = dt

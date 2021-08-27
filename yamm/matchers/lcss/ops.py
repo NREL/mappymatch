@@ -1,4 +1,6 @@
 import logging
+import numpy as np
+
 from copy import deepcopy
 from typing import List, NamedTuple, Any
 
@@ -34,12 +36,14 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
 
     C = [[0 for i in range(n + 1)] for j in range(m + 1)]
 
-    for i in range(1, m + 1):
-        coord = trace.coords[i - 1]
-        for j in range(1, n + 1):
-            road = path[j - 1]
+    f = trace._frame
+    distances = np.array([f.distance(r.geom).values for r in path])
 
-            dt = road_to_coord_dist(road, coord)
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+
+            # dt = road_to_coord_dist(road, coord)
+            dt = distances[j - 1][i - 1]
 
             if dt < distance_epsilon:
                 point_similarity = 1 - dt / distance_epsilon
