@@ -8,12 +8,10 @@ Clone the repo, setup a python environment with python >= 3.8 and pip install th
 
 ```
 git clone https://github.nrel.gov/MBAP/yamm.git
-conda create -n yamm python=3.9
 cd yamm/
+conda env create -f environment.yml
 pip install -e .
 ```
-
-
 
 ## Examples
 
