@@ -7,7 +7,7 @@ from yamm.constructs.trace import Trace
 from yamm.utils.crs import LATLON_CRS
 
 
-def get_trace(sampno, vehno, table, engine):
+def get_tsdc_trace(sampno, vehno, table, engine):
     q = f"""
     select * from {table}  
     where sampno={sampno} and vehno={vehno}
@@ -15,10 +15,12 @@ def get_trace(sampno, vehno, table, engine):
     """
     try:
         trip_gdf = gpd.GeoDataFrame.from_postgis(q, engine)
+        trip_gdf = trip_gdf.set_index(['sampno', 'vehno', 'time_local'])
         return Trace.from_geo_dataframe(trip_gdf)
     except ValueError:
         # table might not have geometry
         trip_df = pd.read_sql(q, engine)
+        trip_df = trip_df.set_index(['sampno', 'vehno', 'time_local'])
         return Trace.from_dataframe(trip_df, lat_column="latitude", lon_column="longitude")
 
 
@@ -42,9 +44,8 @@ def get_unique_trips(table, engine):
     group by sampno, vehno
     """
     trips = pd.read_sql(q, engine)
+    trips['table'] = table
 
     return trips
 
 
-def matches_to_dataframe(matches):
-    return pd.DataFrame([m.to_json() for m in matches])

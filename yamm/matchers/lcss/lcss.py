@@ -1,8 +1,6 @@
 import functools as ft
-
 import logging
 from multiprocessing import Pool
-from typing import Optional
 
 from yamm.maps.map_interface import MapInterface
 from yamm.matchers.lcss.constructs import TrajectorySegment

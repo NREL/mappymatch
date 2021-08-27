@@ -3,7 +3,7 @@ from __future__ import annotations
 from yamm.constructs.trace import Trace
 
 
-def remove_bad_start_from_trace(trace: Trace, distance_threshold: float):
+def remove_bad_start_from_trace(trace: Trace, distance_threshold: float) -> Trace:
     """
     remove points at the beginning of a trace if there is a gap larger than the distance threshold
 
@@ -12,6 +12,7 @@ def remove_bad_start_from_trace(trace: Trace, distance_threshold: float):
 
     :return: the new trace
     """
+
     def _trim_frame(frame):
         for index in range(len(frame)):
             rows = frame.iloc[index:index + 2]
