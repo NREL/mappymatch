@@ -6,7 +6,7 @@ from typing import List, Union, Optional
 
 import numpy as np
 import pandas as pd
-from geopandas import GeoDataFrame, points_from_xy, read_file
+from geopandas import GeoDataFrame, points_from_xy, read_file, read_parquet
 from pyproj import CRS
 
 from yamm.constructs.coordinate import Coordinate
@@ -136,9 +136,35 @@ class Trace:
         elif not filepath.suffix == ".csv":
             raise TypeError(f"file of type {filepath.suffix} does not appear to be a csv file")
 
-        df = pd.read_csv(filepath)
+        columns = pd.read_csv(file, nrows=0).columns.to_list()
+        if lat_column in columns and lon_column in columns:
+            df = pd.read_csv(filepath)
+            return Trace.from_dataframe(df, xy, lat_column, lon_column)
+        else:
+            raise ValueError("Could not find any geometry information in the file; "
+                             "Make sure there are latitude and longitude columns "
+                             "[and provide the lat/lon column names to this function]")
 
-        return Trace.from_dataframe(df, xy, lat_column, lon_column)
+    @classmethod
+    def from_parquet(
+            cls,
+            file: Union[str, Path],
+            xy: bool = True
+    ):
+        """
+        read a trace from a parquet file
+
+        :param file:
+        :param xy:
+        :return:
+        """
+        filepath = Path(file)
+        frame = read_parquet(filepath)
+
+        if xy:
+            frame = frame.to_crs(XY_CRS)
+
+        return Trace(frame)
 
     @classmethod
     def from_geojson(
@@ -147,10 +173,22 @@ class Trace:
             index_property: Optional[str] = None,
             xy: bool = True
     ):
+        """
+        reads a geojson file; if index_property is not specified, this will set any property columns as the index.
+
+        :param file:
+        :param index_property:
+        :param xy:
+        :return:
+        """
         filepath = Path(file)
         frame = read_file(filepath)
-        if index_property in frame.columns:
+        if index_property and index_property in frame.columns:
             frame = frame.set_index(index_property)
+        else:
+            gname = frame.geometry.name
+            index_cols = [c for c in frame.columns if c != gname]
+            frame = frame.set_index(index_cols)
 
         if xy:
             frame = frame.to_crs(XY_CRS)
@@ -185,3 +223,12 @@ class Trace:
         """
         new_frame = self._frame.to_crs(new_crs)
         return Trace(new_frame)
+
+    def to_geojson(self, file: Union[str, Path]):
+        """
+        write the trace to a csv file
+
+        :param file:
+        :return:
+        """
+        self._frame.to_file(file, driver="GeoJSON")

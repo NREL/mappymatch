@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import random
+import time
 from typing import NamedTuple, List
 
 import numpy as np
@@ -115,6 +116,7 @@ class TrajectorySegment(NamedTuple):
 
         sim_score = C[m][n] / float(min(m, n))
 
+
         return self.set_score(sim_score).set_matches(matched_roads)
 
     def compute_cutting_points(
@@ -144,7 +146,9 @@ class TrajectorySegment(NamedTuple):
             start = self.trace.coords[0]
             end = self.trace.coords[-1]
 
-            if start.geom.distance(end.geom) < 0.1:
+            start_end_dist = start.geom.distance(end.geom)
+
+            if start_end_dist < distance_epsilon:
                 p1 = np.argmax([coord_to_coord_dist(start, c) for c in self.trace.coords])
                 p2 = np.argmax([coord_to_coord_dist(end, c) for c in self.trace.coords])
 

@@ -1,6 +1,23 @@
 from __future__ import annotations
 
+from typing import List
+
 from yamm.constructs.trace import Trace
+
+
+def split_large_trace(trace: Trace, ideal_size: int) -> List[Trace]:
+    """
+    split up a trace into a list of smaller traces
+
+    :param trace:
+    :param ideal_size:
+
+    :return:
+    """
+    if len(trace) <= ideal_size:
+        return [trace]
+    else:
+        return [trace[i:i + ideal_size] for i in range(0, len(trace), ideal_size)]
 
 
 def remove_bad_start_from_trace(trace: Trace, distance_threshold: float) -> Trace:

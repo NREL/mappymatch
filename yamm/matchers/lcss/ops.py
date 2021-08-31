@@ -1,8 +1,9 @@
 import logging
-import numpy as np
-
+import time
 from copy import deepcopy
 from typing import List, NamedTuple, Any
+
+import numpy as np
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.road import Road
@@ -11,7 +12,6 @@ from yamm.maps.map_interface import MapInterface, PathWeight
 from yamm.matchers.lcss.constructs import TrajectorySegment, TrajectoryScheme
 from yamm.matchers.lcss.utils import merge
 from yamm.matchers.matcher_interface import MatchResult
-from yamm.utils.geo import road_to_coord_dist
 
 log = logging.getLogger(__name__)
 
@@ -26,6 +26,7 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
 
     :return:
     """
+    s = time.time()
     m = len(trace.coords)
     n = len(path)
 
@@ -54,6 +55,9 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
 
     sim_score = C[m][n] / float(min(m, n))
 
+    e = time.time()
+    print(f"SCORE: size: {m * n} \t\t time: {round(e - s, 2)} seconds")
+
     return sim_score
 
 
@@ -79,7 +83,11 @@ def new_path(
     destination = trace.coords[-1]
 
     time_path = road_map.shortest_path(origin, destination, weight=PathWeight.TIME)
+
     dist_path = road_map.shortest_path(origin, destination, weight=PathWeight.DISTANCE)
+
+    if time_path == dist_path:
+        return time_path
 
     if not time_path and not dist_path:
         return []
