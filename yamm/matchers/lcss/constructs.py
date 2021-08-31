@@ -68,9 +68,9 @@ class TrajectorySegment(NamedTuple):
 
         matched_roads = []
 
-        if m < 2:
+        if m < 10:
             # todo: find a better way to handle this edge case
-            raise Exception(f"traces of less than 2 points can't be matched")
+            raise Exception(f"traces of less than 10 points can't be matched")
         elif n < 2:
             # a path was not found for this segment; might not be matchable;
             # we set a score of zero and return a set of no-matches
