@@ -1,6 +1,7 @@
 from typing import Tuple
 
-from pyproj import Transformer
+import geopandas as gpd
+from pyproj import Transformer, CRS
 from shapely.geometry import LineString
 from shapely.ops import transform
 
@@ -25,7 +26,7 @@ def latlon_to_xy(lat: float, lon: float) -> Tuple[float, float]:
     return x, y
 
 
-def geofence_from_trace(trace: Trace, padding: float = 15, xy: bool = False, buffer_res: int = 2) -> Geofence:
+def geofence_from_trace(trace: Trace, padding: float = 15, crs: CRS = LATLON_CRS, buffer_res: int = 2) -> Geofence:
     """
     computes a bounding box surrounding a trace by taking the minimum and maximum x and y
 
@@ -37,20 +38,16 @@ def geofence_from_trace(trace: Trace, padding: float = 15, xy: bool = False, buf
     :return: the computed bounding box
     """
 
-    if trace.crs != XY_CRS:
-        trace = trace.to_crs(XY_CRS)
-
     trace_line_string = LineString([c.geom for c in trace.coords])
 
     polygon = trace_line_string.buffer(padding, buffer_res)
 
-    if xy:
-        return Geofence(crs=XY_CRS, geometry=polygon)
+    if trace.crs != crs:
+        project = Transformer.from_crs(trace.crs, crs, always_xy=True).transform
+        polygon = transform(project, polygon)
+        return Geofence(crs=crs, geometry=polygon)
 
-    project = Transformer.from_crs(XY_CRS, LATLON_CRS, always_xy=True).transform
-    polygon = transform(project, polygon)
-
-    return Geofence(crs=LATLON_CRS, geometry=polygon)
+    return Geofence(crs=trace.crs, geometry=polygon)
 
 
 def road_to_coord_dist(road: Road, coord: Coordinate) -> float:

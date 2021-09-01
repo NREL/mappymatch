@@ -1,6 +1,9 @@
 import logging
+import time
 from copy import deepcopy
 from typing import List, NamedTuple, Any
+
+import numpy as np
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.road import Road
@@ -9,7 +12,6 @@ from yamm.maps.map_interface import MapInterface, PathWeight
 from yamm.matchers.lcss.constructs import TrajectorySegment, TrajectoryScheme
 from yamm.matchers.lcss.utils import merge
 from yamm.matchers.matcher_interface import MatchResult
-from yamm.utils.geo import road_to_coord_dist
 
 log = logging.getLogger(__name__)
 
@@ -24,6 +26,7 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
 
     :return:
     """
+    s = time.time()
     m = len(trace.coords)
     n = len(path)
 
@@ -34,12 +37,14 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
 
     C = [[0 for i in range(n + 1)] for j in range(m + 1)]
 
-    for i in range(1, m + 1):
-        coord = trace.coords[i - 1]
-        for j in range(1, n + 1):
-            road = path[j - 1]
+    f = trace._frame
+    distances = np.array([f.distance(r.geom).values for r in path])
 
-            dt = road_to_coord_dist(road, coord)
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+
+            # dt = road_to_coord_dist(road, coord)
+            dt = distances[j - 1][i - 1]
 
             if dt < distance_epsilon:
                 point_similarity = 1 - dt / distance_epsilon
@@ -49,6 +54,9 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
             C[i][j] = max((C[i - 1][j - 1] + point_similarity), C[i][j - 1], C[i - 1][j])
 
     sim_score = C[m][n] / float(min(m, n))
+
+    e = time.time()
+    print(f"SCORE: size: {m * n} \t\t time: {round(e - s, 2)} seconds")
 
     return sim_score
 
@@ -75,7 +83,11 @@ def new_path(
     destination = trace.coords[-1]
 
     time_path = road_map.shortest_path(origin, destination, weight=PathWeight.TIME)
+
     dist_path = road_map.shortest_path(origin, destination, weight=PathWeight.DISTANCE)
+
+    if time_path == dist_path:
+        return time_path
 
     if not time_path and not dist_path:
         return []
@@ -109,11 +121,11 @@ def split_trajectory_segment(
     cutting_points = trajectory_segment.cutting_points
 
     def _short_segment(ts: TrajectorySegment):
-        if len(ts.trace) < 2 or len(ts.path) < 1:
+        if len(ts.trace) < 10 or len(ts.path) < 1:
             return True
         return False
 
-    if len(trace.coords) < 2:
+    if len(trace.coords) < 10:
         # segment is too short to split
         return [trajectory_segment]
     elif len(cutting_points) < 1:

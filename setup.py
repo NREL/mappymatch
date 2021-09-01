@@ -26,16 +26,12 @@ setup(
     packages=find_packages(),
     python_requires=">=3.8",
     install_requires=[
-        "numpy",
-        "networkx",
-        "pyproj",
-        "shapely",
-        "sqlalchemy",
-        "pandas",
-        "geopandas",
-        "pygeos",
-        "psycopg2-binary",
-        "tqdm",
+        # "networkx",
+        # "sqlalchemy",
+        # "geopandas",
+        # "pygeos",
+        # "psycopg2-binary",
+        # "tqdm",
     ],
     extras_require={
         "optional": [

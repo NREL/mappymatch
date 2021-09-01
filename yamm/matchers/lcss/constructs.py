@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import random
+import time
 from typing import NamedTuple, List
 
 import numpy as np
@@ -67,9 +68,9 @@ class TrajectorySegment(NamedTuple):
 
         matched_roads = []
 
-        if m < 2:
+        if m < 10:
             # todo: find a better way to handle this edge case
-            raise Exception(f"traces of less than 2 points can't be matched")
+            raise Exception(f"traces of less than 10 points can't be matched")
         elif n < 2:
             # a path was not found for this segment; might not be matchable;
             # we set a score of zero and return a set of no-matches
@@ -78,6 +79,9 @@ class TrajectorySegment(NamedTuple):
 
         C = [[0 for i in range(n + 1)] for j in range(m + 1)]
 
+        f = trace._frame
+        distances = np.array([f.distance(r.geom).values for r in path])
+
         for i in range(1, m + 1):
             nearest_road = None
             min_dist = np.inf
@@ -85,7 +89,8 @@ class TrajectorySegment(NamedTuple):
             for j in range(1, n + 1):
                 road = path[j - 1]
 
-                dt = road_to_coord_dist(road, coord)
+                # dt = road_to_coord_dist(road, coord)
+                dt = distances[j - 1][i - 1]
 
                 if dt < min_dist:
                     min_dist = dt
@@ -110,6 +115,7 @@ class TrajectorySegment(NamedTuple):
             matched_roads.append(match)
 
         sim_score = C[m][n] / float(min(m, n))
+
 
         return self.set_score(sim_score).set_matches(matched_roads)
 
@@ -140,7 +146,9 @@ class TrajectorySegment(NamedTuple):
             start = self.trace.coords[0]
             end = self.trace.coords[-1]
 
-            if start.geom.distance(end.geom) < 0.1:
+            start_end_dist = start.geom.distance(end.geom)
+
+            if start_end_dist < distance_epsilon:
                 p1 = np.argmax([coord_to_coord_dist(start, c) for c in self.trace.coords])
                 p2 = np.argmax([coord_to_coord_dist(end, c) for c in self.trace.coords])
 

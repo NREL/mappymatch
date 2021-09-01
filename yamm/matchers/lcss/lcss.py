@@ -1,8 +1,6 @@
 import functools as ft
-
 import logging
 from multiprocessing import Pool
-from typing import Optional
 
 from yamm.maps.map_interface import MapInterface
 from yamm.matchers.lcss.constructs import TrajectorySegment
@@ -92,6 +90,15 @@ class LCSSMatcher(MatcherInterface):
             trace_batch: List[Trace],
             processes: int = 1,
     ) -> List[MatchResult]:
+        """
+        match traces in batches; useful for large traces as the computational complexity of the scoring
+        function is O(N^2)
+
+        :param trace_batch:
+        :param processes:
+        :return:
+        """
+
         if processes > 1:
             results = [self.match_trace(t) for t in trace_batch]
         else:

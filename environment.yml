@@ -1,0 +1,14 @@
+name: yamm
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - networkx
+  - sqlalchemy
+  - psycopg2
+  - geopandas
+  - pygeos
+  - tqdm
+
+
