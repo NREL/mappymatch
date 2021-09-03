@@ -17,11 +17,13 @@ def get_tsdc_trace(trip_id, table, engine) -> Tuple[Trace, pd.DataFrame]:
     """
     try:
         raw_trip_gdf = gpd.GeoDataFrame.from_postgis(q, engine)
+        raw_trip_gdf['original_table'] = table
         trip_gdf = raw_trip_gdf.set_index(['point_id', 'time_rel'])
         return Trace.from_geo_dataframe(trip_gdf), raw_trip_gdf
     except ValueError:
         # table might not have geometry
         raw_trip_df = pd.read_sql(q, engine)
+        raw_trip_df['original_table'] = table
         trip_df = raw_trip_df.set_index(['point_id', 'time_local'])
         return Trace.from_dataframe(trip_df, lat_column="latitude", lon_column="longitude"), raw_trip_df
 
