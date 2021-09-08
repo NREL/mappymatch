@@ -5,6 +5,7 @@ from sqlalchemy.future import Engine
 
 from yamm.constructs.geofence import Geofence
 from yamm.utils.crs import XY_CRS, LATLON_CRS
+from yamm.utils.exceptions import MapException
 
 
 def get_tomtom_gdf_2021(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame:
@@ -29,7 +30,11 @@ def get_tomtom_gdf_2021(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame
         geom_col="geom",
     )
 
-    gdf.crs = LATLON_CRS
+    if gdf.empty:
+        raise MapException("road network has no links; check geofence boundaries")
+
+    if not gdf.crs:
+        gdf.crs = LATLON_CRS
 
     # add default speed to missing speeds
     gdf['speed_average_neg'] = gdf.speed_average_neg.fillna(20)
@@ -62,6 +67,12 @@ def get_tomtom_gdf_2017(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame
         con=sql_con,
         geom_col="wkb_geometry",
     )
+    if raw_gdf.empty:
+        raise MapException("road network has no links; check geofence boundaries")
+
+    if not raw_gdf.crs:
+        raw_gdf.crs = LATLON_CRS
+
     raw_gdf['kilometers'] = raw_gdf.meters / 1000
 
     raw_gdf = raw_gdf[
@@ -70,6 +81,7 @@ def get_tomtom_gdf_2017(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame
         ].fillna(0)
 
     return raw_gdf
+
 
 
 def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiDiGraph:
@@ -151,7 +163,13 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     G.add_edges_from(oneway_edges_ft)
     G.add_edges_from(oneway_edges_tf)
 
-    G = nx.MultiDiGraph(G.subgraph(max(nx.strongly_connected_components(G), key=len)))
+    sg_components = nx.strongly_connected_components(G)
+
+    if not sg_components:
+        raise MapException("road network has no strongly connected components and is not routable; "
+                           "check polygon boundaries.")
+
+    G = nx.MultiDiGraph(G.subgraph(max(sg_components, key=len)))
 
     return G
 
@@ -238,6 +256,12 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     G.add_edges_from(oneway_edges_ft)
     G.add_edges_from(oneway_edges_tf)
 
-    G = nx.MultiDiGraph(G.subgraph(max(nx.strongly_connected_components(G), key=len)))
+    sg_components = nx.strongly_connected_components(G)
+
+    if not sg_components:
+        raise MapException("road network has no strongly connected components and is not routable; "
+                           "check polygon boundaries.")
+
+    G = nx.MultiDiGraph(G.subgraph(max(sg_components, key=len)))
 
     return G
