@@ -4,7 +4,7 @@ from shapely.geometry import LineString
 from sqlalchemy.future import Engine
 
 from yamm.constructs.geofence import Geofence
-from yamm.utils.crs import XY_CRS
+from yamm.utils.crs import XY_CRS, LATLON_CRS
 
 
 def get_tomtom_gdf_2021(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame:
@@ -28,6 +28,8 @@ def get_tomtom_gdf_2021(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame
         con=sql_con,
         geom_col="geom",
     )
+
+    gdf.crs = LATLON_CRS
 
     # add default speed to missing speeds
     gdf['speed_average_neg'] = gdf.speed_average_neg.fillna(20)
