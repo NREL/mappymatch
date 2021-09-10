@@ -42,13 +42,13 @@ def compute_bbox_from_table(table, padding, engine):
     return Geofence(geometry=bbox, crs=LATLON_CRS)
 
 
-def get_unique_trips(table, engine):
+def get_unique_trips(table, engine, skip_trips=None):
     q = f"""
     select distinct trip_id from {table} 
     """
     trips = pd.read_sql(q, engine)
     trips['table'] = table
+    if skip_trips:
+        trips = trips[~trips.trip_id.isin(skip_trips)]
 
     return trips
-
-
