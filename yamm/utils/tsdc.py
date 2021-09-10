@@ -47,6 +47,7 @@ def get_unique_trips(table, engine, skip_trips=None):
     select distinct trip_id from {table} 
     """
     trips = pd.read_sql(q, engine)
+    trips = trips.astype({'trip_id': str})
     trips['table'] = table
     if skip_trips is not None:
         trips = trips[~trips.trip_id.isin(skip_trips)]
