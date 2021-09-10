@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 DEFAULT_OSRM_ADDRESS = "http://router.project-osrm.org"
 
 
-def parse_osrm_json(j: dict) -> List[Match]:
+def parse_osrm_json(j: dict, trace: Trace) -> List[Match]:
     """
     parse the json response from the osrm match service
 
@@ -37,7 +37,7 @@ def parse_osrm_json(j: dict) -> List[Match]:
     if not legs:
         raise ValueError("could not find any link legs in response")
 
-    def _parse_leg(d: dict) -> Match:
+    def _parse_leg(d: dict, i: int) -> Match:
         annotation = d.get("annotation")
         if not annotation:
             raise ValueError("leg has no annotation information")
@@ -48,10 +48,10 @@ def parse_osrm_json(j: dict) -> List[Match]:
 
         # todo: we need to get geometry and distance info from OSRM if available
         road = Road(road_id=link_id, geom=None)
-        match = Match(road=road, coordinate=None, distance=None)
+        match = Match(road=road, coordinate=trace.coords[i], distance=None)
         return match
 
-    return [_parse_leg(d) for d in legs]
+    return [_parse_leg(d, i) for i, d in enumerate(legs)]
 
 
 class OsrmMatcher(MatcherInterface):
@@ -90,7 +90,7 @@ class OsrmMatcher(MatcherInterface):
         if not r.status_code == requests.codes.ok:
             r.raise_for_status()
 
-        result = parse_osrm_json(r.json())
+        result = parse_osrm_json(r.json(), trace)
 
         return result
 

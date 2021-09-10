@@ -27,7 +27,7 @@ from yamm.constructs.trace import Trace
 
 matcher = OsrmMatcher()
 
-trace = Trace.from_csv("resources/traces/sample_trace_1.csv")
+trace = Trace.from_csv("resources/traces/sample_trace_1.csv", xy=False)
 
 # only match first 5 points
 matches = matcher.match_trace(trace[:5])
@@ -47,7 +47,7 @@ from yamm.matchers.lcss.lcss import LCSSMatcher
 from yamm.maps.tomtom.tomtom_map import TomTomMap 
 from yamm.constructs.trace import Trace
 
-road_map = TomTomMap("resources/austin_tomtom_network.pickle")
+road_map = TomTomMap.from_file("resources/austin_tomtom_network.pickle")
 
 matcher = LCSSMatcher(road_map)
 
