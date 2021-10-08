@@ -3,22 +3,18 @@ from typing import List, Union
 
 import networkx as nx
 from pygeos import STRtree, Geometry
-from sqlalchemy.future import Engine
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.constructs.geofence import Geofence
 from yamm.constructs.road import Road
 from yamm.maps.map_interface import MapInterface, PathWeight
-from yamm.maps.tomtom.utils import (
-    get_tomtom_gdf_2021,
-    tomtom_gdf_to_nx_graph_2021, get_tomtom_gdf_2017, tomtom_gdf_to_nx_graph_2017
-)
+from yamm.maps.osm.utils import get_osm_networkx_graph
 from yamm.utils.crs import LATLON_CRS
 
 
-class TomTomMap(MapInterface):
+class OSMap(MapInterface):
     DISTANCE_WEIGHT = "kilometers"
-    TIME_WEIGHT = "minutes"
+    TIME_WEIGHT = "travel_time"
 
     def __init__(self, graph: nx.MultiDiGraph):
         self.g = graph
@@ -30,8 +26,8 @@ class TomTomMap(MapInterface):
         geoms = []
         road_lookup = []
         for u, v, rid, d, in self.g.edges(data=True, keys=True):
-            geoms.append(Geometry(d['geom'].wkb))
-            road = Road(rid, d['geom'], metadata={'u': u, 'v': v})
+            geoms.append(Geometry(d['geometry'].wkb))
+            road = Road(rid, d['geometry'], metadata={'u': u, 'v': v})
             road_lookup.append(road)
 
         self.rtree = STRtree(geoms)
@@ -48,36 +44,27 @@ class TomTomMap(MapInterface):
         """
         p = Path(file)
         if not p.suffix == ".pickle":
-            raise TypeError(f"TomTomMap only supports pickle files")
+            raise TypeError(f"OSMap only supports pickle files")
 
         g = nx.read_gpickle(file)
 
-        return TomTomMap(g)
+        return OSMap(g)
 
     @classmethod
-    def from_sql(cls, sql_connection: Engine, geofence: Geofence, vintage: Union[int, str] = "2021"):
+    def from_geofence(cls, geofence: Geofence):
         """
         Loads a network from a sql database using the bounding box.
 
-        :param sql_connection: the sql connection to build the network from.
         :param geofence: the boundary to specify what subset of the network to download.
-        :param vintage: which vintage of tomtom to use? 2017 or 2021
 
         :return: a NetworkXMap instance
         """
         if geofence.crs != LATLON_CRS:
             raise TypeError(f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}")
 
-        if vintage in [2021, "2021"]:
-            gdf = get_tomtom_gdf_2021(sql_connection, geofence)
-            g = tomtom_gdf_to_nx_graph_2021(gdf)
-        elif vintage in [2017, "2017"]:
-            gdf = get_tomtom_gdf_2017(sql_connection, geofence)
-            g = tomtom_gdf_to_nx_graph_2017(gdf)
-        else:
-            raise TypeError(f"vintage {vintage} not supported by TomTomMap; try 2021 or 2017")
+        g = get_osm_networkx_graph(geofence)
 
-        return TomTomMap(g)
+        return OSMap(g)
 
     def to_file(self, outfile: Union[str, Path]):
         nx.write_gpickle(self.g, str(outfile))
@@ -136,7 +123,7 @@ class TomTomMap(MapInterface):
         elif weight == PathWeight.TIME:
             weight_string = self.TIME_WEIGHT
         else:
-            raise TypeError(f"path weight {weight.name} is not supported by the TomTomMap")
+            raise TypeError(f"path weight {weight.name} is not supported by the OSMap")
 
         nx_route = nx.shortest_path(
             self.g,
@@ -154,8 +141,10 @@ class TomTomMap(MapInterface):
 
             road_key = list(edge_data.keys())[0]
 
-            geom = edge_data[road_key]['geom']
+            geom = edge_data[road_key]['geometry']
 
-            path.append(Road(road_key, geom, metadata={'u': road_start_node, 'v': road_end_node}))
+            road_id = f"{road_start_node}_{road_end_node}"
+
+            path.append(Road(road_id, geom, metadata={'u': road_start_node, 'v': road_end_node}))
 
         return path
