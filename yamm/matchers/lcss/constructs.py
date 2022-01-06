@@ -24,6 +24,7 @@ class TrajectorySegment(NamedTuple):
     """
     represents a trace and path matching
     """
+
     trace: Trace
     path: List[Road]
 
@@ -48,9 +49,9 @@ class TrajectorySegment(NamedTuple):
         return self._replace(matches=matches)
 
     def score_and_match(
-            self,
-            distance_epsilon: float,
-            max_distance: float,
+        self,
+        distance_epsilon: float,
+        max_distance: float,
     ) -> TrajectorySegment:
         """
         computes the score of a trace, pair matching and also matches the coordinates to the nearest road.
@@ -74,7 +75,10 @@ class TrajectorySegment(NamedTuple):
         elif n < 2:
             # a path was not found for this segment; might not be matchable;
             # we set a score of zero and return a set of no-matches
-            matches = [Match(road=None, distance=np.inf, coordinate=c) for c in self.trace.coords]
+            matches = [
+                Match(road=None, distance=np.inf, coordinate=c)
+                for c in self.trace.coords
+            ]
             return self.set_score(0).set_matches(matches)
 
         C = [[0 for i in range(n + 1)] for j in range(m + 1)]
@@ -101,7 +105,9 @@ class TrajectorySegment(NamedTuple):
                 else:
                     point_similarity = 0
 
-                C[i][j] = max((C[i - 1][j - 1] + point_similarity), C[i][j - 1], C[i - 1][j])
+                C[i][j] = max(
+                    (C[i - 1][j - 1] + point_similarity), C[i][j - 1], C[i - 1][j]
+                )
 
             if min_dist > max_distance:
                 nearest_road = None
@@ -116,25 +122,24 @@ class TrajectorySegment(NamedTuple):
 
         sim_score = C[m][n] / float(min(m, n))
 
-
         return self.set_score(sim_score).set_matches(matched_roads)
 
     def compute_cutting_points(
-            self,
-            distance_epsilon: float,
-            cutting_thresh: float,
-            random_cuts: int,
+        self,
+        distance_epsilon: float,
+        cutting_thresh: float,
+        random_cuts: int,
     ) -> TrajectorySegment:
         """
         Computes the cutting points for a trajectory segment by:
-         - computing the furthest point 
+         - computing the furthest point
          - adding points that are close to the distance epsilon
 
         :param distance_epsilon:
         :param cutting_thresh:
         :param random_cuts:
 
-        :return: the updated trajectory segment with cutting points 
+        :return: the updated trajectory segment with cutting points
         """
         cutting_points = []
 
@@ -149,7 +154,9 @@ class TrajectorySegment(NamedTuple):
             start_end_dist = start.geom.distance(end.geom)
 
             if start_end_dist < distance_epsilon:
-                p1 = np.argmax([coord_to_coord_dist(start, c) for c in self.trace.coords])
+                p1 = np.argmax(
+                    [coord_to_coord_dist(start, c) for c in self.trace.coords]
+                )
                 p2 = np.argmax([coord_to_coord_dist(end, c) for c in self.trace.coords])
 
                 cp1 = CuttingPoint(p1)

@@ -26,7 +26,9 @@ def build_rtree(road_map: MapInterface):
         c = road.end.x
         d = road.end.y
         if not a or not b or not c or not d:
-            raise ValueError(f"LineSnapMatcher requires projected x,y data but found a road without this information")
+            raise ValueError(
+                f"LineSnapMatcher requires projected x,y data but found a road without this information"
+            )
         segment = ((a, b), (c, d))
         box = (min(a, c), min(b, d), max(a, c), max(b, d))
         items.append((sindx, box, (lid, segment)))
@@ -63,12 +65,10 @@ class LineSnapMatcher(MatcherInterface):
     """
     A crude (but fast) map matcher that just snaps points to the nearest road network link.
     """
+
     BOX_SIZE = 200  # meters
 
-    def __init__(
-            self,
-            road_map: MapInterface
-    ):
+    def __init__(self, road_map: MapInterface):
         self.map = road_map
         self.rtree = build_rtree(road_map)
 
@@ -78,10 +78,17 @@ class LineSnapMatcher(MatcherInterface):
 
         for coord in trace.coords:
             if not coord.x or not coord.y:
-                raise ValueError("this trace requires projected x, y data but found a coordinate with only lat/lon")
+                raise ValueError(
+                    "this trace requires projected x, y data but found a coordinate with only lat/lon"
+                )
             p = Point(coord.x, coord.y)
-            pbox = (coord.x - self.BOX_SIZE, coord.y - self.BOX_SIZE, coord.x + self.BOX_SIZE, coord.y + self.BOX_SIZE)
-            hits = self.rtree.intersection(pbox, objects='raw')
+            pbox = (
+                coord.x - self.BOX_SIZE,
+                coord.y - self.BOX_SIZE,
+                coord.x + self.BOX_SIZE,
+                coord.y + self.BOX_SIZE,
+            )
+            hits = self.rtree.intersection(pbox, objects="raw")
             d = np.inf
             s = None
             for h in hits:

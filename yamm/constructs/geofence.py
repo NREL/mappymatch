@@ -16,9 +16,13 @@ class Geofence(NamedTuple):
         frame = read_file(filepath)
 
         if len(frame) > 1:
-            raise TypeError("found multiple polygons in the input; please only provide one")
+            raise TypeError(
+                "found multiple polygons in the input; please only provide one"
+            )
         elif frame.crs is None:
-            raise TypeError("no crs information found in the file; please make sure file has a crs")
+            raise TypeError(
+                "no crs information found in the file; please make sure file has a crs"
+            )
 
         polygon = frame.iloc[0].geometry
 

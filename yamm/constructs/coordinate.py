@@ -33,4 +33,6 @@ class Coordinate(NamedTuple):
         transformer = Transformer.from_crs(self.crs, new_crs)
         new_x, new_y = transformer.transform(self.geom.x, self.geom.y)
 
-        return Coordinate(coordinate_id=self.coordinate_id, geom=Point(new_x, new_y), crs=new_crs)
+        return Coordinate(
+            coordinate_id=self.coordinate_id, geom=Point(new_x, new_y), crs=new_crs
+        )

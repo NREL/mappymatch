@@ -8,7 +8,6 @@ from yamm.utils.crs import XY_CRS
 
 
 class TestTrace(TestCase):
-
     def test_trace_from_file(self):
         file = root() / "resources" / "traces" / "sample_trace_1.csv"
 

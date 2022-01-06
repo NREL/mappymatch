@@ -17,7 +17,7 @@ def split_large_trace(trace: Trace, ideal_size: int) -> List[Trace]:
     if len(trace) <= ideal_size:
         return [trace]
     else:
-        ts = [trace[i:i + ideal_size] for i in range(0, len(trace), ideal_size)]
+        ts = [trace[i : i + ideal_size] for i in range(0, len(trace), ideal_size)]
 
         # check to make sure the last trace isn't too small
         if len(ts[-1]) <= 10:
@@ -39,7 +39,7 @@ def remove_bad_start_from_trace(trace: Trace, distance_threshold: float) -> Trac
 
     def _trim_frame(frame):
         for index in range(len(frame)):
-            rows = frame.iloc[index:index + 2]
+            rows = frame.iloc[index : index + 2]
 
             if len(rows) < 2:
                 return frame
@@ -50,7 +50,7 @@ def remove_bad_start_from_trace(trace: Trace, distance_threshold: float) -> Trac
             if current_point != next_point:
                 dist = current_point.distance(next_point)
                 if dist > distance_threshold:
-                    return frame.iloc[index + 1:]
+                    return frame.iloc[index + 1 :]
                 else:
                     return frame
 

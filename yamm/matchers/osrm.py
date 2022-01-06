@@ -41,9 +41,9 @@ def parse_osrm_json(j: dict, trace: Trace) -> List[Match]:
         annotation = d.get("annotation")
         if not annotation:
             raise ValueError("leg has no annotation information")
-        nodes = annotation.get('nodes')
+        nodes = annotation.get("nodes")
         if not nodes:
-            raise ValueError('leg has no osm node information')
+            raise ValueError("leg has no osm node information")
         link_id = f"({nodes[0]},{nodes[1]})"
 
         # todo: we need to get geometry and distance info from OSRM if available
@@ -60,17 +60,21 @@ class OsrmMatcher(MatcherInterface):
     """
 
     def __init__(
-            self,
-            osrm_address=DEFAULT_OSRM_ADDRESS,
-            osrm_profile="driving",
-            osrm_version="v1",
+        self,
+        osrm_address=DEFAULT_OSRM_ADDRESS,
+        osrm_profile="driving",
+        osrm_version="v1",
     ):
-        self.osrm_api_base = multiurljoin([osrm_address, "match", osrm_version, osrm_profile])
+        self.osrm_api_base = multiurljoin(
+            [osrm_address, "match", osrm_version, osrm_profile]
+        )
 
     def match_trace(self, trace: Trace) -> MatchResult:
         if not trace.crs == LATLON_CRS:
-            raise TypeError(f"this matcher requires traces to be in the CRS of EPSG:{LATLON_CRS.to_epsg()} "
-                            f"but found EPSG:{trace.crs.to_epsg()}")
+            raise TypeError(
+                f"this matcher requires traces to be in the CRS of EPSG:{LATLON_CRS.to_epsg()} "
+                f"but found EPSG:{trace.crs.to_epsg()}"
+            )
 
         if len(trace.coords) > 100:
             trace = trace.downsample(100)

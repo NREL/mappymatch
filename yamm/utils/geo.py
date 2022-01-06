@@ -26,7 +26,9 @@ def latlon_to_xy(lat: float, lon: float) -> Tuple[float, float]:
     return x, y
 
 
-def geofence_from_trace(trace: Trace, padding: float = 15, crs: CRS = LATLON_CRS, buffer_res: int = 2) -> Geofence:
+def geofence_from_trace(
+    trace: Trace, padding: float = 15, crs: CRS = LATLON_CRS, buffer_res: int = 2
+) -> Geofence:
     """
     computes a bounding box surrounding a trace by taking the minimum and maximum x and y
 

@@ -51,7 +51,9 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
             else:
                 point_similarity = 0
 
-            C[i][j] = max((C[i - 1][j - 1] + point_similarity), C[i][j - 1], C[i - 1][j])
+            C[i][j] = max(
+                (C[i - 1][j - 1] + point_similarity), C[i][j - 1], C[i - 1][j]
+            )
 
     sim_score = C[m][n] / float(min(m, n))
 
@@ -62,9 +64,9 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
 
 
 def new_path(
-        road_map: MapInterface,
-        trace: Trace,
-        distance_epsilon: float,
+    road_map: MapInterface,
+    trace: Trace,
+    distance_epsilon: float,
 ) -> List[Road]:
     """
     Computes a shortest time and shortest distance path and returns the path that
@@ -102,9 +104,9 @@ def new_path(
 
 
 def split_trajectory_segment(
-        road_map: MapInterface,
-        trajectory_segment: TrajectorySegment,
-        distance_epsilon: float,
+    road_map: MapInterface,
+    trajectory_segment: TrajectorySegment,
+    distance_epsilon: float,
 ) -> List[TrajectorySegment]:
     """
     Splits a trajectory segment based on the provided cutting points.
@@ -140,7 +142,7 @@ def split_trajectory_segment(
 
     # start
     scp = cutting_points[0]
-    new_trace = trace[:scp.trace_index]
+    new_trace = trace[: scp.trace_index]
     new_paths.append(new_path(road_map, new_trace, distance_epsilon))
     new_traces.append(new_trace)
 
@@ -148,13 +150,13 @@ def split_trajectory_segment(
     for i in range(len(cutting_points) - 1):
         cp = cutting_points[i]
         ncp = cutting_points[i + 1]
-        new_trace = trace[cp.trace_index:ncp.trace_index]
+        new_trace = trace[cp.trace_index : ncp.trace_index]
         new_paths.append(new_path(road_map, new_trace, distance_epsilon))
         new_traces.append(new_trace)
 
     # end
     ecp = cutting_points[-1]
-    new_trace = trace[ecp.trace_index:]
+    new_trace = trace[ecp.trace_index :]
     new_paths.append(new_path(road_map, new_trace, distance_epsilon))
     new_traces.append(new_trace)
 
@@ -173,8 +175,8 @@ def split_trajectory_segment(
 
 
 def same_trajectory_scheme(
-        scheme1: TrajectoryScheme,
-        scheme2: TrajectoryScheme) -> bool:
+    scheme1: TrajectoryScheme, scheme2: TrajectoryScheme
+) -> bool:
     """
     compares two trajectory schemes for equality
 
@@ -184,7 +186,9 @@ def same_trajectory_scheme(
     :return: are the schemes the same?
     """
     same_paths = all(map(lambda a, b: a.path == b.path, scheme1, scheme2))
-    same_traces = all(map(lambda a, b: a.trace.coords == b.trace.coords, scheme1, scheme2))
+    same_traces = all(
+        map(lambda a, b: a.trace.coords == b.trace.coords, scheme1, scheme2)
+    )
 
     return same_paths and same_traces
 
@@ -231,7 +235,9 @@ def find_stationary_points(trace: Trace) -> List[StationaryIndex]:
     return index_collections
 
 
-def drop_stationary_points(trace: Trace, stationary_index: List[StationaryIndex]) -> Trace:
+def drop_stationary_points(
+    trace: Trace, stationary_index: List[StationaryIndex]
+) -> Trace:
     """
     drops stationary points from the trace, keeping the first point
 
@@ -247,8 +253,8 @@ def drop_stationary_points(trace: Trace, stationary_index: List[StationaryIndex]
 
 
 def add_matches_for_stationary_points(
-        matches: MatchResult,
-        stationary_index: List[StationaryIndex],
+    matches: MatchResult,
+    stationary_index: List[StationaryIndex],
 ) -> MatchResult:
     """
     takes a set of matches and adds duplicate match entries for stationary points
@@ -263,8 +269,12 @@ def add_matches_for_stationary_points(
     for si in stationary_index:
         mi = si.i_index[0]
         m = matches[mi]
-        new_matches = [m.set_coordinate(Coordinate(ci, geom=m.coordinate.geom, crs=m.coordinate.crs)) for ci in
-                       si.c_index[1:]]
-        matches[si.i_index[1]:si.i_index[1]] = new_matches
+        new_matches = [
+            m.set_coordinate(
+                Coordinate(ci, geom=m.coordinate.geom, crs=m.coordinate.crs)
+            )
+            for ci in si.c_index[1:]
+        ]
+        matches[si.i_index[1] : si.i_index[1]] = new_matches
 
     return matches

@@ -12,8 +12,16 @@ from pyproj import CRS
 from yamm.constructs.coordinate import Coordinate
 from yamm.utils.crs import LATLON_CRS, XY_CRS
 
-valid_latitude_names = {'latitude', 'Latitude', 'lat', 'Lat', "Latitude [degrees]"}
-valid_longitude_names = {'longitude', 'Longitude', 'Lon', 'Lon', 'long', 'Long', "Longitude [degrees]"}
+valid_latitude_names = {"latitude", "Latitude", "lat", "Lat", "Latitude [degrees]"}
+valid_longitude_names = {
+    "longitude",
+    "Longitude",
+    "Lon",
+    "Lon",
+    "long",
+    "Long",
+    "Longitude [degrees]",
+}
 
 
 class Trace:
@@ -46,7 +54,10 @@ class Trace:
 
     @cached_property
     def coords(self) -> List[Coordinate]:
-        coords = [Coordinate(i, g, self.crs) for i, g in zip(self._frame.index, self._frame.geometry)]
+        coords = [
+            Coordinate(i, g, self.crs)
+            for i, g in zip(self._frame.index, self._frame.geometry)
+        ]
         return coords
 
     @property
@@ -55,9 +66,9 @@ class Trace:
 
     @classmethod
     def from_geo_dataframe(
-            cls,
-            frame: GeoDataFrame,
-            xy: bool = True,
+        cls,
+        frame: GeoDataFrame,
+        xy: bool = True,
     ) -> Trace:
         """
         Builds a trace from a geopandas dataframe
@@ -78,11 +89,11 @@ class Trace:
 
     @classmethod
     def from_dataframe(
-            cls,
-            dataframe: pd.DataFrame,
-            xy: bool = True,
-            lat_column: str = "latitude",
-            lon_column: str = "longitude",
+        cls,
+        dataframe: pd.DataFrame,
+        xy: bool = True,
+        lat_column: str = "latitude",
+        lon_column: str = "longitude",
     ) -> Trace:
         """
         Builds a trace from a pandas dataframe
@@ -110,11 +121,11 @@ class Trace:
 
     @classmethod
     def from_csv(
-            cls,
-            file: Union[str, Path],
-            xy: bool = True,
-            lat_column: str = 'latitude',
-            lon_column: str = 'longitude',
+        cls,
+        file: Union[str, Path],
+        xy: bool = True,
+        lat_column: str = "latitude",
+        lon_column: str = "longitude",
     ) -> Trace:
         """
         Builds a trace from a csv file.
@@ -134,23 +145,23 @@ class Trace:
         if not filepath.is_file():
             raise FileNotFoundError(file)
         elif not filepath.suffix == ".csv":
-            raise TypeError(f"file of type {filepath.suffix} does not appear to be a csv file")
+            raise TypeError(
+                f"file of type {filepath.suffix} does not appear to be a csv file"
+            )
 
         columns = pd.read_csv(file, nrows=0).columns.to_list()
         if lat_column in columns and lon_column in columns:
             df = pd.read_csv(filepath)
             return Trace.from_dataframe(df, xy, lat_column, lon_column)
         else:
-            raise ValueError("Could not find any geometry information in the file; "
-                             "Make sure there are latitude and longitude columns "
-                             "[and provide the lat/lon column names to this function]")
+            raise ValueError(
+                "Could not find any geometry information in the file; "
+                "Make sure there are latitude and longitude columns "
+                "[and provide the lat/lon column names to this function]"
+            )
 
     @classmethod
-    def from_parquet(
-            cls,
-            file: Union[str, Path],
-            xy: bool = True
-    ):
+    def from_parquet(cls, file: Union[str, Path], xy: bool = True):
         """
         read a trace from a parquet file
 
@@ -168,10 +179,10 @@ class Trace:
 
     @classmethod
     def from_geojson(
-            cls,
-            file: Union[str, Path],
-            index_property: Optional[str] = None,
-            xy: bool = True
+        cls,
+        file: Union[str, Path],
+        index_property: Optional[str] = None,
+        xy: bool = True,
     ):
         """
         reads a geojson file; if index_property is not specified, this will set any property columns as the index.

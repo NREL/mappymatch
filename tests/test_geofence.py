@@ -6,7 +6,6 @@ from yamm.utils.crs import LATLON_CRS
 
 
 class TestGeofence(TestCase):
-
     def test_trace_from_geojson(self):
         file = test_dir() / "test_assets" / "downtown_denver.geojson"
 

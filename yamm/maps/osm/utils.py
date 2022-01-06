@@ -13,16 +13,16 @@ log.basicConfig(level=log.INFO)
 
 DEFAULT_MPH = 30
 _unit_conversion = {
-    'mph': 1,
-    'kmph': 0.621371,
+    "mph": 1,
+    "kmph": 0.621371,
 }
 METERS_TO_KM = 1 / 1000
 
 
 def parse_road_network_graph(g):
-    length_meters = nx.get_edge_attributes(g, 'length')
+    length_meters = nx.get_edge_attributes(g, "length")
     kilometers = {k: v * METERS_TO_KM for k, v in length_meters.items()}
-    nx.set_edge_attributes(g, kilometers, 'kilometers')
+    nx.set_edge_attributes(g, kilometers, "kilometers")
 
     return g
 
@@ -34,19 +34,19 @@ def compress(g):
     :return: compressed graph
     """
     keys_to_delete = [
-        'oneway',
-        'ref',
-        'access',
-        'lanes',
-        'name',
-        'maxspeed',
-        'highway',
-        'length',
-        'speed_kph',
-        'osmid',
-        'street_count',
-        'y',
-        'x',
+        "oneway",
+        "ref",
+        "access",
+        "lanes",
+        "name",
+        "maxspeed",
+        "highway",
+        "length",
+        "speed_kph",
+        "osmid",
+        "street_count",
+        "y",
+        "x",
     ]
 
     for _, _, d in g.edges(data=True):
@@ -78,21 +78,25 @@ def get_osm_networkx_graph(geofence: Geofence) -> nx.MultiDiGraph:
     sg_components = nx.strongly_connected_components(g)
 
     if not sg_components:
-        raise MapException("road network has no strongly connected components and is not routable; "
-                           "check polygon boundaries.")
+        raise MapException(
+            "road network has no strongly connected components and is not routable; "
+            "check polygon boundaries."
+        )
 
     g = nx.MultiDiGraph(g.subgraph(max(sg_components, key=len)))
 
     no_geom = 0
     for u, v, d in g.edges(data=True):
-        if 'geometry' not in d:
+        if "geometry" not in d:
             # we'll build a pseudo-geometry using the x, y data from the nodes
             unode = g.nodes[u]
             vnode = g.nodes[v]
-            line = LineString([(unode['x'], unode['y']), (vnode['x'], vnode['y'])])
-            d['geometry'] = line
+            line = LineString([(unode["x"], unode["y"]), (vnode["x"], vnode["y"])])
+            d["geometry"] = line
             no_geom += 1
-    print(f"Warning: found {no_geom} links with no geometry; creating geometries from the node lat/lon")
+    print(
+        f"Warning: found {no_geom} links with no geometry; creating geometries from the node lat/lon"
+    )
 
     g = compress(g)
 

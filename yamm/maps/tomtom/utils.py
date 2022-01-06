@@ -37,11 +37,11 @@ def get_tomtom_gdf_2021(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame
         gdf.crs = LATLON_CRS
 
     # add default speed to missing speeds
-    gdf['speed_average_neg'] = gdf.speed_average_neg.fillna(20)
-    gdf['speed_average_pos'] = gdf.speed_average_pos.fillna(20)
-    gdf['kilometers'] = gdf.centimeters * 0.00001
-    gdf['neg_minutes'] = (gdf.kilometers / gdf.speed_average_neg) * 60
-    gdf['pos_minutes'] = (gdf.kilometers / gdf.speed_average_pos) * 60
+    gdf["speed_average_neg"] = gdf.speed_average_neg.fillna(20)
+    gdf["speed_average_pos"] = gdf.speed_average_pos.fillna(20)
+    gdf["kilometers"] = gdf.centimeters * 0.00001
+    gdf["neg_minutes"] = (gdf.kilometers / gdf.speed_average_neg) * 60
+    gdf["pos_minutes"] = (gdf.kilometers / gdf.speed_average_pos) * 60
 
     gdf = gdf.to_crs(XY_CRS)
 
@@ -73,15 +73,11 @@ def get_tomtom_gdf_2017(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame
     if not raw_gdf.crs:
         raw_gdf.crs = LATLON_CRS
 
-    raw_gdf['kilometers'] = raw_gdf.meters / 1000
+    raw_gdf["kilometers"] = raw_gdf.meters / 1000
 
-    raw_gdf = raw_gdf[
-        (raw_gdf.rdcond < 2) &
-        (raw_gdf.frc < 8)
-        ].fillna(0)
+    raw_gdf = raw_gdf[(raw_gdf.rdcond < 2) & (raw_gdf.frc < 8)].fillna(0)
 
     return raw_gdf
-
 
 
 def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiDiGraph:
@@ -99,11 +95,17 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     twoway = gdf[gdf.simple_traffic_direction.isin([1, 9])]
 
     twoway_edges_tf = [
-        (t, f, nid, {
-            'kilometers': km,
-            'minutes': mn,
-            'geom': LineString(reversed(g.coords)),
-        }) for t, f, nid, km, mn, g in zip(
+        (
+            t,
+            f,
+            nid,
+            {
+                "kilometers": km,
+                "minutes": mn,
+                "geom": LineString(reversed(g.coords)),
+            },
+        )
+        for t, f, nid, km, mn, g in zip(
             twoway.junction_id_to.values,
             twoway.junction_id_from.values,
             twoway.netw_id,
@@ -114,11 +116,17 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     ]
 
     twoway_edges_ft = [
-        (f, t, nid, {
-            'kilometers': km,
-            'minutes': mn,
-            'geom': g,
-        }) for t, f, nid, km, mn, g in zip(
+        (
+            f,
+            t,
+            nid,
+            {
+                "kilometers": km,
+                "minutes": mn,
+                "geom": g,
+            },
+        )
+        for t, f, nid, km, mn, g in zip(
             twoway.junction_id_to.values,
             twoway.junction_id_from.values,
             twoway.netw_id,
@@ -129,11 +137,17 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     ]
 
     oneway_edges_ft = [
-        (f, t, nid, {
-            'kilometers': km,
-            'minutes': mn,
-            'geom': g,
-        }) for t, f, nid, km, mn, g in zip(
+        (
+            f,
+            t,
+            nid,
+            {
+                "kilometers": km,
+                "minutes": mn,
+                "geom": g,
+            },
+        )
+        for t, f, nid, km, mn, g in zip(
             oneway_ft.junction_id_to.values,
             oneway_ft.junction_id_from.values,
             oneway_ft.netw_id,
@@ -143,11 +157,17 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
         )
     ]
     oneway_edges_tf = [
-        (t, f, nid, {
-            'kilometers': km,
-            'minutes': mn,
-            'geom': LineString(reversed(g.coords)),
-        }) for t, f, nid, km, mn, g in zip(
+        (
+            t,
+            f,
+            nid,
+            {
+                "kilometers": km,
+                "minutes": mn,
+                "geom": LineString(reversed(g.coords)),
+            },
+        )
+        for t, f, nid, km, mn, g in zip(
             oneway_tf.junction_id_to.values,
             oneway_tf.junction_id_from.values,
             oneway_tf.netw_id,
@@ -166,8 +186,10 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     sg_components = nx.strongly_connected_components(G)
 
     if not sg_components:
-        raise MapException("road network has no strongly connected components and is not routable; "
-                           "check polygon boundaries.")
+        raise MapException(
+            "road network has no strongly connected components and is not routable; "
+            "check polygon boundaries."
+        )
 
     G = nx.MultiDiGraph(G.subgraph(max(sg_components, key=len)))
 
@@ -181,24 +203,30 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     :param gdf: the tomtom geo dataframe
     :return: a tomtom networkx graph
     """
-    gdf['id'] = gdf.id.astype(int)
-    gdf['f_jnctid'] = gdf.f_jnctid.astype(int)
-    gdf['t_jnctid'] = gdf.t_jnctid.astype(int)
-    gdf['f_lon'] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[0][0])
-    gdf['f_lat'] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[0][1])
-    gdf['t_lon'] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[-1][0])
-    gdf['t_lat'] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[-1][1])
+    gdf["id"] = gdf.id.astype(int)
+    gdf["f_jnctid"] = gdf.f_jnctid.astype(int)
+    gdf["t_jnctid"] = gdf.t_jnctid.astype(int)
+    gdf["f_lon"] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[0][0])
+    gdf["f_lat"] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[0][1])
+    gdf["t_lon"] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[-1][0])
+    gdf["t_lat"] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[-1][1])
     gdf = gdf.to_crs(XY_CRS)
-    oneway_ft = gdf[gdf.oneway == 'FT']
-    oneway_tf = gdf[gdf.oneway == 'TF']
-    twoway = gdf[~(gdf.oneway == 'FT') & ~(gdf.oneway == 'TF')]
+    oneway_ft = gdf[gdf.oneway == "FT"]
+    oneway_tf = gdf[gdf.oneway == "TF"]
+    twoway = gdf[~(gdf.oneway == "FT") & ~(gdf.oneway == "TF")]
 
     twoway_edges_tf = [
-        (t, f, -k, {
-            'kilometers': mt,
-            'minutes': mn,
-            'geom': LineString(reversed(g.coords)),
-        }) for t, f, k, mt, mn, g in zip(
+        (
+            t,
+            f,
+            -k,
+            {
+                "kilometers": mt,
+                "minutes": mn,
+                "geom": LineString(reversed(g.coords)),
+            },
+        )
+        for t, f, k, mt, mn, g in zip(
             twoway.t_jnctid.values,
             twoway.f_jnctid.values,
             twoway.id,
@@ -208,11 +236,17 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
         )
     ]
     twoway_edges_ft = [
-        (f, t, k, {
-            'kilometers': mt,
-            'minutes': mn,
-            'geom': g,
-        }) for t, f, k, mt, mn, g in zip(
+        (
+            f,
+            t,
+            k,
+            {
+                "kilometers": mt,
+                "minutes": mn,
+                "geom": g,
+            },
+        )
+        for t, f, k, mt, mn, g in zip(
             twoway.t_jnctid.values,
             twoway.f_jnctid.values,
             twoway.id,
@@ -222,11 +256,17 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
         )
     ]
     oneway_edges_ft = [
-        (f, t, k, {
-            'kilometers': mt,
-            'minutes': mn,
-            'geom': g,
-        }) for t, f, k, mt, mn, g in zip(
+        (
+            f,
+            t,
+            k,
+            {
+                "kilometers": mt,
+                "minutes": mn,
+                "geom": g,
+            },
+        )
+        for t, f, k, mt, mn, g in zip(
             oneway_ft.t_jnctid.values,
             oneway_ft.f_jnctid.values,
             oneway_ft.id,
@@ -236,11 +276,17 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
         )
     ]
     oneway_edges_tf = [
-        (t, f, -k, {
-            'kilometers': mt,
-            'minutes': mn,
-            'geom': LineString(reversed(g.coords)),
-        }) for t, f, k, mt, mn, g in zip(
+        (
+            t,
+            f,
+            -k,
+            {
+                "kilometers": mt,
+                "minutes": mn,
+                "geom": LineString(reversed(g.coords)),
+            },
+        )
+        for t, f, k, mt, mn, g in zip(
             oneway_tf.t_jnctid.values,
             oneway_tf.f_jnctid.values,
             oneway_tf.id,
@@ -259,8 +305,10 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     sg_components = nx.strongly_connected_components(G)
 
     if not sg_components:
-        raise MapException("road network has no strongly connected components and is not routable; "
-                           "check polygon boundaries.")
+        raise MapException(
+            "road network has no strongly connected components and is not routable; "
+            "check polygon boundaries."
+        )
 
     G = nx.MultiDiGraph(G.subgraph(max(sg_components, key=len)))
 

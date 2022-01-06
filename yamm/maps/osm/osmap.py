@@ -25,9 +25,14 @@ class OSMap(MapInterface):
     def _build_rtree(self):
         geoms = []
         road_lookup = []
-        for u, v, rid, d, in self.g.edges(data=True, keys=True):
-            geoms.append(Geometry(d['geometry'].wkb))
-            road = Road(rid, d['geometry'], metadata={'u': u, 'v': v})
+        for (
+            u,
+            v,
+            rid,
+            d,
+        ) in self.g.edges(data=True, keys=True):
+            geoms.append(Geometry(d["geometry"].wkb))
+            road = Road(rid, d["geometry"], metadata={"u": u, "v": v})
             road_lookup.append(road)
 
         self.rtree = STRtree(geoms)
@@ -60,7 +65,9 @@ class OSMap(MapInterface):
         :return: a NetworkXMap instance
         """
         if geofence.crs != LATLON_CRS:
-            raise TypeError(f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}")
+            raise TypeError(
+                f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}"
+            )
 
         g = get_osm_networkx_graph(geofence)
 
@@ -70,8 +77,8 @@ class OSMap(MapInterface):
         nx.write_gpickle(self.g, str(outfile))
 
     def nearest_road(
-            self,
-            coord: Coordinate,
+        self,
+        coord: Coordinate,
     ) -> Road:
         """
         a helper function to get the nearest road.
@@ -86,8 +93,12 @@ class OSMap(MapInterface):
 
         return road
 
-    def shortest_path(self, origin: Coordinate, destination: Coordinate, weight: PathWeight = PathWeight.TIME) -> List[
-        Road]:
+    def shortest_path(
+        self,
+        origin: Coordinate,
+        destination: Coordinate,
+        weight: PathWeight = PathWeight.TIME,
+    ) -> List[Road]:
         """
         computes the shortest path between an origin and a destination
 
@@ -106,17 +117,17 @@ class OSMap(MapInterface):
         v_dist = oend.distance(origin.geom)
 
         if u_dist <= v_dist:
-            origin_id = origin_road.metadata['u']
+            origin_id = origin_road.metadata["u"]
         else:
-            origin_id = origin_road.metadata['v']
+            origin_id = origin_road.metadata["v"]
 
         u_dist = dstart.distance(destination.geom)
         v_dist = dend.distance(destination.geom)
 
         if u_dist <= v_dist:
-            dest_id = dest_road.metadata['u']
+            dest_id = dest_road.metadata["u"]
         else:
-            dest_id = dest_road.metadata['v']
+            dest_id = dest_road.metadata["v"]
 
         if weight == PathWeight.DISTANCE:
             weight_string = self.DISTANCE_WEIGHT
@@ -141,10 +152,12 @@ class OSMap(MapInterface):
 
             road_key = list(edge_data.keys())[0]
 
-            geom = edge_data[road_key]['geometry']
+            geom = edge_data[road_key]["geometry"]
 
             road_id = f"{road_start_node}_{road_end_node}"
 
-            path.append(Road(road_id, geom, metadata={'u': road_start_node, 'v': road_end_node}))
+            path.append(
+                Road(road_id, geom, metadata={"u": road_start_node, "v": road_end_node})
+            )
 
         return path

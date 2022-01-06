@@ -26,8 +26,8 @@ class MapInterface(metaclass=ABCMeta):
 
     @abstractmethod
     def nearest_road(
-            self,
-            coord: Coordinate,
+        self,
+        coord: Coordinate,
     ) -> Road:
         """
         return the nearest road to a coordinate
@@ -36,8 +36,12 @@ class MapInterface(metaclass=ABCMeta):
         """
 
     @abstractmethod
-    def shortest_path(self, origin: Coordinate, destination: Coordinate, weight: PathWeight = PathWeight.TIME) -> List[
-        Road]:
+    def shortest_path(
+        self,
+        origin: Coordinate,
+        destination: Coordinate,
+        weight: PathWeight = PathWeight.TIME,
+    ) -> List[Road]:
         """
         computes the shortest path on the road network
 

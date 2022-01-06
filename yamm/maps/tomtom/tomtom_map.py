@@ -11,7 +11,9 @@ from yamm.constructs.road import Road
 from yamm.maps.map_interface import MapInterface, PathWeight
 from yamm.maps.tomtom.utils import (
     get_tomtom_gdf_2021,
-    tomtom_gdf_to_nx_graph_2021, get_tomtom_gdf_2017, tomtom_gdf_to_nx_graph_2017
+    tomtom_gdf_to_nx_graph_2021,
+    get_tomtom_gdf_2017,
+    tomtom_gdf_to_nx_graph_2017,
 )
 from yamm.utils.crs import LATLON_CRS
 
@@ -29,9 +31,14 @@ class TomTomMap(MapInterface):
     def _build_rtree(self):
         geoms = []
         road_lookup = []
-        for u, v, rid, d, in self.g.edges(data=True, keys=True):
-            geoms.append(Geometry(d['geom'].wkb))
-            road = Road(rid, d['geom'], metadata={'u': u, 'v': v})
+        for (
+            u,
+            v,
+            rid,
+            d,
+        ) in self.g.edges(data=True, keys=True):
+            geoms.append(Geometry(d["geom"].wkb))
+            road = Road(rid, d["geom"], metadata={"u": u, "v": v})
             road_lookup.append(road)
 
         self.rtree = STRtree(geoms)
@@ -55,7 +62,12 @@ class TomTomMap(MapInterface):
         return TomTomMap(g)
 
     @classmethod
-    def from_sql(cls, sql_connection: Engine, geofence: Geofence, vintage: Union[int, str] = "2021"):
+    def from_sql(
+        cls,
+        sql_connection: Engine,
+        geofence: Geofence,
+        vintage: Union[int, str] = "2021",
+    ):
         """
         Loads a network from a sql database using the bounding box.
 
@@ -66,7 +78,9 @@ class TomTomMap(MapInterface):
         :return: a NetworkXMap instance
         """
         if geofence.crs != LATLON_CRS:
-            raise TypeError(f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}")
+            raise TypeError(
+                f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}"
+            )
 
         if vintage in [2021, "2021"]:
             gdf = get_tomtom_gdf_2021(sql_connection, geofence)
@@ -75,7 +89,9 @@ class TomTomMap(MapInterface):
             gdf = get_tomtom_gdf_2017(sql_connection, geofence)
             g = tomtom_gdf_to_nx_graph_2017(gdf)
         else:
-            raise TypeError(f"vintage {vintage} not supported by TomTomMap; try 2021 or 2017")
+            raise TypeError(
+                f"vintage {vintage} not supported by TomTomMap; try 2021 or 2017"
+            )
 
         return TomTomMap(g)
 
@@ -83,8 +99,8 @@ class TomTomMap(MapInterface):
         nx.write_gpickle(self.g, str(outfile))
 
     def nearest_road(
-            self,
-            coord: Coordinate,
+        self,
+        coord: Coordinate,
     ) -> Road:
         """
         a helper function to get the nearest road.
@@ -99,8 +115,12 @@ class TomTomMap(MapInterface):
 
         return road
 
-    def shortest_path(self, origin: Coordinate, destination: Coordinate, weight: PathWeight = PathWeight.TIME) -> List[
-        Road]:
+    def shortest_path(
+        self,
+        origin: Coordinate,
+        destination: Coordinate,
+        weight: PathWeight = PathWeight.TIME,
+    ) -> List[Road]:
         """
         computes the shortest path between an origin and a destination
 
@@ -119,24 +139,26 @@ class TomTomMap(MapInterface):
         v_dist = oend.distance(origin.geom)
 
         if u_dist <= v_dist:
-            origin_id = origin_road.metadata['u']
+            origin_id = origin_road.metadata["u"]
         else:
-            origin_id = origin_road.metadata['v']
+            origin_id = origin_road.metadata["v"]
 
         u_dist = dstart.distance(destination.geom)
         v_dist = dend.distance(destination.geom)
 
         if u_dist <= v_dist:
-            dest_id = dest_road.metadata['u']
+            dest_id = dest_road.metadata["u"]
         else:
-            dest_id = dest_road.metadata['v']
+            dest_id = dest_road.metadata["v"]
 
         if weight == PathWeight.DISTANCE:
             weight_string = self.DISTANCE_WEIGHT
         elif weight == PathWeight.TIME:
             weight_string = self.TIME_WEIGHT
         else:
-            raise TypeError(f"path weight {weight.name} is not supported by the TomTomMap")
+            raise TypeError(
+                f"path weight {weight.name} is not supported by the TomTomMap"
+            )
 
         nx_route = nx.shortest_path(
             self.g,
@@ -154,8 +176,12 @@ class TomTomMap(MapInterface):
 
             road_key = list(edge_data.keys())[0]
 
-            geom = edge_data[road_key]['geom']
+            geom = edge_data[road_key]["geom"]
 
-            path.append(Road(road_key, geom, metadata={'u': road_start_node, 'v': road_end_node}))
+            path.append(
+                Road(
+                    road_key, geom, metadata={"u": road_start_node, "v": road_end_node}
+                )
+            )
 
         return path

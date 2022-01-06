@@ -6,7 +6,6 @@ from yamm.maps.osm.utils import get_osm_networkx_graph
 
 
 class TestOSMap(TestCase):
-
     def test_osm_networkx_graph(self):
         gfile = test_dir() / "test_assets" / "downtown_denver.geojson"
 
