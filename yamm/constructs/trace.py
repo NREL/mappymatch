@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from functools import cached_property
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import List, Union, Optional, Set
 
 import numpy as np
 import pandas as pd
@@ -11,17 +11,7 @@ from pyproj import CRS
 
 from yamm.constructs.coordinate import Coordinate
 from yamm.utils.crs import LATLON_CRS, XY_CRS
-
-valid_latitude_names = {"latitude", "Latitude", "lat", "Lat", "Latitude [degrees]"}
-valid_longitude_names = {
-    "longitude",
-    "Longitude",
-    "Lon",
-    "Lon",
-    "long",
-    "Long",
-    "Longitude [degrees]",
-}
+from yamm.utils.geohash import encode
 
 
 class Trace:
@@ -60,9 +50,33 @@ class Trace:
         ]
         return coords
 
+    def geohashes(self, precision=12) -> Set[str]:
+        """
+        returns a set of the geohashes that this trace intersects
+        """
+        if self.crs != LATLON_CRS:
+            frame = self._frame.to_crs(LATLON_CRS)
+        else:
+            frame = self._frame
+
+        geohashes = set(
+            frame.geometry.apply(lambda g: encode(g.y, g.x, precision)).unique()
+        )
+
+        return geohashes
+
     @property
     def crs(self) -> CRS:
         return self._frame.crs
+
+    @classmethod
+    def build(cls, frame: GeoDataFrame, xy: bool = True) -> Trace:
+        """
+        build a new trace
+        """
+        if xy:
+            frame = frame.to_crs(XY_CRS)
+        return Trace(frame)
 
     @classmethod
     def from_geo_dataframe(
@@ -82,10 +96,7 @@ class Trace:
         """
         # get rid of any extra info besides geometry and index
         frame = GeoDataFrame(geometry=frame.geometry, index=frame.index)
-        if xy:
-            frame = frame.to_crs(XY_CRS)
-
-        return Trace(frame)
+        return Trace.build(frame, xy)
 
     @classmethod
     def from_dataframe(
@@ -114,10 +125,8 @@ class Trace:
             index=dataframe.index,
             crs=LATLON_CRS,
         )
-        if xy:
-            frame = frame.to_crs(XY_CRS)
 
-        return Trace(frame)
+        return Trace.build(frame, xy)
 
     @classmethod
     def from_csv(
@@ -172,10 +181,7 @@ class Trace:
         filepath = Path(file)
         frame = read_parquet(filepath)
 
-        if xy:
-            frame = frame.to_crs(XY_CRS)
-
-        return Trace(frame)
+        return Trace.build(frame, xy)
 
     @classmethod
     def from_geojson(
@@ -201,10 +207,7 @@ class Trace:
             index_cols = [c for c in frame.columns if c != gname]
             frame = frame.set_index(index_cols)
 
-        if xy:
-            frame = frame.to_crs(XY_CRS)
-
-        return Trace(frame)
+        return Trace.build(frame, xy)
 
     def downsample(self, npoints: int) -> Trace:
         s = list(np.linspace(0, len(self._frame) - 1, npoints).astype(int))
