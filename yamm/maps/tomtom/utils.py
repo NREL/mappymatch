@@ -8,7 +8,9 @@ from yamm.utils.crs import XY_CRS, LATLON_CRS
 from yamm.utils.exceptions import MapException
 
 
-def get_tomtom_gdf_2021(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame:
+def get_tomtom_gdf_2021(
+    sql_con: Engine, geofence: Geofence, xy: bool = True
+) -> gpd.GeoDataFrame:
     """
     Pull TomTom road links and return a geo dataframe
 
@@ -16,6 +18,7 @@ def get_tomtom_gdf_2021(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame
 
     :param sql_con: the sql connection
     :param geofence: the boundary of the network to pull
+    :param xy: whether to return the data in projected xy coordinates
 
     :return: a geo dataframe with the road links
     """
@@ -43,17 +46,22 @@ def get_tomtom_gdf_2021(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame
     gdf["neg_minutes"] = (gdf.kilometers / gdf.speed_average_neg) * 60
     gdf["pos_minutes"] = (gdf.kilometers / gdf.speed_average_pos) * 60
 
-    gdf = gdf.to_crs(XY_CRS)
+    if xy:
+        gdf = gdf.to_crs(XY_CRS)
 
     return gdf
 
 
-def get_tomtom_gdf_2017(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame:
+def get_tomtom_gdf_2017(
+    sql_con: Engine, geofence: Geofence, xy: bool = True
+) -> gpd.GeoDataFrame:
     """
     Pull TomTom road links and return a geo dataframe
     NOTE: this is designed for TomTom 2017 Multinet
     :param sql_con: the sql connection
     :param geofence: the boundary of the network to pull
+    :param xy: whether to return the data in projected xy coordinates
+
     :return: a geo dataframe with the road links
     """
     q = f"""
@@ -76,6 +84,9 @@ def get_tomtom_gdf_2017(sql_con: Engine, geofence: Geofence) -> gpd.GeoDataFrame
     raw_gdf["kilometers"] = raw_gdf.meters / 1000
 
     raw_gdf = raw_gdf[(raw_gdf.rdcond < 2) & (raw_gdf.frc < 8)].fillna(0)
+
+    if xy:
+        raw_gdf = raw_gdf.to_crs(XY_CRS)
 
     return raw_gdf
 
@@ -193,6 +204,8 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
 
     G = nx.MultiDiGraph(G.subgraph(max(sg_components, key=len)))
 
+    G.graph["crs"] = gdf.crs
+
     return G
 
 
@@ -210,7 +223,6 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     gdf["f_lat"] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[0][1])
     gdf["t_lon"] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[-1][0])
     gdf["t_lat"] = gdf.wkb_geometry.apply(lambda g: list(g.coords)[-1][1])
-    gdf = gdf.to_crs(XY_CRS)
     oneway_ft = gdf[gdf.oneway == "FT"]
     oneway_tf = gdf[gdf.oneway == "TF"]
     twoway = gdf[~(gdf.oneway == "FT") & ~(gdf.oneway == "TF")]
@@ -311,5 +323,7 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
         )
 
     G = nx.MultiDiGraph(G.subgraph(max(sg_components, key=len)))
+
+    G.graph["crs"] = gdf.crs
 
     return G

@@ -115,10 +115,11 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
 def plot_map(tmap: MapInterface, m=None):
     roads = list(tmap.g.edges(data=True))
     road_df = pd.DataFrame([r[2] for r in roads])
-    gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=XY_CRS).drop(
+    gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=tmap.crs).drop(
         columns=["geom"]
     )
-    gdf = gdf.to_crs(LATLON_CRS)
+    if gdf.crs != LATLON_CRS:
+        gdf = gdf.to_crs(LATLON_CRS)
 
     if not m:
         c = gdf.iloc[int(len(gdf) / 2)].geometry.centroid.coords[0]

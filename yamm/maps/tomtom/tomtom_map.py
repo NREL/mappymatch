@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import List, Union
 
 import networkx as nx
+from numpy import isin
 from pygeos import STRtree, Geometry
 from sqlalchemy.future import Engine
 
@@ -15,7 +16,7 @@ from yamm.maps.tomtom.utils import (
     get_tomtom_gdf_2017,
     tomtom_gdf_to_nx_graph_2017,
 )
-from yamm.utils.crs import LATLON_CRS
+from yamm.utils.crs import LATLON_CRS, CRS
 
 
 class TomTomMap(MapInterface):
@@ -24,6 +25,22 @@ class TomTomMap(MapInterface):
 
     def __init__(self, graph: nx.MultiDiGraph):
         self.g = graph
+
+        if not "crs" in graph.graph:
+            raise ValueError(
+                "Input graph must have pyproj crs;"
+                "You can set it like: `graph.graph['crs'] = pyproj.CRS('EPSG:4326')`"
+            )
+
+        crs = graph.graph["crs"]
+
+        if not isinstance(crs, CRS):
+            raise TypeError(
+                "Input graph must have pyproj crs;"
+                "You can set it like: `graph.graph['crs'] = pyproj.CRS('EPSG:4326')`"
+            )
+        
+        self.crs = crs
 
         self._nodes = [nid for nid in self.g.nodes()]
         self._build_rtree()
@@ -67,6 +84,7 @@ class TomTomMap(MapInterface):
         sql_connection: Engine,
         geofence: Geofence,
         vintage: Union[int, str] = "2021",
+        xy: bool = True,
     ):
         """
         Loads a network from a sql database using the bounding box.
@@ -74,6 +92,7 @@ class TomTomMap(MapInterface):
         :param sql_connection: the sql connection to build the network from.
         :param geofence: the boundary to specify what subset of the network to download.
         :param vintage: which vintage of tomtom to use? 2017 or 2021
+        :param xy: whether to use xy or latlon coordinates.
 
         :return: a NetworkXMap instance
         """
@@ -83,10 +102,10 @@ class TomTomMap(MapInterface):
             )
 
         if vintage in [2021, "2021"]:
-            gdf = get_tomtom_gdf_2021(sql_connection, geofence)
+            gdf = get_tomtom_gdf_2021(sql_connection, geofence, xy)
             g = tomtom_gdf_to_nx_graph_2021(gdf)
         elif vintage in [2017, "2017"]:
-            gdf = get_tomtom_gdf_2017(sql_connection, geofence)
+            gdf = get_tomtom_gdf_2017(sql_connection, geofence, xy)
             g = tomtom_gdf_to_nx_graph_2017(gdf)
         else:
             raise TypeError(
@@ -129,6 +148,11 @@ class TomTomMap(MapInterface):
         :param weight:
         :return:
         """
+        if origin.crs != self.crs:
+            raise ValueError(f"crs of origin {origin.crs} must match crs of map {self.crs}")
+        elif destination.crs != self.crs:
+            raise ValueError(f"crs of destination {destination.crs} must match crs of map {self.crs}")
+
         origin_road = self.nearest_road(origin)
         dest_road = self.nearest_road(destination)
 
