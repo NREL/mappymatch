@@ -22,7 +22,7 @@ class Coordinate(NamedTuple):
     def __repr__(self):
         crs_a = self.crs.to_authority() if self.crs else "Null"
         return f"Coordinate(coordinate_id={self.coordinate_id}, x={self.x}, y={self.y}, crs={crs_a})"
-    
+
     @classmethod
     def from_lat_lon(cls, lat: float, lon: float) -> Coordinate:
         """

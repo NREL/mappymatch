@@ -39,7 +39,7 @@ class TomTomMap(MapInterface):
                 "Input graph must have pyproj crs;"
                 "You can set it like: `graph.graph['crs'] = pyproj.CRS('EPSG:4326')`"
             )
-        
+
         self.crs = crs
 
         self._nodes = [nid for nid in self.g.nodes()]
@@ -149,9 +149,13 @@ class TomTomMap(MapInterface):
         :return:
         """
         if origin.crs != self.crs:
-            raise ValueError(f"crs of origin {origin.crs} must match crs of map {self.crs}")
+            raise ValueError(
+                f"crs of origin {origin.crs} must match crs of map {self.crs}"
+            )
         elif destination.crs != self.crs:
-            raise ValueError(f"crs of destination {destination.crs} must match crs of map {self.crs}")
+            raise ValueError(
+                f"crs of destination {destination.crs} must match crs of map {self.crs}"
+            )
 
         origin_road = self.nearest_road(origin)
         dest_road = self.nearest_road(destination)
