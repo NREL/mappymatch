@@ -37,9 +37,9 @@ matches = matcher.match_trace(trace[:5])
 
 The LCSS Matcher implements the map matching algorithm described in this paper: 
 
-Zhu, Lei, Jacob R. Holden, and Jeffrey D. Gonder.
+[Zhu, Lei, Jacob R. Holden, and Jeffrey D. Gonder.
 "Trajectory Segmentation Map-Matching Approach for Large-Scale, High-Resolution GPS Data."
-Transportation Research Record: Journal of the Transportation Research Board 2645 (2017): 67-75.
+Transportation Research Record: Journal of the Transportation Research Board 2645 (2017): 67-75.](https://doi.org/10.3141%2F2645-08)
 
 usage:
 ```python
