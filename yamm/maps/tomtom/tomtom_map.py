@@ -2,8 +2,8 @@ from pathlib import Path
 from typing import List, Union
 
 import networkx as nx
-from numpy import isin
 from pygeos import STRtree, Geometry
+from shapely.geometry import Point
 from sqlalchemy.future import Engine
 
 from yamm.constructs.coordinate import Coordinate
@@ -160,8 +160,11 @@ class TomTomMap(MapInterface):
         origin_road = self.nearest_road(origin)
         dest_road = self.nearest_road(destination)
 
-        ostart, oend = origin_road.geom.boundary
-        dstart, dend = dest_road.geom.boundary
+        ostart = Point(origin_road.geom.coords[0]) 
+        oend = Point(origin_road.geom.coords[-1]) 
+
+        dstart = Point(dest_road.geom.coords[0]) 
+        dend = Point(dest_road.geom.coords[-1])
 
         u_dist = ostart.distance(origin.geom)
         v_dist = oend.distance(origin.geom)
@@ -211,5 +214,13 @@ class TomTomMap(MapInterface):
                     road_key, geom, metadata={"u": road_start_node, "v": road_end_node}
                 )
             )
+        
+        # # include the origin and destination nearest roads if they're not included in the path
+        # if path:
+        #     if path[0] != origin_road:
+        #         path.insert(0, origin_road)
+            
+        #     # if path[-1] != dest_road:
+        #     #     path.append(dest_road)
 
         return path

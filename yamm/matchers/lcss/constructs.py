@@ -184,9 +184,19 @@ class TrajectorySegment(NamedTuple):
             cpi = random.randint(0, len(self.trace) - 1)
             cutting_points.append(CuttingPoint(cpi))
 
+        # merge cutting points that are adjacent to one another
         compressed_cuts = list(compress(cutting_points))
 
-        return self.set_cutting_points(compressed_cuts)
+        # it doesn't make sense to cut the trace at the start or end so discard any
+        # points that apear in the [0, 1, -1, -2] position with respect to a trace
+        n = len(self.trace)
+        final_cuts = list(
+            filter(
+                lambda cp: cp.trace_index not in [0, 1, n - 2, n - 1], compressed_cuts
+            )
+        )
+
+        return self.set_cutting_points(final_cuts)
 
 
 TrajectoryScheme = List[TrajectorySegment]
