@@ -2,6 +2,9 @@ import functools as ft
 import logging
 from multiprocessing import Pool
 
+from shapely.geometry import Point
+
+from yamm.constructs.coordinate import Coordinate
 from yamm.maps.map_interface import MapInterface
 from yamm.matchers.lcss.constructs import TrajectorySegment
 from yamm.matchers.lcss.ops import (
@@ -13,6 +16,7 @@ from yamm.matchers.lcss.ops import (
     add_matches_for_stationary_points,
 )
 from yamm.matchers.matcher_interface import *
+from yamm.utils.crs import XY_CRS
 
 log = logging.getLogger(__name__)
 
@@ -44,6 +48,31 @@ class LCSSMatcher(MatcherInterface):
         self.distance_threshold = distance_threshold
 
     def match_trace(self, trace: Trace) -> MatchResult:
+        def _join_segment(a: TrajectorySegment, b: TrajectorySegment):
+            new_traces = a.trace + b.trace
+            new_path = a.path + b.path
+
+            # test to see if there is a gap between the paths and if so,
+            # try to connect it
+            if len(a.path) > 1 and len(b.path) > 1:
+                end_road = a.path[-1]
+                start_road = b.path[0]
+                if end_road.metadata["v"] != start_road.metadata["u"]:
+                    o = Coordinate(
+                        coordinate_id=None, 
+                        geom=Point(end_road.geom.coords[-1]), 
+                        crs=XY_CRS,
+                    )
+                    d = Coordinate(
+                        coordinate_id=None,
+                        geom=Point(start_road.geom.coords[0]),
+                        crs=XY_CRS,
+                    )
+                    path = self.road_map.shortest_path(o, d)
+                    new_path = a.path + path + b.path
+
+            return TrajectorySegment(new_traces, new_path)
+
         stationary_index = find_stationary_points(trace)
 
         sub_trace = drop_stationary_points(trace, stationary_index)
@@ -75,7 +104,7 @@ class LCSSMatcher(MatcherInterface):
                     # split and check the score
                     new_split = split_trajectory_segment(road_map, scored_segment, de)
                     joined_segment = ft.reduce(
-                        lambda acc, x: acc + x, new_split
+                        _join_segment, new_split
                     ).score_and_match(de, dt)
                     if joined_segment.score > scored_segment.score:
                         # we found a better fit
@@ -88,7 +117,7 @@ class LCSSMatcher(MatcherInterface):
 
             scheme = next_scheme
 
-        joined_segment = ft.reduce(lambda acc, x: acc + x, scheme).score_and_match(
+        joined_segment = ft.reduce(_join_segment, scheme).score_and_match(
             de, dt
         )
 
