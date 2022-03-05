@@ -160,10 +160,10 @@ class TomTomMap(MapInterface):
         origin_road = self.nearest_road(origin)
         dest_road = self.nearest_road(destination)
 
-        ostart = Point(origin_road.geom.coords[0]) 
-        oend = Point(origin_road.geom.coords[-1]) 
+        ostart = Point(origin_road.geom.coords[0])
+        oend = Point(origin_road.geom.coords[-1])
 
-        dstart = Point(dest_road.geom.coords[0]) 
+        dstart = Point(dest_road.geom.coords[0])
         dend = Point(dest_road.geom.coords[-1])
 
         u_dist = ostart.distance(origin.geom)
@@ -214,12 +214,12 @@ class TomTomMap(MapInterface):
                     road_key, geom, metadata={"u": road_start_node, "v": road_end_node}
                 )
             )
-        
+
         # # include the origin and destination nearest roads if they're not included in the path
         # if path:
         #     if path[0] != origin_road:
         #         path.insert(0, origin_road)
-            
+
         #     # if path[-1] != dest_road:
         #     #     path.append(dest_road)
 

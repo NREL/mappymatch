@@ -59,8 +59,8 @@ class LCSSMatcher(MatcherInterface):
                 start_road = b.path[0]
                 if end_road.metadata["v"] != start_road.metadata["u"]:
                     o = Coordinate(
-                        coordinate_id=None, 
-                        geom=Point(end_road.geom.coords[-1]), 
+                        coordinate_id=None,
+                        geom=Point(end_road.geom.coords[-1]),
                         crs=XY_CRS,
                     )
                     d = Coordinate(
@@ -117,9 +117,7 @@ class LCSSMatcher(MatcherInterface):
 
             scheme = next_scheme
 
-        joined_segment = ft.reduce(_join_segment, scheme).score_and_match(
-            de, dt
-        )
+        joined_segment = ft.reduce(_join_segment, scheme).score_and_match(de, dt)
 
         matches = joined_segment.matches
 
