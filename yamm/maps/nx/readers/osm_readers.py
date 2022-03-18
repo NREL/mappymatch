@@ -19,6 +19,7 @@ _unit_conversion = {
 }
 METERS_TO_KM = 1 / 1000
 
+
 def read_osm_nxmap(geofence: Geofence, xy: bool = True) -> NxMap:
     if geofence.crs != LATLON_CRS:
         raise TypeError(
@@ -27,7 +28,7 @@ def read_osm_nxmap(geofence: Geofence, xy: bool = True) -> NxMap:
 
     g = get_osm_networkx_graph(geofence, xy)
 
-    return NxMap(g) 
+    return NxMap(g)
 
 
 def parse_road_network_graph(g):

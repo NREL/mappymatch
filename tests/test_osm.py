@@ -12,4 +12,3 @@ class TestOSMap(TestCase):
         geofence = Geofence.from_geojson(gfile)
 
         osm_map = read_osm_nxmap(geofence)
-
