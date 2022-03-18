@@ -113,11 +113,10 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
 
 
 def plot_map(tmap: MapInterface, m=None):
+    # TODO make this generic to all map types, not just NxMap
     roads = list(tmap.g.edges(data=True))
     road_df = pd.DataFrame([r[2] for r in roads])
-    gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=tmap.crs).drop(
-        columns=["geom"]
-    )
+    gdf = gpd.GeoDataFrame(road_df, geometry=road_df[tmap._geom_key], crs=tmap.crs)
     if gdf.crs != LATLON_CRS:
         gdf = gdf.to_crs(LATLON_CRS)
 

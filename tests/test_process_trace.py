@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from tests import test_dir
+from tests import get_test_dir
 from yamm.constructs.trace import Trace
 from yamm.utils.process_trace import remove_bad_start_from_trace
 
@@ -10,7 +10,7 @@ class TestProcessTrace(TestCase):
         """
         a test to ensure that the gap in the beginning of the trace is removed
         """
-        tfile = test_dir() / "test_assets" / "trace_bad_start.geojson"
+        tfile = get_test_dir() / "test_assets" / "trace_bad_start.geojson"
 
         trace = Trace.from_geojson(tfile, xy=True)
         bad_point = trace.coords[0]

@@ -5,7 +5,8 @@ import osmnx as ox
 from shapely.geometry import LineString
 
 from yamm.constructs.geofence import Geofence
-from yamm.utils.crs import XY_CRS
+from yamm.maps.nx.nx_map import NxMap
+from yamm.utils.crs import LATLON_CRS, XY_CRS
 from yamm.utils.exceptions import MapException
 
 ox.config(log_console=True)
@@ -17,6 +18,16 @@ _unit_conversion = {
     "kmph": 0.621371,
 }
 METERS_TO_KM = 1 / 1000
+
+def read_osm_nxmap(geofence: Geofence, xy: bool = True) -> NxMap:
+    if geofence.crs != LATLON_CRS:
+        raise TypeError(
+            f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}"
+        )
+
+    g = get_osm_networkx_graph(geofence, xy)
+
+    return NxMap(g) 
 
 
 def parse_road_network_graph(g):
@@ -66,10 +77,15 @@ def compress(g):
     return g
 
 
-def get_osm_networkx_graph(geofence: Geofence) -> nx.MultiDiGraph:
+def get_osm_networkx_graph(geofence: Geofence, xy: bool = True) -> nx.MultiDiGraph:
     g = ox.graph_from_polygon(geofence.geometry, network_type="drive")
 
-    g = ox.project_graph(g, XY_CRS)
+    if xy:
+        g = ox.project_graph(g, XY_CRS)
+        crs = XY_CRS
+    else:
+        crs = LATLON_CRS
+
     g = ox.add_edge_speeds(g)
     g = ox.add_edge_travel_times(g)
     g = parse_road_network_graph(g)
@@ -94,10 +110,16 @@ def get_osm_networkx_graph(geofence: Geofence) -> nx.MultiDiGraph:
             line = LineString([(unode["x"], unode["y"]), (vnode["x"], vnode["y"])])
             d["geometry"] = line
             no_geom += 1
-    print(
-        f"Warning: found {no_geom} links with no geometry; creating geometries from the node lat/lon"
-    )
+    if no_geom:
+        print(
+            f"Warning: found {no_geom} links with no geometry; creating geometries from the node lat/lon"
+        )
 
     g = compress(g)
+
+    g.graph["crs"] = crs
+    g.graph["distance_weight"] = "kilometers"
+    g.graph["time_weight"] = "travel_time"
+    g.graph["geometry_key"] = "geometry"
 
     return g

@@ -1,5 +1,5 @@
 from pathlib import Path
 
 
-def test_dir() -> Path:
+def get_test_dir() -> Path:
     return Path(__file__).parent
