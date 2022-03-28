@@ -61,7 +61,13 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
         v = metadata["v"]
 
         edge_data = road_map.g.get_edge_data(u, v)
-        road_geom = edge_data[m.road.road_id]["geom"]
+
+        road_key = list(edge_data.keys())[0]
+
+        # TODO: this should be generic over all road maps
+        geom_key = road_map._geom_key
+
+        road_geom = edge_data[road_key][geom_key]
 
         d["geom"] = road_geom
 
@@ -75,6 +81,7 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
         }
 
         return d
+    
 
     road_df = pd.DataFrame([match_to_road(m) for m in matches if m.road])
     road_df = road_df.loc[road_df.road_id.shift() != road_df.road_id]

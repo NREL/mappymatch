@@ -150,6 +150,7 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
                 "kilometers": km,
                 "minutes": mn,
                 "geom": LineString(reversed(g.coords)),
+                "road_id": nid,
             },
         )
         for t, f, nid, km, mn, g in zip(
@@ -171,6 +172,7 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
                 "kilometers": km,
                 "minutes": mn,
                 "geom": g,
+                "road_id": nid,
             },
         )
         for t, f, nid, km, mn, g in zip(
@@ -192,6 +194,7 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
                 "kilometers": km,
                 "minutes": mn,
                 "geom": g,
+                "road_id": nid,
             },
         )
         for t, f, nid, km, mn, g in zip(
@@ -212,6 +215,7 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
                 "kilometers": km,
                 "minutes": mn,
                 "geom": LineString(reversed(g.coords)),
+                "road_id": nid,
             },
         )
         for t, f, nid, km, mn, g in zip(
@@ -244,6 +248,7 @@ def tomtom_gdf_to_nx_graph_2021(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     G.graph["distance_weight"] = "kilometers"
     G.graph["time_weight"] = "minutes"
     G.graph["geometry_key"] = "geom"
+    G.graph["road_id_key"] = "road_id"
 
     return G
 
@@ -275,6 +280,7 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
                 "kilometers": mt,
                 "minutes": mn,
                 "geom": LineString(reversed(g.coords)),
+                "road_id": str(-k),
             },
         )
         for t, f, k, mt, mn, g in zip(
@@ -295,6 +301,7 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
                 "kilometers": mt,
                 "minutes": mn,
                 "geom": g,
+                "road_id": str(k),
             },
         )
         for t, f, k, mt, mn, g in zip(
@@ -315,6 +322,7 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
                 "kilometers": mt,
                 "minutes": mn,
                 "geom": g,
+                "road_id": str(k),
             },
         )
         for t, f, k, mt, mn, g in zip(
@@ -335,6 +343,7 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
                 "kilometers": mt,
                 "minutes": mn,
                 "geom": LineString(reversed(g.coords)),
+                "road_id": str(-k),
             },
         )
         for t, f, k, mt, mn, g in zip(
@@ -367,5 +376,6 @@ def tomtom_gdf_to_nx_graph_2017(gdf: gpd.geodataframe.GeoDataFrame) -> nx.MultiD
     G.graph["distance_weight"] = "kilometers"
     G.graph["time_weight"] = "minutes"
     G.graph["geometry_key"] = "geom"
+    G.graph["road_id_key"] = "road_id"
 
     return G

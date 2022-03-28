@@ -104,6 +104,7 @@ def get_osm_networkx_graph(geofence: Geofence, xy: bool = True) -> nx.MultiDiGra
 
     no_geom = 0
     for u, v, d in g.edges(data=True):
+        d["road_id"] = f"{u}-{v}"
         if "geometry" not in d:
             # we'll build a pseudo-geometry using the x, y data from the nodes
             unode = g.nodes[u]
@@ -119,8 +120,11 @@ def get_osm_networkx_graph(geofence: Geofence, xy: bool = True) -> nx.MultiDiGra
     g = compress(g)
 
     g.graph["crs"] = crs
+
+    # TODO: these should all be sourced from the same location
     g.graph["distance_weight"] = "kilometers"
     g.graph["time_weight"] = "travel_time"
     g.graph["geometry_key"] = "geometry"
+    g.graph["road_id_key"] = "road_id"
 
     return g
