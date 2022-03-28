@@ -1,6 +1,5 @@
 from typing import Tuple
 
-import geopandas as gpd
 from pyproj import Transformer, CRS
 from shapely.geometry import LineString
 from shapely.ops import transform
