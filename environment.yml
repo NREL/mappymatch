@@ -6,10 +6,9 @@ dependencies:
   - python=3.8
   - networkx
   - osmnx
-  - sqlalchemy
-  - psycopg2
   - geopandas
   - pygeos
   - tqdm
+  - folium
 
 

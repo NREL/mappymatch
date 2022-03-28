@@ -25,15 +25,13 @@ setup(
     packages=find_packages(),
     python_requires=">=3.8",
     install_requires=[
-        # "networkx",
-        # "sqlalchemy",
-        # "geopandas",
-        # "pygeos",
-        # "psycopg2-binary",
-        # "tqdm",
+        "networkx",
+        "geopandas",
+        "pygeos",
+        "tqdm",
     ],
     extras_require={
-        "optional": [
+        "osm": [
             "osmnx",
             "requests",
         ],
@@ -45,12 +43,6 @@ setup(
     package_data={
         "yamm.resources": ["*"],
     },
-    entry_points={
-        "console_scripts": [
-            "get-tomtom-network=scripts.get_tomtom_road_network:get_tomtom_network",
-            "get-osm-network=scripts.get_osm_road_network:get_osm_network",
-        ]
-    },
     author="National Renewable Energy Laboratory",
-    license="Copyright ©2020 Alliance for Sustainable Energy, LLC All Rights Reserved",
+    license="Copyright ©2022 Alliance for Sustainable Energy, LLC All Rights Reserved",
 )
