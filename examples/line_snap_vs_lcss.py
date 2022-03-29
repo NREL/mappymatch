@@ -9,7 +9,7 @@ from yamm import root
 PLOT = True
 
 if PLOT:
-    from yamm.utils.plot import plot_geofence, plot_trace, plot_matches
+    from yamm.utils.plot import plot_matches
     import webbrowser
 
 trace = Trace.from_csv(root() / "resources/traces/sample_trace_3.csv")
