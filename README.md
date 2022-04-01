@@ -4,13 +4,20 @@
 ## Setup
 
 ### locally
-Clone the repo, setup a python environment with python >= 3.8 and pip install the package
 
+Clone the repo:
 ```
 git clone https://github.nrel.gov/MBAP/yamm.git
-cd yamm/
-conda env create -f environment.yml
-pip install -e .
+```
+
+Then, setup a python environment with python >= 3.8:
+```
+conda create -n yamm python=3.8
+```
+
+Finally, use pip to install the package:
+```
+pip install -e <path/to/yamm> 
 ```
 
 ## Example Usage

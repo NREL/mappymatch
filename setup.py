@@ -25,14 +25,11 @@ setup(
     packages=find_packages(),
     python_requires=">=3.8",
     install_requires=[
-        "networkx",
-        "geopandas",
+        "osmnx",
         "pygeos",
-        "tqdm",
     ],
     extras_require={
-        "osm": [
-            "osmnx",
+        "osrm": [
             "requests",
         ],
         "plot": [
