@@ -55,6 +55,7 @@ usage:
 ```python
 from yamm import root
 from yamm.matchers.lcss.lcss import LCSSMatcher
+from yamm.utils.geo import geofence_from_trace
 from yamm.maps.nx.readers.osm_readers import read_osm_nxmap
 from yamm.constructs.trace import Trace
 
