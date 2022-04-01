@@ -3,7 +3,7 @@
 
 ## Setup
 
-### locally
+### Standard Method
 
 Clone the repo:
 ```
@@ -19,6 +19,27 @@ Finally, use pip to install the package:
 ```
 pip install -e <path/to/yamm> 
 ```
+
+### Alternate Methods
+
+If you have issues installing the package and dependencies using pip you can try using conda to
+install the dependencies:
+
+Clone the repo:
+```
+git clone https://github.nrel.gov/MBAP/yamm.git
+```
+
+Then, use the provided environment.yml file to install dependencies:
+```
+conda env create -f environment.yml
+```
+
+Finally, use pip to install the package:
+```
+pip install -e <path/to/yamm> 
+```
+
 
 ## Example Usage
 

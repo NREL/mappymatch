@@ -4,11 +4,9 @@ channels:
   - defaults
 dependencies:
   - python=3.8
-  - networkx
   - osmnx
-  - geopandas
   - pygeos
-  - tqdm
   - folium
+  - requests
 
 
