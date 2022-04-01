@@ -1,5 +1,5 @@
 # yamm
-"yet another map matcher" is a library that maintains a collection of map matching algorithms and wrappers
+"yet another map matcher" is a pure-python package developed by the National Renewable Energy Laboratory that maintains a collection of map matching algorithms and wrappers. The package was designed for ease of use and portabilty across platforms.
 
 ## Setup
 
@@ -13,29 +13,11 @@ conda env create -f environment.yml
 pip install -e .
 ```
 
-## Examples
+## Example Usage
 
-### OsrmMatcher
+The current primary workflow is to use [osmnx](https://github.com/gboeing/osmnx) to download a road network and match it using the `LCSSMatcher`.
 
-The OsrmMatcher communicates with an OSRM server to match a trace of points
-(default is http://router.project-osrm.org but you can point to your own)
-
-usage:
-```python
-from yamm.matchers.osrm import OsrmMatcher
-from yamm.constructs.trace import Trace
-
-matcher = OsrmMatcher()
-
-trace = Trace.from_csv("resources/traces/sample_trace_1.csv", xy=False)
-
-# only match first 5 points
-matches = matcher.match_trace(trace[:5])
-```
-
-### LCSSMatcher 
-
-The LCSS Matcher implements the map matching algorithm described in this paper: 
+The `LCSSMatcher` implements the map matching algorithm described in this paper: 
 
 [Zhu, Lei, Jacob R. Holden, and Jeffrey D. Gonder.
 "Trajectory Segmentation Map-Matching Approach for Large-Scale, High-Resolution GPS Data."
@@ -43,15 +25,21 @@ Transportation Research Record: Journal of the Transportation Research Board 264
 
 usage:
 ```python
+from yamm import root
 from yamm.matchers.lcss.lcss import LCSSMatcher
-from yamm.maps.tomtom.tomtom_map import TomTomMap 
+from yamm.maps.nx.readers.osm_readers import read_osm_nxmap
 from yamm.constructs.trace import Trace
 
-road_map = TomTomMap.from_file("resources/austin_tomtom_network.pickle")
+trace = Trace.from_csv(root() / "resources/traces/sample_trace_1.csv")
+
+# generate a geofence polygon that surrounds the trace; units are in meters;
+# this is used to query OSM for a small map that we can match to
+geofence = geofence_from_trace(trace, padding=1e3)
+
+# uses osmnx to pull a networkx map from the OSM database
+road_map = read_osm_nxmap(geofence)
 
 matcher = LCSSMatcher(road_map)
-
-trace = Trace.from_csv("resources/traces/sample_trace_1.csv")
 
 matches = matcher.match_trace(trace)
 ```
