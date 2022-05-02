@@ -1,4 +1,4 @@
-from __future__ import annotations
+from __future__i import annotations
 
 from functools import cached_property
 from pathlib import Path
@@ -17,8 +17,7 @@ from yamm.utils.geohash import encode
 class Trace:
     _frame: GeoDataFrame
 
-    coords: List[Coordinate]
-    crs: CRS
+    coords_list: List[Coordinate]
 
     def __init__(self, frame: GeoDataFrame):
         self._frame = frame
@@ -44,11 +43,11 @@ class Trace:
 
     @cached_property
     def coords(self) -> List[Coordinate]:
-        coords = [
+        coords_list = [
             Coordinate(i, g, self.crs)
             for i, g in zip(self._frame.index, self._frame.geometry)
         ]
-        return coords
+        return coords_list
 
     def geohashes(self, precision=12) -> Set[str]:
         """
