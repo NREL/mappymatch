@@ -8,12 +8,12 @@ with open(path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="yamm",
+    name="mappymatch",
     version="0.2.0",
-    description="yamm is a package for map matching",
+    description="mappymatch is a package for map matching",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.nrel.gov/MBAP/yamm",
+    url="https://github.com/NREL/mappymatch",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
@@ -39,7 +39,7 @@ setup(
     },
     include_package_data=True,
     package_data={
-        "yamm.resources": ["*"],
+        "mappymatch.resources": ["*"],
     },
     author="National Renewable Energy Laboratory",
     license="Copyright ©2022 Alliance for Sustainable Energy, LLC All Rights Reserved",
