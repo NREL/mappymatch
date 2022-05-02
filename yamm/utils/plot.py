@@ -8,7 +8,7 @@ from shapely.geometry import Point
 
 from yamm.constructs.match import Match
 from yamm.constructs.trace import Trace
-from yamm.maps.map_interface import MapInterface
+from yamm.maps.nx.nx_map import NxMap
 from yamm.utils.crs import XY_CRS, LATLON_CRS
 
 
@@ -43,7 +43,7 @@ def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
     return m
 
 
-def plot_matches(matches: List[Match], road_map: MapInterface):
+def plot_matches(matches: List[Match], road_map: NxMap):
     """
     plots a trace and the relevant matches on a folium map
 
@@ -81,7 +81,7 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
         }
 
         return d
-    
+
 
     road_df = pd.DataFrame([match_to_road(m) for m in matches if m.road])
     road_df = road_df.loc[road_df.road_id.shift() != road_df.road_id]
@@ -119,7 +119,7 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
     return fmap
 
 
-def plot_map(tmap: MapInterface, m=None):
+def plot_map(tmap: NxMap, m=None):
     # TODO make this generic to all map types, not just NxMap
     roads = list(tmap.g.edges(data=True))
     road_df = pd.DataFrame([r[2] for r in roads])
