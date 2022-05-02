@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 from enum import Enum
 from typing import List
 
-from yamm.constructs.coordinate import Coordinate
-from yamm.constructs.road import Road
-from yamm.utils.abc import *
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.road import Road
+from abc import ABCMeta, abstractmethod
 
 
 class PathWeight(Enum):
@@ -16,7 +18,8 @@ class MapInterface(metaclass=ABCMeta):
     abstract base class for a Matcher
     """
 
-    @abstractattribute
+    @property
+    @abstractmethod
     def roads(self) -> List[Road]:
         """
         get a list of all the roads in the map

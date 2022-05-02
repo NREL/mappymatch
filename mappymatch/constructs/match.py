@@ -1,7 +1,7 @@
 from typing import NamedTuple, Optional
 
-from yamm.constructs.coordinate import Coordinate
-from yamm.constructs.road import Road
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.road import Road
 
 
 class Match(NamedTuple):

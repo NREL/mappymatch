@@ -3,11 +3,12 @@ import logging as log
 import networkx as nx
 import osmnx as ox
 from shapely.geometry import LineString
+from enum import Enum
 
-from yamm.constructs.geofence import Geofence
-from yamm.maps.nx.nx_map import NxMap
-from yamm.utils.crs import LATLON_CRS, XY_CRS
-from yamm.utils.exceptions import MapException
+from mappymatch.constructs.geofence import Geofence
+from mappymatch.maps.nx.nx_map import NxMap
+from mappymatch.utils.crs import LATLON_CRS, XY_CRS
+from mappymatch.utils.exceptions import MapException
 
 ox.config(log_console=True)
 log.basicConfig(level=log.INFO)
@@ -20,13 +21,25 @@ _unit_conversion = {
 METERS_TO_KM = 1 / 1000
 
 
-def read_osm_nxmap(geofence: Geofence, xy: bool = True) -> NxMap:
+class NetworkType(Enum):
+    """Network Types suuported by osmnx"""
+    all_private = 'all_private'
+    all = 'all'
+    bike = 'bike'
+    drive = 'drive'
+    drive_service = 'drive_service'
+    walk = 'walk'
+
+
+def read_osm_nxmap(geofence: Geofence,
+                   xy: bool = True,
+                   network_type: NetworkType = NetworkType.drive) -> NxMap:
     if geofence.crs != LATLON_CRS:
         raise TypeError(
             f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}"
         )
 
-    g = get_osm_networkx_graph(geofence, xy)
+    g = get_osm_networkx_graph(geofence, xy, network_type)
 
     return NxMap(g)
 
@@ -78,8 +91,10 @@ def compress(g):
     return g
 
 
-def get_osm_networkx_graph(geofence: Geofence, xy: bool = True) -> nx.MultiDiGraph:
-    g = ox.graph_from_polygon(geofence.geometry, network_type="drive")
+def get_osm_networkx_graph(geofence: Geofence,
+                           xy: bool = True,
+                           network_type: NetworkType = NetworkType.drive) -> nx.MultiDiGraph:
+    g = ox.graph_from_polygon(geofence.geometry, network_type=network_type.value)
 
     if xy:
         g = ox.project_graph(g, XY_CRS)
@@ -126,5 +141,6 @@ def get_osm_networkx_graph(geofence: Geofence, xy: bool = True) -> nx.MultiDiGra
     g.graph["time_weight"] = "travel_time"
     g.graph["geometry_key"] = "geometry"
     g.graph["road_id_key"] = "road_id"
+    g.graph["network_type"] = network_type.value
 
     return g

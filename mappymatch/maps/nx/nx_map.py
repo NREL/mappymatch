@@ -6,10 +6,10 @@ import networkx as nx
 from pygeos import STRtree, Geometry
 from shapely.geometry import Point
 
-from yamm.constructs.coordinate import Coordinate
-from yamm.constructs.road import Road
-from yamm.maps.map_interface import MapInterface, PathWeight
-from yamm.utils.crs import CRS
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.road import Road
+from mappymatch.maps.map_interface import MapInterface, PathWeight
+from mappymatch.utils.crs import CRS
 
 DEFAULT_DISTANCE_WEIGHT = "kilometers"
 DEFAULT_TIME_WEIGHT = "minutes"
@@ -49,9 +49,9 @@ class NxMap(MapInterface):
         self._road_id_key = road_id_key 
 
         self._nodes = [nid for nid in self.g.nodes()]
-        self._build_rtree()
+        self._roads = self._build_rtree()
 
-    def _build_rtree(self):
+    def _build_rtree(self) -> List[Road]:
         geoms = []
         road_lookup = []
         for (
@@ -65,7 +65,11 @@ class NxMap(MapInterface):
             road_lookup.append(road)
 
         self.rtree = STRtree(geoms)
-        self.roads = road_lookup
+        return road_lookup
+
+    @property
+    def roads(self) -> List[Road]:
+        return self._roads
 
     @classmethod
     def from_file(cls, file: Union[str, Path]) -> NxMap:
