@@ -18,7 +18,7 @@ conda create -n yamm python=3.8
 Finally, use pip to install the package:
 ```
 conda activate yamm
-pip install -e <path/to/yamm>[plot]
+pip install -e <path/to/yamm> 
 ```
 
 There are a couple of extras available:
@@ -46,7 +46,7 @@ conda env create -f environment.yml
 Finally, use pip to install the package:
 ```
 conda activate yamm
-pip install -e <path/to/yamm>[plot]
+pip install -e <path/to/yamm> 
 ```
 
 
