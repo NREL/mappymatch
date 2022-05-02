@@ -5,6 +5,8 @@ import pandas as pd
 from yamm import root
 from yamm.constructs.trace import Trace
 from yamm.utils.crs import XY_CRS
+from tests import get_test_dir
+
 
 
 class TestTrace(TestCase):
@@ -25,3 +27,10 @@ class TestTrace(TestCase):
 
         self.assertEqual(trace.crs, XY_CRS)
         self.assertEqual(len(trace), 949)
+
+    def test_trace_from_gpx(self):
+        file = get_test_dir() / "test_assets" / "test_trace.gpx"
+        trace = Trace.from_gpx(file)
+
+        self.assertEqual(trace.crs, XY_CRS)
+        self.assertEqual(len(trace), 778)
