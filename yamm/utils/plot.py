@@ -2,12 +2,12 @@ from typing import List, Optional
 
 import folium
 import geopandas as gpd
-import numpy as np
+import numpy as np #TODO np is not accessed
 import pandas as pd
 from shapely.geometry import Point
 
 from yamm.constructs.match import Match
-from yamm.constructs.trace import Trace
+from yamm.constructs.trace import Trace #TODO Trace is not used?
 from yamm.maps.map_interface import MapInterface
 from yamm.utils.crs import XY_CRS, LATLON_CRS
 
@@ -100,13 +100,15 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
     mid_i = int(len(coord_gdf) / 2)
     mid_coord = coord_gdf.iloc[mid_i].geometry
 
+    # create a fmap with folium given the location coordinates
     fmap = folium.Map(location=[mid_coord.y, mid_coord.x], zoom_start=11)
 
     for coord in coord_gdf.itertuples():
-        folium.Circle(
+        folium.CircleMarker(
             location=(coord.geometry.y, coord.geometry.x),
             radius=5,
-            tooltip=f"road_id: {coord.road_id}\ndistance: {coord.distance}",
+            tooltip=f"road_id: {coord.road_id}\ndistance: {coord.distance}", 
+            fill_opacity=1
         ).add_to(fmap)
 
     for road in road_gdf.itertuples():
