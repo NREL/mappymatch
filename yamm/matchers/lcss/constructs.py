@@ -3,9 +3,10 @@ from __future__ import annotations
 import logging
 import random
 import time
-from typing import NamedTuple, List
+from typing import Any, NamedTuple, List, Union
 
 import numpy as np
+from numpy import ndarray, signedinteger
 
 from yamm.constructs.match import Match
 from yamm.constructs.road import Road
@@ -17,7 +18,7 @@ log = logging.getLogger(__name__)
 
 
 class CuttingPoint(NamedTuple):
-    trace_index: int
+    trace_index: Union[signedinteger, int]
 
 
 class TrajectorySegment(NamedTuple):
@@ -158,7 +159,8 @@ class TrajectorySegment(NamedTuple):
                     [coord_to_coord_dist(start, c) for c in self.trace.coords]
                 )
                 p2 = np.argmax([coord_to_coord_dist(end, c) for c in self.trace.coords])
-
+                assert not isinstance(p1, ndarray)
+                assert not isinstance(p2, ndarray)
                 cp1 = CuttingPoint(p1)
                 cp2 = CuttingPoint(p2)
 
@@ -170,8 +172,8 @@ class TrajectorySegment(NamedTuple):
                 cutting_points.append(cp)
         else:
             # find furthest point
-            i = np.argmax([m.distance for m in self.matches if m.road])
-            cutting_points.append(CuttingPoint(i))
+            pre_i = np.argmax([m.distance for m in self.matches if m.road])
+            cutting_points.append(CuttingPoint(pre_i))
 
             # collect points that are close to the distance threshold
             for i, m in enumerate(self.matches):
