@@ -1,4 +1,4 @@
-from __future__i import annotations
+from __future__ import annotations
 
 from functools import cached_property
 from pathlib import Path
