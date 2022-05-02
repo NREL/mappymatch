@@ -1,0 +1,16 @@
+name: yamm
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - osmnx
+  - pygeos
+  - folium
+  - requests
+  - pytest 
+  - sphinx=4.5.0
+  - sphinx_rtd_theme=1.0.0
+
+
+
