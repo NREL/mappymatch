@@ -17,6 +17,7 @@ conda create -n yamm python=3.8
 
 Finally, use pip to install the package:
 ```
+conda activate yamm
 pip install -e <path/to/yamm> 
 ```
 
