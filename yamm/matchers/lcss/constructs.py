@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import random
-import time
+#import time
 from typing import NamedTuple, List
 
 import numpy as np
@@ -175,9 +175,10 @@ class TrajectorySegment(NamedTuple):
 
             # collect points that are close to the distance threshold
             for i, m in enumerate(self.matches):
-                if m.road:
+                if m.road: # if the point is of type Road... 
                     if abs(m.distance - distance_epsilon) < cutting_thresh:
                         cutting_points.append(CuttingPoint(i))
+
 
         # add random points
         for _ in range(random_cuts):

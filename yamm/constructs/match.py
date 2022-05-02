@@ -11,7 +11,7 @@ class Match(NamedTuple):
 
     road: Optional[Road]
     coordinate: Coordinate
-    distance: float
+    distance: float # distance from plotted point to the actual road?
 
     def set_coordinate(self, c: Coordinate):
         return self._replace(coordinate=c)

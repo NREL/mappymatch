@@ -26,6 +26,7 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "osmnx",
+        "folium"
         "pygeos",
     ],
     extras_require={

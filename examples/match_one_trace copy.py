@@ -2,7 +2,7 @@ from pathlib import Path
 from yamm.constructs.trace import Trace
 from yamm.utils.geo import geofence_from_trace
 from yamm.maps.nx.readers.osm_readers import read_osm_nxmap
-from yamm.matchers.osrm import OsrmMatcher
+from yamm.matchers.lcss.lcss import LCSSMatcher
 from yamm import root
 
 PLOT = True
@@ -18,9 +18,9 @@ trace = Trace.from_csv(root() / "resources/traces/sample_trace_1.csv")
 geofence = geofence_from_trace(trace, padding=1e3)
 
 # uses osmnx to pull a networkx map from the OSM database
-#nx_map = read_osm_nxmap(geofence)
+nx_map = read_osm_nxmap(geofence)
 
-matcher = OsrmMatcher()
+matcher = LCSSMatcher(nx_map)
 
 matches = matcher.match_trace(trace)
 
@@ -31,6 +31,6 @@ if PLOT:
     webbrowser.open(tmap_file.absolute().as_uri())
 
     mmap_file = Path("matches_map.html")
-    #mmap = plot_matches(matches, road_map=nx_map)
-    #mmap.save(str(mmap_file))
+    mmap = plot_matches(matches, road_map=nx_map)
+    mmap.save(str(mmap_file))
     webbrowser.open(mmap_file.absolute().as_uri())

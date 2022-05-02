@@ -10,6 +10,7 @@ from yamm.constructs.match import Match
 from yamm.constructs.trace import Trace #TODO Trace is not used?
 from yamm.maps.map_interface import MapInterface
 from yamm.utils.crs import XY_CRS, LATLON_CRS
+import matplotlib.pyplot as plt
 
 
 def plot_geofence(geofence, m=None):
@@ -143,6 +144,8 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
     mid_i = int(len(coord_gdf) / 2)
     mid_coord = coord_gdf.iloc[mid_i].geometry
 
+    # create a plot of the accuracy of predicted points based on actual map data.
+    plot_match_score(coord_gdf,coord_df,road_gdf)
 
     # create a fmap with folium given the location coordinates
     fmap = folium.Map(location=[mid_coord.y, mid_coord.x], zoom_start=11)
@@ -193,3 +196,29 @@ def plot_map(tmap: MapInterface, m=None):
         ).add_to(m)
 
     return m
+
+
+def plot_match_score(coord_gdf,coord_df,road_gdf):
+
+
+
+    y = coord_df.distance # the distances from the expected line. Deviance. 
+    x = [x for x in range(0,len(y))] # create blanks for x axis
+    #y = np.exp(np.sin(x))
+
+    for coord in coord_gdf.itertuples():
+        x_coord = coord.geometry.x
+        y_coord = coord.geometry.y
+        
+    for road in road_gdf.itertuples():
+        full_line = [(lat, lon) for lon, lat in road.geometry.coords]
+
+    plt.figure(figsize=(15, 7))
+    plt.autoscale(enable=True)
+    #plt.stem(x, y)
+    plt.scatter(x,y)
+    plt.title('Distance To Nearest Road')
+    plt.ylabel('Meters')
+    plt.xlabel('Point Along The Path')
+    plt.show()
+
