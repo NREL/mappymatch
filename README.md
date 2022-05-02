@@ -88,13 +88,19 @@ Make sure your conda environment is activated.
 
 If Jupyter Lab is not yet installed in your conda environment, first run
 
-```python
+```shell
 pip install jupyterlab
 ```
 
-Once Jupyter Lab has been installed, run
+If this is your first time running Jupyter Lab in this environment, enable the mappymatch module to imported by running
 
-```python
+```shell
+env PYTHONPATH=<path/to/mappymatch> 
+```
+
+Once Jupyter Lab has been installed and the PYTHONPATH environment variable has been edited, run
+
+```shell
 jupyter-lab
 ```
 
