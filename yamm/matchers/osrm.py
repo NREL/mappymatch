@@ -6,6 +6,8 @@ from yamm.constructs.road import Road
 from yamm.matchers.matcher_interface import *
 from yamm.utils.crs import LATLON_CRS
 from yamm.utils.url import multiurljoin
+from shapely.wkt import loads
+from shapely.geometry import LineString
 
 log = logging.getLogger(__name__)
 
@@ -38,6 +40,21 @@ def parse_osrm_json(j: dict, trace: Trace) -> List[Match]:
         raise ValueError("could not find any link legs in response")
 
     def _parse_leg(d: dict, i: int) -> Match:
+        """
+        _parse_leg function takes a dictionary and an integer.
+
+        Args:
+            d (dict): _description_
+            i (int): _description_
+
+        Raises:
+            ValueError: _description_
+            ValueError: _description_
+
+        Returns:
+            Match: _description_
+        """
+
         annotation = d.get("annotation")
         if not annotation:
             raise ValueError("leg has no annotation information")
@@ -46,9 +63,23 @@ def parse_osrm_json(j: dict, trace: Trace) -> List[Match]:
             raise ValueError("leg has no osm node information")
         link_id = f"({nodes[0]},{nodes[1]})"
 
-        # todo: we need to get geometry and distance info from OSRM if available
+        #TODO: we need to get geometry and distance info from OSRM if available
         road = Road(road_id=link_id, geom=None)
-        match = Match(road=road, coordinate=trace.coords[i], distance=None)
+        match = Match()
+        #TODO- try/except the geometry from the OSRM resp
+        if Match(distance = None):
+
+            #temporarily run Match with distance = None to generate a match object, then reassign once match is calculated.
+            match = Match(road=road, coordinate=trace.coords[i], distance=None)
+            line_string_one = road.geom # gets the roads linestring
+            point_1 = match.coordinate
+            new_distance = point_1.distance(line_string_one) # calculate the distance between the two coordinate and the line.
+            match = Match(road=road, coordinate=trace.coords[i], distance=new_distance) # now redo the match
+        else:
+            distance = Match.distance
+            match = Match(road=road, coordinate=trace.coords[i],distance=distance)
+
+        
         return match
 
     return [_parse_leg(d, i) for i, d in enumerate(legs)]
