@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 import folium
 import geopandas as gpd
@@ -63,7 +63,7 @@ def plot_matches(matches: List[Match], road_map: NxMap):
         road_key = list(edge_data.keys())[0]
 
         # TODO: this should be generic over all road maps
-        geom_key = road_map._geom_key
+        geom_key = road_map._geom_key  # type: ignore
 
         road_geom = edge_data[road_key][geom_key]
 
