@@ -28,7 +28,7 @@ install the dependencies:
 
 Clone the repo:
 ```
-git clone https://github.nrel.gov/MBAP/yamm.git
+git clone https://github.com/NREL/yamm.git
 ```
 
 Then, use the provided environment.yml file to install dependencies:
