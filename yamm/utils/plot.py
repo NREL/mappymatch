@@ -2,12 +2,10 @@ from typing import List, Optional
 
 import folium
 import geopandas as gpd
-import numpy as np
 import pandas as pd
 from shapely.geometry import Point
 
 from yamm.constructs.match import Match
-from yamm.constructs.trace import Trace
 from yamm.maps.nx.nx_map import NxMap
 from yamm.utils.crs import XY_CRS, LATLON_CRS
 
