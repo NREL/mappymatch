@@ -2,6 +2,8 @@
 Constructs
 ==========
 
+Constructs are the fundamental datastructures shared between all matching implementations.
+
 .. automodule:: yamm.constructs.coordinate
     :members:
 

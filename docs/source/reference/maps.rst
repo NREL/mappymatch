@@ -6,7 +6,10 @@ The type of map used to display data can be changed based on what works best for
 Available Maps
 --------------
 
-- :class:`yamm.maps.nx.nx_map.NxMap``
+- :class:`yamm.maps.nx.nx_map.NxMap`
+
+.. automodule:: yamm.maps.nx.nx_map
+    :members:
 
 Map Interface
 -------------
