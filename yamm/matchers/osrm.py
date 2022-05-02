@@ -69,7 +69,6 @@ def parse_osrm_json(j: dict, trace: Trace) -> List[Match]:
         match = Match()
         #TODO- try/except the geometry from the OSRM resp
         if Match(distance = None):
-
             #temporarily run Match with distance = None to generate a match object, then reassign once match is calculated.
             match = Match(road=road, coordinate=trace.coords[i], distance=None)
             line_string_one = road.geom # gets the roads linestring
@@ -79,12 +78,8 @@ def parse_osrm_json(j: dict, trace: Trace) -> List[Match]:
         else:
             distance = Match.distance
             match = Match(road=road, coordinate=trace.coords[i],distance=distance)
-
-        
         return match
-
     return [_parse_leg(d, i) for i, d in enumerate(legs)]
-
 
 class OsrmMatcher(MatcherInterface):
     """
