@@ -1,57 +1,106 @@
 # yamm
-"yet another map matcher" is a pure-python package developed by the National Renewable Energy Laboratory that maintains a collection of map matching algorithms and wrappers. The package was designed for ease of use and portabilty across platforms.
+
+"yet another map matcher" is a pure-python package developed by the National Renewable Energy Laboratory that maintains
+a collection of map matching algorithms and wrappers. The package was designed for ease of use and portabilty across
+platforms.
 
 ## Setup
 
-### Standard Method
+### Prerequisites
+
+#### Windows
+
+The Geospatial Data Abstraction Library (GDAL) does not play very nicely with Windows and Pip. The recommended solution
+is to install gdal using conda
+
+```
+conda install gdal
+```
+
+If conda is not an option, there are two possible solutions.
+
+##### 1) Install GDAL from source
+This is the most difficult solution, but is trusted.
+
+
+Before installing the required dependencies, install GDAL into the system. This process is documented
+by [UCLA](https://web.archive.org/web/20220317032000/https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows)
+.
+
+##### 2) Install GDAL from binary wheel
+This is the easiest solution, but it is from an untrusted source and is not to be used in sensitive environments.
+
+| :exclamation:  Unofficial Vendor!|
+|------------------------------------------|
+
+A precompiled binary wheel is provided by Christoph Gohlke of the Laboratory for Fluorescence Dynamics at the 
+University of California. If you use this approach, both GDAL and Fiona wheels need to be installed.
+
+GDAL wheels: https://www.lfd.uci.edu/~gohlke/pythonlibs/#gdal
+Fiona wheels: https://www.lfd.uci.edu/~gohlke/pythonlibs/#fiona 
+
+1. Download the correct GDAL and Fiona wheels for your architecture and Python version
+2. Create the virtual environment: `conda create -n yamm python=3.8`
+3. Install the GDAL wheel into the virtual environment `pip install <path_to_GDAL_whl>`
+4. Install the Fiona wheel into the virtual environment `pip install <path_to_Fiona_whl>`
+5. Use pip to install the remaining packages `pip install -e <path/to/yamm>`
+
+### Standard Setup
 
 Clone the repo:
+
 ```
-git clone https://github.nrel.gov/MBAP/yamm.git
+git clone https://github.com/NREL/yamm.git
 ```
 
 Then, setup a python environment with python >= 3.8:
+
 ```
-conda create -n yamm python=3.8
+conda create -n yamm python=3.8 
 ```
 
 Finally, use pip to install the package:
+
 ```
 pip install -e <path/to/yamm> 
 ```
 
-### Alternate Methods
+### Alternate Setup
 
-If you have issues installing the package and dependencies using pip you can try using conda to
-install the dependencies:
+If you have issues installing the package and dependencies using pip you can try using conda to install the
+dependencies:
 
 Clone the repo:
+
 ```
 git clone https://github.nrel.gov/MBAP/yamm.git
 ```
 
 Then, use the provided environment.yml file to install dependencies:
+
 ```
 conda env create -f environment.yml
 ```
 
 Finally, use pip to install the package:
+
 ```
 pip install -e <path/to/yamm> 
 ```
 
-
 ## Example Usage
 
-The current primary workflow is to use [osmnx](https://github.com/gboeing/osmnx) to download a road network and match it using the `LCSSMatcher`.
+The current primary workflow is to use [osmnx](https://github.com/gboeing/osmnx) to download a road network and match it
+using the `LCSSMatcher`.
 
-The `LCSSMatcher` implements the map matching algorithm described in this paper: 
+The `LCSSMatcher` implements the map matching algorithm described in this paper:
 
 [Zhu, Lei, Jacob R. Holden, and Jeffrey D. Gonder.
 "Trajectory Segmentation Map-Matching Approach for Large-Scale, High-Resolution GPS Data."
 Transportation Research Record: Journal of the Transportation Research Board 2645 (2017): 67-75.](https://doi.org/10.3141%2F2645-08)
 
 usage:
+
 ```python
 from yamm import root
 from yamm.matchers.lcss.lcss import LCSSMatcher
