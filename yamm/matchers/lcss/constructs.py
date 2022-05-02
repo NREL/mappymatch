@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import random
 import time
-from typing import NamedTuple, List
+from typing import NamedTuple, List, Union
 
 import numpy as np
 
@@ -158,7 +158,9 @@ class TrajectorySegment(NamedTuple):
                     [coord_to_coord_dist(start, c) for c in self.trace.coords]
                 )
                 p2 = np.argmax([coord_to_coord_dist(end, c) for c in self.trace.coords])
-
+                # To do - np.argmax returns array of indices where the highest value is found.
+                # if there is only one highest value an int is returned. CuttingPoint takes an int.
+                # if an array is returned by argmax, this throws an error
                 cp1 = CuttingPoint(p1)
                 cp2 = CuttingPoint(p2)
 
