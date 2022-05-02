@@ -20,6 +20,12 @@ class Coordinate(NamedTuple):
     crs: CRS
 
     def __repr__(self):
+        """
+        summary
+
+        Returns:
+            _type_: _description_
+        """
         crs_a = self.crs.to_authority() if self.crs else "Null"
         return f"Coordinate(coordinate_id={self.coordinate_id}, x={self.x}, y={self.y}, crs={crs_a})"
 
