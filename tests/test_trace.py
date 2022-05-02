@@ -16,7 +16,7 @@ class TestTrace(TestCase):
         trace = Trace.from_csv(file)
 
         self.assertEqual(trace.crs, XY_CRS)
-        self.assertEqual(len(trace), 949)
+        self.assertEqual(len(trace), 1053)
 
     def test_trace_from_dataframe(self):
         file = root() / "resources" / "traces" / "sample_trace_1.csv"
@@ -26,7 +26,8 @@ class TestTrace(TestCase):
         trace = Trace.from_dataframe(df)
 
         self.assertEqual(trace.crs, XY_CRS)
-        self.assertEqual(len(trace), 949)
+        self.assertEqual(len(trace), 1053)
+
 
     def test_trace_from_gpx(self):
         file = get_test_dir() / "test_assets" / "test_trace.gpx"

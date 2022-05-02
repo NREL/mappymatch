@@ -17,6 +17,7 @@ conda create -n yamm python=3.8
 
 Finally, use pip to install the package:
 ```
+conda activate yamm
 pip install -e <path/to/yamm> 
 ```
 
@@ -27,7 +28,7 @@ install the dependencies:
 
 Clone the repo:
 ```
-git clone https://github.nrel.gov/MBAP/yamm.git
+git clone https://github.com/NREL/yamm.git
 ```
 
 Then, use the provided environment.yml file to install dependencies:
@@ -37,6 +38,7 @@ conda env create -f environment.yml
 
 Finally, use pip to install the package:
 ```
+conda activate yamm
 pip install -e <path/to/yamm> 
 ```
 
