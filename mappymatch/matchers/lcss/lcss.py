@@ -4,10 +4,10 @@ from multiprocessing import Pool
 
 from shapely.geometry import Point
 
-from yamm.constructs.coordinate import Coordinate
-from yamm.maps.map_interface import MapInterface
-from yamm.matchers.lcss.constructs import TrajectorySegment
-from yamm.matchers.lcss.ops import (
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.maps.map_interface import MapInterface
+from mappymatch.matchers.lcss.constructs import TrajectorySegment
+from mappymatch.matchers.lcss.ops import (
     new_path,
     split_trajectory_segment,
     same_trajectory_scheme,
@@ -15,8 +15,8 @@ from yamm.matchers.lcss.ops import (
     drop_stationary_points,
     add_matches_for_stationary_points,
 )
-from yamm.matchers.matcher_interface import *
-from yamm.utils.crs import XY_CRS
+from mappymatch.matchers.matcher_interface import *
+from mappymatch.utils.crs import XY_CRS
 
 log = logging.getLogger(__name__)
 

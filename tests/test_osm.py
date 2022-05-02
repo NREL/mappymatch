@@ -1,10 +1,10 @@
 from unittest import TestCase, skip
 
 from tests import get_test_dir
-from yamm.constructs.coordinate import Coordinate
-from yamm.constructs.geofence import Geofence
-from yamm.maps.nx.readers.osm_readers import read_osm_nxmap, NetworkType
-from yamm.utils.crs import XY_CRS, LATLON_CRS
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.geofence import Geofence
+from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap, NetworkType
+from mappymatch.utils.crs import XY_CRS, LATLON_CRS
 
 
 class TestOSMap(TestCase):
