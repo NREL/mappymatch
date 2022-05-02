@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import random
 import time
-from typing import Any, NamedTuple, List, Union
+from typing import NamedTuple, List, Union
 
 import numpy as np
 from numpy import ndarray, signedinteger
