@@ -13,6 +13,18 @@ from yamm.utils.crs import XY_CRS, LATLON_CRS
 
 
 def plot_geofence(geofence, m=None):
+    """_summary_
+
+    Args:
+        geofence (_type_): _description_
+        m (_type_, optional): _description_. Defaults to None.
+
+    Raises:
+        NotImplementedError: _description_
+
+    Returns:
+        _type_: _description_
+    """
     if not geofence.crs == LATLON_CRS:
         raise NotImplementedError("can currently only plot a geofence with lat lon crs")
 
@@ -26,6 +38,19 @@ def plot_geofence(geofence, m=None):
 
 
 def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
+    """
+    plot trace takes in trace, m, point_color and the color of the line.
+
+    Args:
+        trace (_type_): _description_
+        m (_type_, optional): _description_. Defaults to None.
+        point_color (str, optional): _description_. Defaults to "yellow".
+        line_color (str, optional): _description_. Defaults to "green".
+
+    Returns:
+        _type_: _description_
+    """
+
     if not trace.crs == LATLON_CRS:
         trace = trace.to_crs(LATLON_CRS)
 
@@ -54,6 +79,15 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
     """
 
     def match_to_road(m):
+        """
+        match_to_road ...
+
+        Args:
+            m (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         d = {"road_id": m.road.road_id}
 
         metadata = m.road.metadata
@@ -74,6 +108,15 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
         return d
 
     def match_to_coord(m):
+        """
+        matching to coordinates...
+
+        Args:
+            m (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         d = {
             "road_id": m.road.road_id,
             "geom": Point(m.coordinate.x, m.coordinate.y),
@@ -95,10 +138,11 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
     coord_gdf = gpd.GeoDataFrame(coord_df, geometry=coord_df.geom, crs=XY_CRS).drop(
         columns=["geom"]
     )
-    coord_gdf = coord_gdf.to_crs(LATLON_CRS)
+    coord_gdf = coord_gdf.to_crs(LATLON_CRS) # convert coordinates to latlon_crs format.
 
     mid_i = int(len(coord_gdf) / 2)
     mid_coord = coord_gdf.iloc[mid_i].geometry
+
 
     # create a fmap with folium given the location coordinates
     fmap = folium.Map(location=[mid_coord.y, mid_coord.x], zoom_start=11)
@@ -122,6 +166,16 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
 
 
 def plot_map(tmap: MapInterface, m=None):
+    """
+    summary goes here
+
+    Args:
+        tmap (MapInterface): _description_
+        m (_type_, optional): _description_. Defaults to None.
+
+    Returns:
+        _type_: _description_
+    """
     # TODO make this generic to all map types, not just NxMap
     roads = list(tmap.g.edges(data=True))
     road_df = pd.DataFrame([r[2] for r in roads])
