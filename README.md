@@ -38,6 +38,7 @@ conda env create -f environment.yml
 
 Finally, use pip to install the package:
 ```
+conda activate yamm
 pip install -e <path/to/yamm> 
 ```
 
