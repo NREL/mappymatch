@@ -17,8 +17,16 @@ conda create -n yamm python=3.8
 
 Finally, use pip to install the package:
 ```
-pip install -e <path/to/yamm> 
+conda activate yamm
+pip install -e <path/to/yamm>[plot]
 ```
+
+There are a couple of extras available:
+
+* `osrm`: Needed by the `OsrmMatcher` to connect to the OSRM API.
+* `plot`: Needed to plot the result.
+
+At least `plot` is needed to run the examples.
 
 ### Alternate Methods
 
@@ -27,7 +35,7 @@ install the dependencies:
 
 Clone the repo:
 ```
-git clone https://github.nrel.gov/MBAP/yamm.git
+git clone https://github.com/NREL/yamm.git
 ```
 
 Then, use the provided environment.yml file to install dependencies:
@@ -37,7 +45,8 @@ conda env create -f environment.yml
 
 Finally, use pip to install the package:
 ```
-pip install -e <path/to/yamm> 
+conda activate yamm
+pip install -e <path/to/yamm>[plot]
 ```
 
 
@@ -72,7 +81,3 @@ matcher = LCSSMatcher(road_map)
 
 matches = matcher.match_trace(trace)
 ```
-
-
-
-
