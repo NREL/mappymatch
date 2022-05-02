@@ -1,14 +1,12 @@
-from typing import List, Optional
+from typing import List
 
 import folium
 import geopandas as gpd
-import numpy as np
 import pandas as pd
 from shapely.geometry import Point
 
 from yamm.constructs.match import Match
-from yamm.constructs.trace import Trace
-from yamm.maps.map_interface import MapInterface
+from yamm.maps.nx.nx_map import NxMap
 from yamm.utils.crs import XY_CRS, LATLON_CRS
 
 
@@ -43,7 +41,7 @@ def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
     return m
 
 
-def plot_matches(matches: List[Match], road_map: MapInterface):
+def plot_matches(matches: List[Match], road_map: NxMap):
     """
     plots a trace and the relevant matches on a folium map
 
@@ -65,7 +63,7 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
         road_key = list(edge_data.keys())[0]
 
         # TODO: this should be generic over all road maps
-        geom_key = road_map._geom_key
+        geom_key = road_map._geom_key  # type: ignore
 
         road_geom = edge_data[road_key][geom_key]
 
@@ -119,7 +117,7 @@ def plot_matches(matches: List[Match], road_map: MapInterface):
     return fmap
 
 
-def plot_map(tmap: MapInterface, m=None):
+def plot_map(tmap: NxMap, m=None):
     # TODO make this generic to all map types, not just NxMap
     roads = list(tmap.g.edges(data=True))
     road_df = pd.DataFrame([r[2] for r in roads])
