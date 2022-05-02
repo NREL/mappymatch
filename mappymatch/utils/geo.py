@@ -66,7 +66,7 @@ def road_to_coord_dist(road: Road, coord: Coordinate) -> float:
     return dist
 
 
-def coord_to_coord_dist(a: Coordinate, b: Coordinate):
+def coord_to_coord_dist(a: Coordinate, b: Coordinate) -> float:
     """
     helper function to compute the distance between to coordinates
 
