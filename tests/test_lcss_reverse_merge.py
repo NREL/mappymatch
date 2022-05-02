@@ -2,10 +2,10 @@ from unittest import TestCase
 import pandas as pd
 from shapely.geometry import LineString
 
-from yamm.matchers.lcss.utils import reverse_merge
-from yamm.constructs.trace import Trace
-from yamm.constructs.road import Road
-from yamm.matchers.lcss.constructs import TrajectorySegment
+from mappymatch.matchers.lcss.utils import reverse_merge
+from mappymatch.constructs.trace import Trace
+from mappymatch.constructs.road import Road
+from mappymatch.matchers.lcss.constructs import TrajectorySegment
 
 
 class TestLCSSMatcherForwardMerge(TestCase):
