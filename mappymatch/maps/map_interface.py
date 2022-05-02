@@ -5,7 +5,7 @@ from typing import List
 
 from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.road import Road
-from mappymatch.utils.abc import ABCMeta, abstractattribute, abstractmethod
+from abc import ABCMeta, abstractmethod
 
 
 class PathWeight(Enum):
@@ -18,7 +18,8 @@ class MapInterface(metaclass=ABCMeta):
     abstract base class for a Matcher
     """
 
-    @abstractattribute
+    @property
+    @abstractmethod
     def roads(self) -> List[Road]:
         """
         get a list of all the roads in the map

@@ -49,9 +49,9 @@ class NxMap(MapInterface):
         self._road_id_key = road_id_key 
 
         self._nodes = [nid for nid in self.g.nodes()]
-        self._build_rtree()
+        self._roads = self._build_rtree()
 
-    def _build_rtree(self):
+    def _build_rtree(self) -> List[Road]:
         geoms = []
         road_lookup = []
         for (
@@ -65,7 +65,11 @@ class NxMap(MapInterface):
             road_lookup.append(road)
 
         self.rtree = STRtree(geoms)
-        self.roads = road_lookup
+        return road_lookup
+
+    @property
+    def roads(self) -> List[Road]:
+        return self._roads
 
     @classmethod
     def from_file(cls, file: Union[str, Path]) -> NxMap:

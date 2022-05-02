@@ -1,7 +1,7 @@
 from typing import List
+from abc import ABCMeta, abstractmethod
 
 from mappymatch.constructs.match import Match
-from mappymatch.utils.abc import *
 from mappymatch.constructs.trace import Trace
 
 MatchResult = List[Match]
