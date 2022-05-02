@@ -81,3 +81,21 @@ matcher = LCSSMatcher(road_map)
 
 matches = matcher.match_trace(trace)
 ```
+
+## Running the Jupyter notebooks
+
+Make sure your conda environment is activated.
+
+If Jupyter Lab is not yet installed in your conda environment, first run
+
+```python
+pip install jupyterlab
+```
+
+Once Jupyter Lab has been installed, run
+
+```python
+jupyter-lab
+```
+
+from the project's top directory to launch Jupyter Lab. The notebooks are in the `notebooks` directory.
