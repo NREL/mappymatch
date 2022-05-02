@@ -21,6 +21,13 @@ conda activate yamm
 pip install -e <path/to/yamm> 
 ```
 
+There are a couple of extras available:
+
+* `osrm`: Needed by the `OsrmMatcher` to connect to the OSRM API.
+* `plot`: Needed to plot the result.
+
+At least `plot` is needed to run the examples.
+
 ### Alternate Methods
 
 If you have issues installing the package and dependencies using pip you can try using conda to
@@ -74,7 +81,3 @@ matcher = LCSSMatcher(road_map)
 
 matches = matcher.match_trace(trace)
 ```
-
-
-
-

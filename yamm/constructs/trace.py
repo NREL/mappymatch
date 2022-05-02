@@ -18,9 +18,6 @@ from yamm.utils.geohash import encode
 class Trace:
     _frame: GeoDataFrame
 
-    coords: List[Coordinate]
-    crs: CRS
-
     def __init__(self, frame: GeoDataFrame):
         self._frame = frame
 
