@@ -20,3 +20,12 @@ class TestOSMap(TestCase):
         denver_zoo = Coordinate.from_lat_lon(39.751029, -104.956666)
         e23_ave = osm_map.nearest_road(denver_zoo.to_crs(XY_CRS))
         self.assertEqual(e23_ave.road_id, '176101784-176102601')
+
+        # Make sure the graph contains this road segment
+        e23_ave_node1 = osm_map.g.nodes[176101784]
+        e23_ave_node2 = osm_map.g.nodes[176102601]
+        self.assertAlmostEqual(e23_ave_node1['lat'], 39.7578861, 5)
+        self.assertAlmostEqual(e23_ave_node1['lon'], -104.9844841, 5)
+        self.assertAlmostEqual(e23_ave_node2['lat'], 39.7585533, 5)
+        self.assertAlmostEqual(e23_ave_node2['lon'], -104.9853503, 5)
+        self.assertAlmostEqual(osm_map.g.get_edge_data(176101784, 176102601, 0)['kilometers'], 0.104817, 5)
