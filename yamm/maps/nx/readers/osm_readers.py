@@ -92,7 +92,7 @@ def compress(g):
 def get_osm_networkx_graph(geofence: Geofence,
                            xy: bool = True,
                            network_type: NetworkType = NetworkType.drive) -> nx.MultiDiGraph:
-    g = ox.graph_from_polygon(geofence.geometry, network_type=network_type.value())
+    g = ox.graph_from_polygon(geofence.geometry, network_type=network_type.value)
 
     if xy:
         g = ox.project_graph(g, XY_CRS)
