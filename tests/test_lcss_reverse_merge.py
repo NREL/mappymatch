@@ -202,10 +202,7 @@ class TestLCSSMatcherForwardMerge(TestCase):
                 for expected_coord, resulted_coord in zip(
                     expected_trace.coords, resulted_trace.coords
                 ):
-                    self.assertEqual(expected_coord.geom.x, resulted_coord.geom.x)
-                    self.assertEqual(expected_coord.geom.y, resulted_coord.geom.y)
-
-                    # self.assertEqual(expected_coord.geom, resulted_coord.geom)
+                    self.assertEqual(expected_coord.geom, resulted_coord.geom)
 
             # confirm that the paths are the same
             self.assertListEqual(expected_trajectory.path, resulted_trajectory.path)
