@@ -3,6 +3,7 @@ import logging as log
 import networkx as nx
 import osmnx as ox
 from shapely.geometry import LineString
+from enum import Enum
 
 from yamm.constructs.geofence import Geofence
 from yamm.maps.nx.nx_map import NxMap
@@ -18,6 +19,16 @@ _unit_conversion = {
     "kmph": 0.621371,
 }
 METERS_TO_KM = 1 / 1000
+
+
+class NetworkType(Enum):
+    """Network Types suuported by osmnx"""
+    all_private = 'all_private'
+    all = 'all'
+    bike = 'bike'
+    drive = 'drive'
+    drive_service = 'drive_service'
+    walk = 'walk'
 
 
 def read_osm_nxmap(geofence: Geofence, xy: bool = True) -> NxMap:
@@ -78,8 +89,10 @@ def compress(g):
     return g
 
 
-def get_osm_networkx_graph(geofence: Geofence, xy: bool = True) -> nx.MultiDiGraph:
-    g = ox.graph_from_polygon(geofence.geometry, network_type="drive")
+def get_osm_networkx_graph(geofence: Geofence,
+                           xy: bool = True,
+                           network_type: NetworkType = NetworkType.drive) -> nx.MultiDiGraph:
+    g = ox.graph_from_polygon(geofence.geometry, network_type=network_type.value())
 
     if xy:
         g = ox.project_graph(g, XY_CRS)
