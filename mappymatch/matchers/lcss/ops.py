@@ -5,13 +5,13 @@ from typing import List, NamedTuple, Any
 
 import numpy as np
 
-from yamm.constructs.coordinate import Coordinate
-from yamm.constructs.road import Road
-from yamm.constructs.trace import Trace
-from yamm.maps.map_interface import MapInterface, PathWeight
-from yamm.matchers.lcss.constructs import TrajectorySegment, TrajectoryScheme
-from yamm.matchers.lcss.utils import merge
-from yamm.matchers.matcher_interface import MatchResult
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.road import Road
+from mappymatch.constructs.trace import Trace
+from mappymatch.maps.map_interface import MapInterface, PathWeight
+from mappymatch.matchers.lcss.constructs import TrajectorySegment, TrajectoryScheme
+from mappymatch.matchers.lcss.utils import merge
+from mappymatch.matchers.matcher_interface import MatchResult
 
 log = logging.getLogger(__name__)
 

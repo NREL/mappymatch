@@ -6,7 +6,7 @@ from typing import NamedTuple, Any
 from pyproj import Transformer, CRS
 from shapely.geometry import Point
 
-from yamm.utils.crs import LATLON_CRS
+from mappymatch.utils.crs import LATLON_CRS
 
 CoordinateId: Any
 

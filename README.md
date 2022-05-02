@@ -1,5 +1,5 @@
-# yamm
-"yet another map matcher" is a pure-python package developed by the National Renewable Energy Laboratory that maintains a collection of map matching algorithms and wrappers. The package was designed for ease of use and portabilty across platforms.
+# mappymatch
+mappymatch is a pure-python package developed by the National Renewable Energy Laboratory that maintains a collection of map matching algorithms and wrappers. The package was designed for ease of use and portabilty across platforms.
 
 ## Setup
 
@@ -7,18 +7,18 @@
 
 Clone the repo:
 ```
-git clone https://github.com/NREL/yamm.git
+git clone https://github.com/NREL/mappymatch.git
 ```
 
 Then, setup a python environment with python >= 3.8:
 ```
-conda create -n yamm python=3.8
+conda create -n mappymatch python=3.8
 ```
 
 Finally, use pip to install the package:
 ```
-conda activate yamm
-pip install -e <path/to/yamm> 
+conda activate mappymatch
+pip install -e <path/to/mappymatch> 
 ```
 
 There are a couple of extras available:
@@ -35,7 +35,7 @@ install the dependencies:
 
 Clone the repo:
 ```
-git clone https://github.com/NREL/yamm.git
+git clone https://github.com/NREL/mappymatch.git
 ```
 
 Then, use the provided environment.yml file to install dependencies:
@@ -45,8 +45,8 @@ conda env create -f environment.yml
 
 Finally, use pip to install the package:
 ```
-conda activate yamm
-pip install -e <path/to/yamm> 
+conda activate mappymatch
+pip install -e <path/to/mappymatch> 
 ```
 
 
@@ -62,11 +62,11 @@ Transportation Research Record: Journal of the Transportation Research Board 264
 
 usage:
 ```python
-from yamm import root
-from yamm.matchers.lcss.lcss import LCSSMatcher
-from yamm.utils.geo import geofence_from_trace
-from yamm.maps.nx.readers.osm_readers import read_osm_nxmap
-from yamm.constructs.trace import Trace
+from mappymatch import root
+from mappymatch.matchers.lcss.lcss import LCSSMatcher
+from mappymatch.utils.geo import geofence_from_trace
+from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap
+from mappymatch.constructs.trace import Trace
 
 trace = Trace.from_csv(root() / "resources/traces/sample_trace_1.csv")
 

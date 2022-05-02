@@ -1,14 +1,14 @@
 from pathlib import Path
-from yamm.constructs.trace import Trace
-from yamm.utils.geo import geofence_from_trace
-from yamm.maps.nx.readers.osm_readers import read_osm_nxmap
-from yamm.matchers.lcss.lcss import LCSSMatcher
-from yamm import root
+from mappymatch.constructs.trace import Trace
+from mappymatch.utils.geo import geofence_from_trace
+from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap
+from mappymatch.matchers.lcss.lcss import LCSSMatcher
+from mappymatch import root
 
 PLOT = True
 
 if PLOT:
-    from yamm.utils.plot import plot_geofence, plot_trace, plot_matches
+    from mappymatch.utils.plot import plot_geofence, plot_trace, plot_matches
     import webbrowser
 
 trace = Trace.from_csv(root() / "resources/traces/sample_trace_1.csv")

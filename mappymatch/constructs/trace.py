@@ -10,9 +10,9 @@ import pandas as pd
 from geopandas import GeoDataFrame, points_from_xy, read_file, read_parquet
 from pyproj import CRS
 
-from yamm.constructs.coordinate import Coordinate
-from yamm.utils.crs import LATLON_CRS, XY_CRS
-from yamm.utils.geohash import encode
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.utils.crs import LATLON_CRS, XY_CRS
+from mappymatch.utils.geohash import encode
 
 
 class Trace:
