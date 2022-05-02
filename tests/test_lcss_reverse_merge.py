@@ -2,64 +2,64 @@ from unittest import TestCase
 import pandas as pd
 from shapely.geometry import LineString
 
-from yamm.matchers.lcss.utils import forward_merge
+from yamm.matchers.lcss.utils import reverse_merge
 from yamm.constructs.trace import Trace
 from yamm.constructs.road import Road
 from yamm.matchers.lcss.constructs import TrajectorySegment
 
 
 class TestLCSSMatcherForwardMerge(TestCase):
-    def test_forward_merge_beginning(self):
+    def test_reverse_merge_beginning_no_merge(self):
         """
-        This will test that forward_merge can merge items at the beginning of the list
+        This will test that reverse_merge can merge items at the beginning of the list
+        with no other merges in the list
         """
         starting_list = [1, 2, 3, 4, 5]
         condition = lambda x: x < 3
-        expected_list = [6, 4, 5]
+        expected_list = [3, 3, 4, 5]
 
-        resulting_list = forward_merge(starting_list, condition=condition)
+        resulting_list = reverse_merge(starting_list, condition=condition)
 
         self.assertListEqual(expected_list, resulting_list)
 
-    def test_forward_merge_ending_no_merge(self):
+    def test_reverse_merge_ending_merge(self):
         """
-        This will test that forward_merge can merge items at the end of the list with
-        no other merges in the list
+        This will test that reverse_merge can merge items at the end of the list
         """
         starting_list = [1, 2, 3, 4, 5]
         condition = lambda x: x > 3
-        expected_list = [1, 2, 3, 9]
+        expected_list = [1, 2, 12]
 
-        resulting_list = forward_merge(starting_list, condition=condition)
+        resulting_list = reverse_merge(starting_list, condition=condition)
 
         self.assertListEqual(expected_list, resulting_list)
 
-    def test_forward_merge_middle(self):
+    def test_reverse_merge_middle(self):
         """
-        This will test that forward_merge can merge items in the middle of the list
+        This will test that reverse_merge can merge items in the middle of the list
         """
         starting_list = [1, 2, 4, 4, 2, 2]
         condition = lambda x: x > 3
-        expected_list = [1, 2, 10, 2]
+        expected_list = [1, 10, 2, 2]
 
-        resulting_list = forward_merge(starting_list, condition=condition)
+        resulting_list = reverse_merge(starting_list, condition=condition)
 
         self.assertListEqual(expected_list, resulting_list)
 
-    def test_forward_merge_multi_merges(self):
+    def test_reverse_merge_multi_merges(self):
         """
-        This will test that forward_merge works for multiple segments including a
-        segment at the end
+        This will test that reverse_merge works for multiple segments including a
+        segment in the beginning
         """
-        starting_list = [1, 2, 3, 6, 4, 2, 3, 1, 6, 7, 3, 4, 3, 3]
+        starting_list = [1, 2, 3, 6, 4, 2, 3, 1, 6, 7, 3, 4]
         condition = lambda x: x < 4
-        expected_list = [12, 4, 12, 7, 7, 6]
+        expected_list = [6, 6, 10, 6, 10, 7]
 
-        resulting_list = forward_merge(starting_list, condition=condition)
+        resulting_list = reverse_merge(starting_list, condition=condition)
 
         self.assertListEqual(expected_list, resulting_list)
 
-    def test_forward_merge_trajectory_segments(self):
+    def test_reverse_merge_trajectory_segments(self):
         """
         This will test that a list of trajectory segments can merge
         """
@@ -125,20 +125,28 @@ class TestLCSSMatcherForwardMerge(TestCase):
         expected_trace_1 = Trace.from_dataframe(
             pd.DataFrame(
                 data={
-                    "latitude": [39.655193, 39.655494, 39.655801],
-                    "longitude": [-104.919294, -104.91943, -104.919567],
+                    "latitude": [39.655193],
+                    "longitude": [-104.919294],
                 }
             )
         )
         expected_trace_2 = Trace.from_dataframe(
             pd.DataFrame(
                 data={
-                    "latitude": [39.656103, 39.656406, 39.656707, 39.657005],
-                    "longitude": [-104.919698, -104.919831, -104.919964, -104.920099],
+                    "latitude": [39.655494, 39.655801, 39.656103],
+                    "longitude": [-104.91943, -104.919567, -104.919698],
                 }
             )
         )
         expected_trace_3 = Trace.from_dataframe(
+            pd.DataFrame(
+                data={
+                    "latitude": [39.656406, 39.656707, 39.657005],
+                    "longitude": [-104.919831, -104.919964, -104.920099],
+                }
+            )
+        )
+        expected_trace_4 = Trace.from_dataframe(
             pd.DataFrame(
                 data={
                     "latitude": [39.657303, 39.657601],
@@ -149,15 +157,17 @@ class TestLCSSMatcherForwardMerge(TestCase):
 
         expected_road_1 = [
             Road("first st", LineString()),
-            Road("second st", LineString()),
         ]
         expected_road_2 = [
+            Road("second st", LineString()),
             Road(234, LineString()),
+        ]
+        expected_road_3 = [
             Road("first st", LineString()),
             Road("second st", LineString()),
             Road(123, LineString()),
         ]
-        expected_road_3 = [
+        expected_road_4 = [
             Road("main st", LineString()),
             Road("second str", LineString()),
         ]
@@ -165,10 +175,16 @@ class TestLCSSMatcherForwardMerge(TestCase):
         expected_segment_1 = TrajectorySegment(expected_trace_1, expected_road_1)
         expected_segment_2 = TrajectorySegment(expected_trace_2, expected_road_2)
         expected_segment_3 = TrajectorySegment(expected_trace_3, expected_road_3)
+        expected_segment_4 = TrajectorySegment(expected_trace_4, expected_road_4)
 
-        expected_list = [expected_segment_1, expected_segment_2, expected_segment_3]
+        expected_list = [
+            expected_segment_1,
+            expected_segment_2,
+            expected_segment_3,
+            expected_segment_4,
+        ]
 
-        resulting_list = forward_merge(starting_list, condition=condition)
+        resulting_list = reverse_merge(starting_list, condition=condition)
 
         # confirm forward merge accuracy
         self.assertEqual(len(expected_list), len(resulting_list))
