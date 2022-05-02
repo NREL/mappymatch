@@ -1,8 +1,8 @@
 from typing import List
 from abc import ABCMeta, abstractmethod
 
-from yamm.constructs.match import Match
-from yamm.constructs.trace import Trace
+from mappymatch.constructs.match import Match
+from mappymatch.constructs.trace import Trace
 
 MatchResult = List[Match]
 
