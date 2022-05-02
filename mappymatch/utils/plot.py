@@ -5,9 +5,9 @@ import geopandas as gpd
 import pandas as pd
 from shapely.geometry import Point
 
-from yamm.constructs.match import Match
-from yamm.maps.nx.nx_map import NxMap
-from yamm.utils.crs import XY_CRS, LATLON_CRS
+from mappymatch.constructs.match import Match
+from mappymatch.maps.nx.nx_map import NxMap
+from mappymatch.utils.crs import XY_CRS, LATLON_CRS
 
 
 def plot_geofence(geofence, m=None):

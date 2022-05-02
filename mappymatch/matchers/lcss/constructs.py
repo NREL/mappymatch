@@ -7,11 +7,11 @@ from typing import NamedTuple, List
 
 import numpy as np
 
-from yamm.constructs.match import Match
-from yamm.constructs.road import Road
-from yamm.constructs.trace import Trace
-from yamm.matchers.lcss.utils import compress
-from yamm.utils.geo import road_to_coord_dist, coord_to_coord_dist
+from mappymatch.constructs.match import Match
+from mappymatch.constructs.road import Road
+from mappymatch.constructs.trace import Trace
+from mappymatch.matchers.lcss.utils import compress
+from mappymatch.utils.geo import road_to_coord_dist, coord_to_coord_dist
 
 log = logging.getLogger(__name__)
 

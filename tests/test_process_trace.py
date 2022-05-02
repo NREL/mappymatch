@@ -1,8 +1,8 @@
 from unittest import TestCase
 
 from tests import get_test_dir
-from yamm.constructs.trace import Trace
-from yamm.utils.process_trace import remove_bad_start_from_trace
+from mappymatch.constructs.trace import Trace
+from mappymatch.utils.process_trace import remove_bad_start_from_trace
 
 
 class TestProcessTrace(TestCase):

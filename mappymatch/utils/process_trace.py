@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List
 
-from yamm.constructs.trace import Trace
+from mappymatch.constructs.trace import Trace
 
 
 def split_large_trace(trace: Trace, ideal_size: int) -> List[Trace]:

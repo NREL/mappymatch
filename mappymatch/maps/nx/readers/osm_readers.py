@@ -5,10 +5,10 @@ import osmnx as ox
 from shapely.geometry import LineString
 from enum import Enum
 
-from yamm.constructs.geofence import Geofence
-from yamm.maps.nx.nx_map import NxMap
-from yamm.utils.crs import LATLON_CRS, XY_CRS
-from yamm.utils.exceptions import MapException
+from mappymatch.constructs.geofence import Geofence
+from mappymatch.maps.nx.nx_map import NxMap
+from mappymatch.utils.crs import LATLON_CRS, XY_CRS
+from mappymatch.utils.exceptions import MapException
 
 ox.config(log_console=True)
 log.basicConfig(level=log.INFO)

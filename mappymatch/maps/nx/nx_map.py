@@ -6,10 +6,10 @@ import networkx as nx
 from pygeos import STRtree, Geometry
 from shapely.geometry import Point
 
-from yamm.constructs.coordinate import Coordinate
-from yamm.constructs.road import Road
-from yamm.maps.map_interface import MapInterface, PathWeight
-from yamm.utils.crs import CRS
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.road import Road
+from mappymatch.maps.map_interface import MapInterface, PathWeight
+from mappymatch.utils.crs import CRS
 
 DEFAULT_DISTANCE_WEIGHT = "kilometers"
 DEFAULT_TIME_WEIGHT = "minutes"

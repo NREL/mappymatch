@@ -1,7 +1,7 @@
 import logging
 
-from yamm.maps.map_interface import MapInterface
-from yamm.matchers.matcher_interface import *
+from mappymatch.maps.map_interface import MapInterface
+from mappymatch.matchers.matcher_interface import *
 
 log = logging.getLogger(__name__)
 

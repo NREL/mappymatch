@@ -2,10 +2,10 @@ from unittest import TestCase
 
 import pandas as pd
 
-from yamm import root
-from yamm.constructs.trace import Trace
-from yamm.utils.crs import XY_CRS
-from yamm.utils.geo import xy_to_latlon
+from mappymatch import root
+from mappymatch.constructs.trace import Trace
+from mappymatch.utils.crs import XY_CRS
+from mappymatch.utils.geo import xy_to_latlon
 from tests import get_test_dir
 
 

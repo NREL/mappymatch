@@ -4,11 +4,11 @@ from pyproj import Transformer, CRS
 from shapely.geometry import LineString
 from shapely.ops import transform
 
-from yamm.constructs.coordinate import Coordinate
-from yamm.constructs.geofence import Geofence
-from yamm.constructs.road import Road
-from yamm.constructs.trace import Trace
-from yamm.utils.crs import XY_CRS, LATLON_CRS
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.geofence import Geofence
+from mappymatch.constructs.road import Road
+from mappymatch.constructs.trace import Trace
+from mappymatch.utils.crs import XY_CRS, LATLON_CRS
 
 
 def xy_to_latlon(x: float, y: float) -> Tuple[float, float]:
