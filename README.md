@@ -15,6 +15,9 @@ Then, setup a python environment with python >= 3.8:
 conda create -n yamm python=3.8
 ```
 
+Activate the environment.
+conda activate yamm
+
 Finally, use pip to install the package:
 ```
 pip install -e <path/to/yamm> 
