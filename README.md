@@ -7,7 +7,7 @@
 
 Clone the repo:
 ```
-git clone https://github.nrel.gov/MBAP/yamm.git
+git clone https://github.com/NREL/yamm.git
 ```
 
 Then, setup a python environment with python >= 3.8:
