@@ -31,13 +31,15 @@ class NetworkType(Enum):
     walk = 'walk'
 
 
-def read_osm_nxmap(geofence: Geofence, xy: bool = True) -> NxMap:
+def read_osm_nxmap(geofence: Geofence,
+                   xy: bool = True,
+                   network_type: NetworkType = NetworkType.drive) -> NxMap:
     if geofence.crs != LATLON_CRS:
         raise TypeError(
             f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}"
         )
 
-    g = get_osm_networkx_graph(geofence, xy)
+    g = get_osm_networkx_graph(geofence, xy, network_type)
 
     return NxMap(g)
 
@@ -139,5 +141,6 @@ def get_osm_networkx_graph(geofence: Geofence,
     g.graph["time_weight"] = "travel_time"
     g.graph["geometry_key"] = "geometry"
     g.graph["road_id_key"] = "road_id"
+    g.graph["network_type"] = network_type.value
 
     return g
