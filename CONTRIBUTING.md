@@ -1,6 +1,6 @@
-# Contributing to yamm 
+# Contributing to mappymatch 
 
-We're excited that you're considering contributing to the yamm package!
+We're excited that you're considering contributing to the mappymatch package!
 There are a variety of ways in which you can contribute beyond writing code.
 This document provides a high-level overview of how you can get involved.
 
@@ -8,7 +8,7 @@ This document provides a high-level overview of how you can get involved.
 ## Asking Questions
 
 Have a question? Rather than opening an issue directly, please ask questions
-or post comments in [Q&A Discussions](https://github.com/NREL/yamm/discussions/categories/q-a).
+or post comments in [Q&A Discussions](https://github.com/NREL/mappymatch/discussions/categories/q-a).
 The NREL team or other members of the community will assist. Your well-worded
 question will serve as a resource to others searching for help.
 
@@ -16,7 +16,7 @@ question will serve as a resource to others searching for help.
 ## Providing Feedback
 
 Your comments and feedback are very welcome. Please post to
-[General Discussions](https://github.com/NREL/yamm/discussions/categories/general)
+[General Discussions](https://github.com/NREL/mappymatch/discussions/categories/general)
 with lots of information and detail. It is beneficial to consider
 how someone else will understand your comments in order to make
 them most effective.
@@ -24,7 +24,7 @@ them most effective.
 
 ## Reporting Issues
 
-Have you identified a reproducible problem in yamm?
+Have you identified a reproducible problem in mappymatch?
 Have a feature request? We want to hear about it! Here's how you can make
 reporting your issue as effective as possible.
 
@@ -57,6 +57,6 @@ Please remember to do the following:
 
 If you are interested in writing code to fix an issue or
 submit a new feature, let us know in
-[Ideas Discussions](https://github.com/NREL/yamm/discussions/categories/ideas)!
+[Ideas Discussions](https://github.com/NREL/mappymatch/discussions/categories/ideas)!
 
 Then, you can open a pull request with your proposed changes and someone on the team will review it.

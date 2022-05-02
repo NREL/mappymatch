@@ -3,15 +3,16 @@ from __future__ import annotations
 from functools import cached_property
 from pathlib import Path
 from typing import List, Union, Optional, Set
+import re
 
 import numpy as np
 import pandas as pd
 from geopandas import GeoDataFrame, points_from_xy, read_file, read_parquet
 from pyproj import CRS
 
-from yamm.constructs.coordinate import Coordinate
-from yamm.utils.crs import LATLON_CRS, XY_CRS
-from yamm.utils.geohash import encode
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.utils.crs import LATLON_CRS, XY_CRS
+from mappymatch.utils.geohash import encode
 
 
 class Trace:
@@ -124,6 +125,36 @@ class Trace:
         )
 
         return Trace.build(frame, xy)
+
+    @classmethod
+    def from_gpx(
+        cls,
+        file: Union[str, Path],
+        xy: bool = True,
+    ) -> Trace:
+        """
+        Builds a trace from a gpx file.
+
+        Expects the file to have simple gpx structure: a sequence of lat, lon pairs
+
+        :param file: the file to load
+        :param xy: should the trace be projected to x, y?
+        :return: the trace
+        """
+        filepath = Path(file)
+        if not filepath.is_file():
+            raise FileNotFoundError(file)
+        elif not filepath.suffix == ".gpx":
+            raise TypeError(
+                f"file of type {filepath.suffix} does not appear to be a gpx file"
+            )
+        data = open(filepath).read()
+
+        lat_column, lon_column = "lat", "lon"
+        lat = np.array(re.findall(r'lat="([^"]+)',data),dtype=float)
+        lon = np.array(re.findall(r'lon="([^"]+)',data),dtype=float)
+        df = pd.DataFrame(zip(lat, lon), columns=[lat_column, lon_column])
+        return Trace.from_dataframe(df, xy, lat_column, lon_column)
 
     @classmethod
     def from_csv(

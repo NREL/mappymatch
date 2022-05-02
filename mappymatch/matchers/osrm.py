@@ -2,10 +2,10 @@ import logging
 
 import requests
 
-from yamm.constructs.road import Road
-from yamm.matchers.matcher_interface import *
-from yamm.utils.crs import LATLON_CRS
-from yamm.utils.url import multiurljoin
+from mappymatch.constructs.road import Road
+from mappymatch.matchers.matcher_interface import *
+from mappymatch.utils.crs import LATLON_CRS
+from mappymatch.utils.url import multiurljoin
 
 log = logging.getLogger(__name__)
 

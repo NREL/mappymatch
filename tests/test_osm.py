@@ -1,10 +1,10 @@
 from unittest import TestCase, skip
 
 from tests import get_test_dir
-from yamm.constructs.coordinate import Coordinate
-from yamm.constructs.geofence import Geofence
-from yamm.maps.nx.readers.osm_readers import read_osm_nxmap, NetworkType
-from yamm.utils.crs import XY_CRS, LATLON_CRS
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.geofence import Geofence
+from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap, NetworkType
+from mappymatch.utils.crs import XY_CRS, LATLON_CRS
 
 
 class TestOSMap(TestCase):
@@ -15,6 +15,7 @@ class TestOSMap(TestCase):
         geofence = Geofence.from_geojson(gfile)
 
         osm_map = read_osm_nxmap(geofence)
+
         self.assertEqual(osm_map.g.graph['network_type'], NetworkType.drive.value)
 
         # Make sure we can find 31st St near Mestizo-Curtis Park
@@ -58,4 +59,3 @@ class TestOSMap(TestCase):
         self.assertAlmostEqual(e23_ave_node2['lat'], 39.7613571, 5)
         self.assertAlmostEqual(e23_ave_node2['lon'], -104.9767106, 5)
         self.assertAlmostEqual(osm_map.g.get_edge_data(3336866319, 3336866337, 0)['kilometers'], 0.120289, 5)
-

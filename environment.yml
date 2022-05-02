@@ -1,4 +1,4 @@
-name: yamm
+name: mappymatch
 channels:
   - conda-forge
   - defaults
