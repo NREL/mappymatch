@@ -40,6 +40,7 @@ def parse_osrm_json(j: dict, trace: Trace) -> List[Match]:
         raise ValueError("could not find any link legs in response")
 
     def _parse_leg(d: dict, i: int) -> Match:
+        
         """
         _parse_leg function takes a dictionary and an integer.
 
@@ -72,7 +73,7 @@ def parse_osrm_json(j: dict, trace: Trace) -> List[Match]:
             #temporarily run Match with distance = None to generate a match object, then reassign once match is calculated.
             match = Match(road=road, coordinate=trace.coords[i], distance=None)
             line_string_one = road.geom # gets the roads linestring
-            point_1 = match.coordinate
+            point_1 = match.coordinate # the point that mappymatch guesses is close to the road.
             new_distance = point_1.distance(line_string_one) # calculate the distance between the two coordinate and the line.
             match = Match(road=road, coordinate=trace.coords[i], distance=new_distance) # now redo the match
         else:
