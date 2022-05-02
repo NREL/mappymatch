@@ -29,7 +29,6 @@ def forward_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
         return ft.reduce(lambda acc, x: acc + x, ml)
 
     merge_items = []
-    merge_index = None
     for i, item in enumerate(merge_list):
         if condition(item):
             merge_items.append(item)
@@ -38,16 +37,12 @@ def forward_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
             merge_items.append(item)
             items.append(_flatten(merge_items))
             merge_items = []
-            merge_index = i
         else:
             items.append(item)
 
-    if merge_items and not merge_index:
+    if merge_items:
         # we got to the end but still have merge items;
         items.append(_flatten(merge_items))
-    else:
-        for item in merge_items:
-            items.append(item)
 
     return items
 
@@ -77,7 +72,6 @@ def reverse_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
         return ft.reduce(lambda acc, x: x + acc, ml)
 
     merge_items = []
-    merge_index = None
     for i in reversed(range(len(merge_list))):
         item = merge_list[i]
         if condition(item):
@@ -87,16 +81,12 @@ def reverse_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
             merge_items.append(item)
             items.append(_flatten(merge_items))
             merge_items = []
-            merge_index = i
         else:
             items.append(item)
 
-    if merge_items and not merge_index:
+    if merge_items:
         # we got to the end but still have merge items;
         items.append(_flatten(merge_items))
-    else:
-        for item in merge_items:
-            items.append(item)
 
     return list(reversed(items))
 

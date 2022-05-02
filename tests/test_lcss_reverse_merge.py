@@ -53,7 +53,7 @@ class TestLCSSMatcherForwardMerge(TestCase):
         """
         starting_list = [1, 2, 3, 6, 4, 2, 3, 1, 6, 7, 3, 4]
         condition = lambda x: x < 4
-        expected_list = [6, 6, 10, 6, 10, 7]
+        expected_list = [6, 6, 10, 6, 10, 4]
 
         resulting_list = reverse_merge(starting_list, condition=condition)
 
@@ -202,7 +202,10 @@ class TestLCSSMatcherForwardMerge(TestCase):
                 for expected_coord, resulted_coord in zip(
                     expected_trace.coords, resulted_trace.coords
                 ):
-                    self.assertEqual(expected_coord.geom, resulted_coord.geom)
+                    self.assertEqual(expected_coord.geom.x, resulted_coord.geom.x)
+                    self.assertEqual(expected_coord.geom.y, resulted_coord.geom.y)
+
+                    # self.assertEqual(expected_coord.geom, resulted_coord.geom)
 
             # confirm that the paths are the same
             self.assertListEqual(expected_trajectory.path, resulted_trajectory.path)
