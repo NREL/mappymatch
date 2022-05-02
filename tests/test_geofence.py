@@ -1,8 +1,8 @@
 from unittest import TestCase
 
 from tests import get_test_dir
-from yamm.constructs.geofence import Geofence
-from yamm.utils.crs import LATLON_CRS
+from mappymatch.constructs.geofence import Geofence
+from mappymatch.utils.crs import LATLON_CRS
 
 
 class TestGeofence(TestCase):

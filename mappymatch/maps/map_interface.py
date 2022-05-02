@@ -3,9 +3,9 @@ from __future__ import annotations
 from enum import Enum
 from typing import List
 
-from yamm.constructs.coordinate import Coordinate
-from yamm.constructs.road import Road
-from yamm.utils.abc import ABCMeta, abstractattribute, abstractmethod
+from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.road import Road
+from mappymatch.utils.abc import ABCMeta, abstractattribute, abstractmethod
 
 
 class PathWeight(Enum):
