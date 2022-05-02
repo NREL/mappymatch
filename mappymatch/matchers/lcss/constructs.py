@@ -161,9 +161,12 @@ class TrajectorySegment(NamedTuple):
                 p2 = np.argmax([coord_to_coord_dist(end, c) for c in self.trace.coords])
                 assert not isinstance(p1, ndarray)
                 assert not isinstance(p2, ndarray)
+<<<<<<< HEAD:mappymatch/matchers/lcss/constructs.py
                 # To do - np.argmax returns array of indices where the highest value is found.
                 # if there is only one highest value an int is returned. CuttingPoint takes an int.
                 # if an array is returned by argmax, this throws an error
+=======
+>>>>>>> d693055 ([#51] assert return from argmax is not an ndarry, allow for signedint type (#64)):yamm/matchers/lcss/constructs.py
                 cp1 = CuttingPoint(p1)
                 cp2 = CuttingPoint(p2)
 
