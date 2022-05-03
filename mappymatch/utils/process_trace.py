@@ -7,12 +7,16 @@ from mappymatch.constructs.trace import Trace
 
 def split_large_trace(trace: Trace, ideal_size: int) -> List[Trace]:
     """
-    split up a trace into a list of smaller traces
+    Split up a trace into a list of smaller traces.
 
-    :param trace:
-    :param ideal_size:
+    TODO: maintainer check
 
-    :return:
+    Args:
+        trace:
+        ideal_size:
+
+    Returns:
+        Trace as list.
     """
     if len(trace) <= ideal_size:
         return [trace]
@@ -33,15 +37,22 @@ def remove_bad_start_from_trace(
     trace: Trace, distance_threshold: float
 ) -> Trace:
     """
-    remove points at the beginning of a trace if there is a gap larger than the distance threshold
+    Remove points at the beginning of a trace if it is a gap is too big.
 
-    :param trace: the trace
-    :param distance_threshold:
+    Too big is defined by distance threshold.
 
-    :return: the new trace
+    TODO: Maintainer check.
+
+    Args:
+        trace: The trace.
+        distance_threshold: The distance threshold.
+
+    Returns:
+        The new trace.
     """
 
     def _trim_frame(frame):
+        """Pivate no docstring required."""
         for index in range(len(frame)):
             rows = frame.iloc[index : index + 2]
 
