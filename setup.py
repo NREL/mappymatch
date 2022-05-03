@@ -13,7 +13,7 @@ setup(
     description="mappymatch is a package for map matching",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.nrel.gov/MBAP/mappymatch",
+    url="https://github.com/NREL/mappymatch",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
