@@ -76,7 +76,9 @@ class TestLCSSMatcherMerge(TestCase):
         """
         # setup inputted trajectory segments
         trace_1 = Trace.from_dataframe(
-            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
+            pd.DataFrame(
+                data={"latitude": [39.655193], "longitude": [-104.919294]}
+            )
         )
         trace_2 = Trace.from_dataframe(
             pd.DataFrame(
@@ -87,13 +89,20 @@ class TestLCSSMatcherMerge(TestCase):
             )
         )
         trace_3 = Trace.from_dataframe(
-            pd.DataFrame(data={"latitude": [39.656103], "longitude": [-104.919698]})
+            pd.DataFrame(
+                data={"latitude": [39.656103], "longitude": [-104.919698]}
+            )
         )
         trace_4 = Trace.from_dataframe(
             pd.DataFrame(
                 data={
                     "latitude": [39.656406, 39.656707, 39.657005, 39.657303],
-                    "longitude": [-104.919831, -104.919964, -104.920099, -104.920229],
+                    "longitude": [
+                        -104.919831,
+                        -104.919964,
+                        -104.920099,
+                        -104.920229,
+                    ],
                 }
             )
         )
@@ -178,8 +187,12 @@ class TestLCSSMatcherMerge(TestCase):
             Road("second str", LineString()),
         ]
 
-        expected_segment_1 = TrajectorySegment(expected_trace_1, expected_road_1)
-        expected_segment_2 = TrajectorySegment(expected_trace_2, expected_road_2)
+        expected_segment_1 = TrajectorySegment(
+            expected_trace_1, expected_road_1
+        )
+        expected_segment_2 = TrajectorySegment(
+            expected_trace_2, expected_road_2
+        )
 
         expected_list = [
             expected_segment_1,
@@ -200,11 +213,15 @@ class TestLCSSMatcherMerge(TestCase):
             for expected_trace, resulted_trace in zip(
                 expected_trajectory.trace, resulted_trajectory.trace
             ):
-                self.assertEqual(len(expected_trace.coords), len(resulted_trace.coords))
+                self.assertEqual(
+                    len(expected_trace.coords), len(resulted_trace.coords)
+                )
                 for expected_coord, resulted_coord in zip(
                     expected_trace.coords, resulted_trace.coords
                 ):
                     self.assertEqual(expected_coord.geom, resulted_coord.geom)
 
             # confirm that the paths are the same
-            self.assertListEqual(expected_trajectory.path, resulted_trajectory.path)
+            self.assertListEqual(
+                expected_trajectory.path, resulted_trajectory.path
+            )
