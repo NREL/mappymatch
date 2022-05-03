@@ -64,7 +64,7 @@ class LCSSMatcher(MatcherInterface):
             if len(a.path) > 1 and len(b.path) > 1:
                 end_road = a.path[-1]
                 start_road = b.path[0]
-                if end_road.metadata["v"] != start_road.metadata["u"]:
+                if end_road.dest_junction_id != start_road.origin_junction_id:
                     o = Coordinate(
                         coordinate_id=None,
                         geom=Point(end_road.geom.coords[-1]),

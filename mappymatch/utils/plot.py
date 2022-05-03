@@ -58,11 +58,9 @@ def plot_matches(matches: List[Match], road_map: NxMap):
     def match_to_road(m):
         d = {"road_id": m.road.road_id}
 
-        metadata = m.road.metadata
-        u = metadata["u"]
-        v = metadata["v"]
-
-        edge_data = road_map.g.get_edge_data(u, v)
+        edge_data = road_map.g.get_edge_data(
+            m.road.origin_junction_id, m.road.dest_junction_id
+        )
 
         road_key = list(edge_data.keys())[0]
 

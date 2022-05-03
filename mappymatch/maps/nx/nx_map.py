@@ -67,8 +67,9 @@ class NxMap(MapInterface):
 
             road = Road(
                 d[self._road_id_key],
-                geom,
-                metadata={"u": u, "v": v},
+                d[self._geom_key],
+                origin_junction_id=u,
+                dest_junction_id=v,
             )
             road_lookup.append(road)
 
@@ -161,17 +162,17 @@ class NxMap(MapInterface):
         v_dist = oend.distance(origin.geom)
 
         if u_dist <= v_dist:
-            origin_id = origin_road.metadata["u"]
+            origin_id = origin_road.origin_junction_id
         else:
-            origin_id = origin_road.metadata["v"]
+            origin_id = origin_road.dest_junction_id
 
         u_dist = dstart.distance(destination.geom)
         v_dist = dend.distance(destination.geom)
 
         if u_dist <= v_dist:
-            dest_id = dest_road.metadata["u"]
+            dest_id = dest_road.origin_junction_id
         else:
-            dest_id = dest_road.metadata["v"]
+            dest_id = dest_road.dest_junction_id
 
         if weight == PathWeight.DISTANCE:
             weight_string = self._dist_weight
@@ -205,7 +206,8 @@ class NxMap(MapInterface):
                 Road(
                     road_id,
                     geom,
-                    metadata={"u": road_start_node, "v": road_end_node},
+                    origin_junction_id=road_start_node,
+                    dest_junction_id=road_end_node,
                 )
             )
 

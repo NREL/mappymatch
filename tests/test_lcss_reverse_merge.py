@@ -1,11 +1,12 @@
 from unittest import TestCase
+
 import pandas as pd
 from shapely.geometry import LineString
 
-from mappymatch.matchers.lcss.utils import reverse_merge
-from mappymatch.constructs.trace import Trace
 from mappymatch.constructs.road import Road
+from mappymatch.constructs.trace import Trace
 from mappymatch.matchers.lcss.constructs import TrajectorySegment
+from mappymatch.matchers.lcss.utils import reverse_merge
 
 
 class TestLCSSMatcherReverseMerge(TestCase):
@@ -99,17 +100,53 @@ class TestLCSSMatcherReverseMerge(TestCase):
             )
         )
 
-        road_1 = [Road("first st", LineString())]
-        road_2 = [Road("second st", LineString())]
-        road_3 = [Road(234, LineString())]
+        road_1 = [
+            Road(
+                "first st",
+                LineString(),
+                origin_junction_id=0,
+                dest_junction_id=1,
+            )
+        ]
+        road_2 = [
+            Road(
+                "second st",
+                LineString(),
+                origin_junction_id=1,
+                dest_junction_id=2,
+            )
+        ]
+        road_3 = [
+            Road(234, LineString(), origin_junction_id=2, dest_junction_id=3)
+        ]
         road_4 = [
-            Road("first st", LineString()),
-            Road("second st", LineString()),
-            Road(123, LineString()),
+            Road(
+                "first st",
+                LineString(),
+                origin_junction_id=0,
+                dest_junction_id=1,
+            ),
+            Road(
+                "second st",
+                LineString(),
+                origin_junction_id=1,
+                dest_junction_id=2,
+            ),
+            Road(123, LineString(), origin_junction_id=2, dest_junction_id=5),
         ]
         road_5 = [
-            Road("main st", LineString()),
-            Road("second str", LineString()),
+            Road(
+                "main st",
+                LineString(),
+                origin_junction_id=6,
+                dest_junction_id=7,
+            ),
+            Road(
+                "second str",
+                LineString(),
+                origin_junction_id=7,
+                dest_junction_id=8,
+            ),
         ]
 
         segment_1 = TrajectorySegment(trace_1, road_1)
@@ -163,20 +200,50 @@ class TestLCSSMatcherReverseMerge(TestCase):
         )
 
         expected_road_1 = [
-            Road("first st", LineString()),
+            Road(
+                "first st",
+                LineString(),
+                origin_junction_id=0,
+                dest_junction_id=1,
+            )
         ]
         expected_road_2 = [
-            Road("second st", LineString()),
-            Road(234, LineString()),
+            Road(
+                "second st",
+                LineString(),
+                origin_junction_id=1,
+                dest_junction_id=2,
+            ),
+            Road(234, LineString(), origin_junction_id=2, dest_junction_id=3),
         ]
         expected_road_3 = [
-            Road("first st", LineString()),
-            Road("second st", LineString()),
-            Road(123, LineString()),
+            Road(
+                "first st",
+                LineString(),
+                origin_junction_id=0,
+                dest_junction_id=1,
+            ),
+            Road(
+                "second st",
+                LineString(),
+                origin_junction_id=1,
+                dest_junction_id=2,
+            ),
+            Road(123, LineString(), origin_junction_id=2, dest_junction_id=5),
         ]
         expected_road_4 = [
-            Road("main st", LineString()),
-            Road("second str", LineString()),
+            Road(
+                "main st",
+                LineString(),
+                origin_junction_id=6,
+                dest_junction_id=7,
+            ),
+            Road(
+                "second str",
+                LineString(),
+                origin_junction_id=7,
+                dest_junction_id=8,
+            ),
         ]
 
         expected_segment_1 = TrajectorySegment(
