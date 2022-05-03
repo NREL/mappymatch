@@ -49,8 +49,12 @@ class Coordinate(NamedTuple):
         new_x, new_y = transformer.transform(self.geom.y, self.geom.x)
 
         if math.isinf(new_x) or math.isinf(new_y):
-            raise ValueError(f"Unable to convert {self.crs} ({self.geom.x}, {self.geom.y}) -> {new_crs} ({new_x}, {new_y})")
+            raise ValueError(
+                f"Unable to convert {self.crs} ({self.geom.x}, {self.geom.y}) -> {new_crs} ({new_x}, {new_y})"
+            )
 
         return Coordinate(
-            coordinate_id=self.coordinate_id, geom=Point(new_x, new_y), crs=new_crs
+            coordinate_id=self.coordinate_id,
+            geom=Point(new_x, new_y),
+            crs=new_crs,
         )

@@ -9,7 +9,10 @@ from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.road import Road
 from mappymatch.constructs.trace import Trace
 from mappymatch.maps.map_interface import MapInterface, PathWeight
-from mappymatch.matchers.lcss.constructs import TrajectorySegment, TrajectoryScheme
+from mappymatch.matchers.lcss.constructs import (
+    TrajectorySegment,
+    TrajectoryScheme,
+)
 from mappymatch.matchers.lcss.utils import merge
 from mappymatch.matchers.matcher_interface import MatchResult
 
@@ -84,9 +87,13 @@ def new_path(
     origin = trace.coords[0]
     destination = trace.coords[-1]
 
-    time_path = road_map.shortest_path(origin, destination, weight=PathWeight.TIME)
+    time_path = road_map.shortest_path(
+        origin, destination, weight=PathWeight.TIME
+    )
 
-    dist_path = road_map.shortest_path(origin, destination, weight=PathWeight.DISTANCE)
+    dist_path = road_map.shortest_path(
+        origin, destination, weight=PathWeight.DISTANCE
+    )
 
     if time_path == dist_path:
         return time_path
@@ -167,7 +174,9 @@ def split_trajectory_segment(
         # can't split
         return [trajectory_segment]
     else:
-        segments = [TrajectorySegment(t, p) for t, p in zip(new_traces, new_paths)]
+        segments = [
+            TrajectorySegment(t, p) for t, p in zip(new_traces, new_paths)
+        ]
 
     merged_segments = merge(segments, _short_segment)
 

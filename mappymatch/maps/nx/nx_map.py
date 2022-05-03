@@ -17,7 +17,6 @@ DEFAULT_GEOMETRY_KEY = "geometry"
 DEFAULT_ROAD_ID_KEY = "road_id"
 
 
-
 class NxMap(MapInterface):
     def __init__(self, graph: nx.MultiDiGraph):
         self.g = graph
@@ -38,7 +37,9 @@ class NxMap(MapInterface):
 
         self.crs = crs
 
-        dist_weight = graph.graph.get("distance_weight", DEFAULT_DISTANCE_WEIGHT)
+        dist_weight = graph.graph.get(
+            "distance_weight", DEFAULT_DISTANCE_WEIGHT
+        )
         time_weight = graph.graph.get("time_weight", DEFAULT_TIME_WEIGHT)
         geom_key = graph.graph.get("geometry_key", DEFAULT_GEOMETRY_KEY)
         road_id_key = graph.graph.get("road_id", DEFAULT_ROAD_ID_KEY)
@@ -46,7 +47,7 @@ class NxMap(MapInterface):
         self._dist_weight = dist_weight
         self._time_weight = time_weight
         self._geom_key = geom_key
-        self._road_id_key = road_id_key 
+        self._road_id_key = road_id_key
 
         self._nodes = [nid for nid in self.g.nodes()]
         self._roads = self._build_rtree()
@@ -61,7 +62,11 @@ class NxMap(MapInterface):
             d,
         ) in self.g.edges(data=True, keys=True):
             geoms.append(Geometry(d[self._geom_key].wkb))
-            road = Road(d[self._road_id_key], d[self._geom_key], metadata={"u": u, "v": v})
+            road = Road(
+                d[self._road_id_key],
+                d[self._geom_key],
+                metadata={"u": u, "v": v},
+            )
             road_lookup.append(road)
 
         self.rtree = STRtree(geoms)
@@ -106,7 +111,9 @@ class NxMap(MapInterface):
             raise ValueError(
                 f"crs of origin {coord.crs} must match crs of map {self.crs}"
             )
-        nearest_index = self.rtree.nearest([Geometry(coord.geom.wkb)]).tolist()[-1][0]
+        nearest_index = self.rtree.nearest(
+            [Geometry(coord.geom.wkb)]
+        ).tolist()[-1][0]
 
         road = self.roads[nearest_index]
 
@@ -165,7 +172,9 @@ class NxMap(MapInterface):
         elif weight == PathWeight.TIME:
             weight_string = self._time_weight
         else:
-            raise TypeError(f"path weight {weight.name} is not supported by the NxMap")
+            raise TypeError(
+                f"path weight {weight.name} is not supported by the NxMap"
+            )
 
         nx_route = nx.shortest_path(
             self.g,
@@ -188,7 +197,9 @@ class NxMap(MapInterface):
 
             path.append(
                 Road(
-                    road_id, geom, metadata={"u": road_start_node, "v": road_end_node}
+                    road_id,
+                    geom,
+                    metadata={"u": road_start_node, "v": road_end_node},
                 )
             )
 
