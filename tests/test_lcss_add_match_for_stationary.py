@@ -14,6 +14,8 @@ from mappymatch.matchers.lcss.ops import add_matches_for_stationary_points
 
 class TestLCSSAddMatchForStationary(TestCase):
     def test_add_matches_no_stationary_points(self):
+        ''' This will test the "null case" which is to say, no stationary points
+        '''
         stationary_index: list[StationaryIndex] = []
 
         # Road(id: str|int, geom: LineString, metadata: dict)
