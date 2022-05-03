@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from mappymatch.matchers.lcss.ops import compress
+from mappymatch.matchers.lcss.utils import compress
 from mappymatch.matchers.lcss.constructs import CuttingPoint
 
 
