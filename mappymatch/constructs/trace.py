@@ -32,7 +32,7 @@ class Trace:
     def __add__(self, other: Trace) -> Trace:
         if self.crs != other.crs:
             raise TypeError(
-                f"cannot add two traces together with different crs"
+                "cannot add two traces together with different crs"
             )
         new_frame = pd.concat([self._frame, other._frame])
         return Trace(new_frame)

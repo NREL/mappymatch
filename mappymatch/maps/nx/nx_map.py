@@ -22,7 +22,7 @@ class NxMap(MapInterface):
     def __init__(self, graph: nx.MultiDiGraph):
         self.g = graph
 
-        if not "crs" in graph.graph:
+        if "crs" not in graph.graph:
             raise ValueError(
                 "Input graph must have pyproj crs;"
                 "You can set it like: `graph.graph['crs'] = pyproj.CRS('EPSG:4326')`"
@@ -73,7 +73,7 @@ class NxMap(MapInterface):
             )
             road_lookup.append(road)
 
-        self.rtree = idx 
+        self.rtree = idx
         return road_lookup
 
     @property
@@ -91,7 +91,7 @@ class NxMap(MapInterface):
         """
         p = Path(file)
         if not p.suffix == ".pickle":
-            raise TypeError(f"NxMap only supports pickle files")
+            raise TypeError("NxMap only supports pickle files")
 
         g = nx.read_gpickle(file)
 
@@ -119,7 +119,7 @@ class NxMap(MapInterface):
 
         if len(nearest_candidates) == 0:
             raise ValueError(f"No roads found for {coord}")
-        
+
         nearest_index = nearest_candidates[0]
 
         road = self.roads[nearest_index]

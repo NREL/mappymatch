@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-from typing import List
-
 from mappymatch.constructs.trace import Trace
 
 
-def split_large_trace(trace: Trace, ideal_size: int) -> List[Trace]:
+def split_large_trace(trace: Trace, ideal_size: int) -> list[Trace]:
     """
     split up a trace into a list of smaller traces
 
