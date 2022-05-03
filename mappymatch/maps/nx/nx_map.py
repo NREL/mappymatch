@@ -73,7 +73,7 @@ class NxMap(MapInterface):
             )
             road_lookup.append(road)
 
-        self.rtree = idx 
+        self.rtree = idx
         return road_lookup
 
     @property
@@ -119,7 +119,7 @@ class NxMap(MapInterface):
 
         if len(nearest_candidates) == 0:
             raise ValueError(f"No roads found for {coord}")
-        
+
         nearest_index = nearest_candidates[0]
 
         road = self.roads[nearest_index]
