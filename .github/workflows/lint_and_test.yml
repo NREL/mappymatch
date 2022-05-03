@@ -23,7 +23,7 @@ jobs:
       run: black mappymatch tests --check
     - name: Run flake8
       if: always()
-      run: flake8 --ignore E501 mappymatch tests
+      run: flake8 --ignore E501,E203 mappymatch tests
     - name: Run mypi
       if: always()
       run: mypy mappymatch tests
