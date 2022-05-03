@@ -188,7 +188,7 @@ class Trace:
                 f"file of type {filepath.suffix} does not appear to be a csv file"
             )
 
-        columns = pd.read_csv(file, nrows=0).columns.to_list()
+        columns = pd.read_csv(filepath, nrows=0).columns.to_list()
         if lat_column in columns and lon_column in columns:
             df = pd.read_csv(filepath)
             return Trace.from_dataframe(df, xy, lat_column, lon_column)
