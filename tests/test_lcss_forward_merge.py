@@ -1,11 +1,12 @@
 from unittest import TestCase
+
 import pandas as pd
 from shapely.geometry import LineString
 
-from mappymatch.matchers.lcss.utils import forward_merge
-from mappymatch.constructs.trace import Trace
 from mappymatch.constructs.road import Road
+from mappymatch.constructs.trace import Trace
 from mappymatch.matchers.lcss.constructs import TrajectorySegment
+from mappymatch.matchers.lcss.utils import forward_merge
 
 
 class TestLCSSMatcherForwardMerge(TestCase):
@@ -95,15 +96,22 @@ class TestLCSSMatcherForwardMerge(TestCase):
             )
         )
 
-        road_1 = [Road("first st", LineString())]
-        road_2 = [Road("second st", LineString())]
-        road_3 = [Road(234, LineString())]
-        road_4 = [
-            Road("first st", LineString()),
-            Road("second st", LineString()),
-            Road(123, LineString()),
+        road_1 = [
+            Road("first st", LineString(), origin_junction_id=3, dest_junction_id=1)
         ]
-        road_5 = [Road("main st", LineString()), Road("second str", LineString())]
+        road_2 = [
+            Road("second st", LineString(), origin_junction_id=1, dest_junction_id=2)
+        ]
+        road_3 = [Road(234, LineString(), origin_junction_id=2, dest_junction_id=3)]
+        road_4 = [
+            Road("first st", LineString(), origin_junction_id=3, dest_junction_id=1),
+            Road("second st", LineString(), origin_junction_id=1, dest_junction_id=2),
+            Road(123, LineString(), origin_junction_id=2, dest_junction_id=4),
+        ]
+        road_5 = [
+            Road("main st", LineString(), origin_junction_id=4, dest_junction_id=5),
+            Road("second str", LineString(), origin_junction_id=5, dest_junction_id=6),
+        ]
 
         segment_1 = TrajectorySegment(trace_1, road_1)
         segment_2 = TrajectorySegment(trace_2, road_2)
@@ -148,18 +156,18 @@ class TestLCSSMatcherForwardMerge(TestCase):
         )
 
         expected_road_1 = [
-            Road("first st", LineString()),
-            Road("second st", LineString()),
+            Road("first st", LineString(), origin_junction_id=3, dest_junction_id=1),
+            Road("second st", LineString(), origin_junction_id=1, dest_junction_id=2),
         ]
         expected_road_2 = [
-            Road(234, LineString()),
-            Road("first st", LineString()),
-            Road("second st", LineString()),
-            Road(123, LineString()),
+            Road(234, LineString(), origin_junction_id=2, dest_junction_id=3),
+            Road("first st", LineString(), origin_junction_id=3, dest_junction_id=1),
+            Road("second st", LineString(), origin_junction_id=1, dest_junction_id=2),
+            Road(123, LineString(), origin_junction_id=2, dest_junction_id=4),
         ]
         expected_road_3 = [
-            Road("main st", LineString()),
-            Road("second str", LineString()),
+            Road("main st", LineString(), origin_junction_id=4, dest_junction_id=5),
+            Road("second str", LineString(), origin_junction_id=5, dest_junction_id=6),
         ]
 
         expected_segment_1 = TrajectorySegment(expected_trace_1, expected_road_1)

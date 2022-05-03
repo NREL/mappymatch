@@ -17,7 +17,6 @@ DEFAULT_GEOMETRY_KEY = "geometry"
 DEFAULT_ROAD_ID_KEY = "road_id"
 
 
-
 class NxMap(MapInterface):
     def __init__(self, graph: nx.MultiDiGraph):
         self.g = graph
@@ -46,7 +45,7 @@ class NxMap(MapInterface):
         self._dist_weight = dist_weight
         self._time_weight = time_weight
         self._geom_key = geom_key
-        self._road_id_key = road_id_key 
+        self._road_id_key = road_id_key
 
         self._nodes = [nid for nid in self.g.nodes()]
         self._roads = self._build_rtree()
@@ -61,7 +60,12 @@ class NxMap(MapInterface):
             d,
         ) in self.g.edges(data=True, keys=True):
             geoms.append(Geometry(d[self._geom_key].wkb))
-            road = Road(d[self._road_id_key], d[self._geom_key], metadata={"u": u, "v": v})
+            road = Road(
+                d[self._road_id_key],
+                d[self._geom_key],
+                origin_junction_id=u,
+                dest_junction_id=v,
+            )
             road_lookup.append(road)
 
         self.rtree = STRtree(geoms)
@@ -148,17 +152,17 @@ class NxMap(MapInterface):
         v_dist = oend.distance(origin.geom)
 
         if u_dist <= v_dist:
-            origin_id = origin_road.metadata["u"]
+            origin_id = origin_road.origin_junction_id
         else:
-            origin_id = origin_road.metadata["v"]
+            origin_id = origin_road.dest_junction_id
 
         u_dist = dstart.distance(destination.geom)
         v_dist = dend.distance(destination.geom)
 
         if u_dist <= v_dist:
-            dest_id = dest_road.metadata["u"]
+            dest_id = dest_road.origin_junction_id
         else:
-            dest_id = dest_road.metadata["v"]
+            dest_id = dest_road.dest_junction_id
 
         if weight == PathWeight.DISTANCE:
             weight_string = self._dist_weight
@@ -187,9 +191,7 @@ class NxMap(MapInterface):
             road_id = edge_data[road_key][self._road_id_key]
 
             path.append(
-                Road(
-                    road_id, geom, metadata={"u": road_start_node, "v": road_end_node}
-                )
+                Road(road_id, geom, metadata={"u": road_start_node, "v": road_end_node})
             )
 
         return path
