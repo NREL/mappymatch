@@ -11,6 +11,18 @@ from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 
 
 def plot_geofence(geofence, m=None):
+    """
+    Plot geofence.
+
+    TODO: maintainer check.
+
+    Args:
+        geofence: ?
+        m: ?
+
+    Returns:
+        The geofence.
+    """
     if not geofence.crs == LATLON_CRS:
         raise NotImplementedError(
             "can currently only plot a geofence with lat lon crs"
