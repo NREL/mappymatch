@@ -93,6 +93,13 @@ This can be installed via pip:
 pip install ".[plot]"
 ```
 
+The final step before creating a new brach for development is to install
+your pre-commit hooks:
+```
+pre-commit install
+```
+
+
 #### 3. Create a new branch for local development
 
 Create a new branch and make the changes, updates, or improvements you desire.
