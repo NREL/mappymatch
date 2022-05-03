@@ -90,7 +90,7 @@ In addition, `plot` is needed to plot the results in the examples.
 
 This can be installed via pip:
 ```
-pip install plot
+pip install ".[plot]"
 ```
 
 #### 3. Create a new branch for local development

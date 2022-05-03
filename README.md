@@ -33,7 +33,7 @@ At least `plot` is needed to run the examples.
 
 This can be installed via pip:
 ```
-pip install plot
+pip install ".[plot]"
 ```
 
 
