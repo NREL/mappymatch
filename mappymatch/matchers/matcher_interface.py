@@ -1,5 +1,5 @@
-from typing import List
 from abc import ABCMeta, abstractmethod
+from typing import List
 
 from mappymatch.constructs.match import Match
 from mappymatch.constructs.trace import Trace

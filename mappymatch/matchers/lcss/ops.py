@@ -1,7 +1,7 @@
 import logging
 import time
 from copy import deepcopy
-from typing import List, NamedTuple, Any
+from typing import Any, List, NamedTuple
 
 import numpy as np
 
@@ -10,8 +10,8 @@ from mappymatch.constructs.road import Road
 from mappymatch.constructs.trace import Trace
 from mappymatch.maps.map_interface import MapInterface, PathWeight
 from mappymatch.matchers.lcss.constructs import (
-    TrajectorySegment,
     TrajectoryScheme,
+    TrajectorySegment,
 )
 from mappymatch.matchers.lcss.utils import merge
 from mappymatch.matchers.matcher_interface import MatchResult

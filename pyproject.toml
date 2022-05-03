@@ -17,3 +17,6 @@ exclude = '''
 include = '\.pyi?$'
 line-length = 79
 target-version = ['py38', ]
+
+[tool.isort]
+profile = "black"
