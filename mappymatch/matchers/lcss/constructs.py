@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 
 
 class CuttingPoint(NamedTuple):
-    trace_index: Union[signedinteger, int]
+    trace_index: Union[signedinteger, int] 
 
 
 class TrajectorySegment(NamedTuple):
