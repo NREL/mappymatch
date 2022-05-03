@@ -48,7 +48,9 @@ def parse_osrm_json(j: dict, trace: Trace) -> List[Match]:
 
         # todo: we need to get geometry and distance info from OSRM if available
         road = Road(road_id=link_id, geom=None)
-        match = Match(road=road, coordinate=trace.coords[i], distance=None)
+        match = Match(
+            road=road, coordinate=trace.coords[i], distance=float("infinity")
+        )
         return match
 
     return [_parse_leg(d, i) for i, d in enumerate(legs)]
