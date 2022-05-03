@@ -59,7 +59,8 @@ class TestLCSSMatcherMerge(TestCase):
 
     def test_merge_left_over_merging(self):
         """
-        This will test that the reverse merge will catch the left over merge candidate from forward merge
+        This will test that the reverse merge will catch the left over merge
+        candidate from forward merge
         """
         starting_list = [1, 2, 3, 4, 5, 2]
         condition = lambda x: x < 3

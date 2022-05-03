@@ -7,7 +7,8 @@ from mappymatch.matchers.lcss.constructs import CuttingPoint
 class TestLCSSMatcherCompress(TestCase):
     def test_compress_one_group_sorted(self):
         """
-        This will test that a sorted list with one compressed group will return correctly
+        This will test that a sorted list with one compressed group will return
+        correctly
         """
         starting_list = [
             CuttingPoint(1),
@@ -27,7 +28,8 @@ class TestLCSSMatcherCompress(TestCase):
 
     def test_compress_one_group_unsorted(self):
         """
-        This will test that a unsorted list with one compressed group will return correctly
+        This will test that a unsorted list with one compressed group will return
+        correctly
         """
         starting_list = [
             CuttingPoint(4),
@@ -47,7 +49,8 @@ class TestLCSSMatcherCompress(TestCase):
 
     def test_compress_multi_single_groups(self):
         """
-        This will test that a sorted list multiple compressed groups of size 1 will result correctly
+        This will test that a sorted list multiple compressed groups of size 1 will
+        result correctly
         """
         starting_list = [
             CuttingPoint(1),
@@ -73,7 +76,8 @@ class TestLCSSMatcherCompress(TestCase):
 
     def test_compress_multi_groups(self):
         """
-        This will test that a sorted list multiple compressed groups of various size will result correctly
+        This will test that a sorted list multiple compressed groups of various size
+        will result correctly
         """
         starting_list = [
             CuttingPoint(1),

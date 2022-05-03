@@ -8,7 +8,7 @@ from mappymatch.constructs.road import Road
 from mappymatch.matchers.lcss.constructs import TrajectorySegment, TrajectoryScheme
 
 
-class TestLCSSMatcherMerge(TestCase):
+class TestLCSSMatcherSameTrajectoryScheme(TestCase):
     def test_same_trajectory_scheme_equal(self):
         """
         This will test that two equal trajectory schemes are the same
