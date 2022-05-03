@@ -10,43 +10,30 @@ Clone the repo:
 git clone https://github.com/NREL/mappymatch.git
 ```
 
-Then, setup a python environment with python >= 3.8:
+Change directory into the mappymatch folder:
 ```
-conda create -n mappymatch python=3.8
-```
-
-Finally, use pip to install the package:
-```
-conda activate mappymatch
-pip install -e <path/to/mappymatch> 
+cd path/to/mappymatch   # from here, your path to mappymatch is likely .\mappymatch\
 ```
 
-There are a couple of extras available:
-
-* `osrm`: Needed by the `OsrmMatcher` to connect to the OSRM API.
-* `plot`: Needed to plot the result.
-
-At least `plot` is needed to run the examples.
-
-### Alternate Methods
-
-If you have issues installing the package and dependencies using pip you can try using conda to
-install the dependencies:
-
-Clone the repo:
-```
-git clone https://github.com/NREL/mappymatch.git
-```
-
-Then, use the provided environment.yml file to install dependencies:
+Then, use the environment.yml file (which was downloaded when you cloned the repo) to install dependencies:
 ```
 conda env create -f environment.yml
 ```
 
-Finally, use pip to install the package:
+To activate the mappymatch environment:
 ```
 conda activate mappymatch
-pip install -e <path/to/mappymatch> 
+```
+
+There are a couple of extras available:
+
+* `plot`: Needed to plot the result.
+
+At least `plot` is needed to run the examples.
+
+This can be installed via pip:
+```
+pip install ".[plot]"
 ```
 
 
