@@ -45,6 +45,9 @@ class Coordinate(NamedTuple):
         return self.geom.y
 
     def to_crs(self, new_crs: CRS) -> Coordinate:
+        new_x: float
+        new_y: float
+        transformer: Transformer
         transformer = Transformer.from_crs(self.crs, new_crs)
         new_x, new_y = transformer.transform(self.geom.y, self.geom.x)
 
