@@ -15,7 +15,12 @@ from mappymatch.matchers.lcss.ops import (
     same_trajectory_scheme,
     split_trajectory_segment,
 )
-from mappymatch.matchers.matcher_interface import *
+from mappymatch.matchers.matcher_interface import (
+    MatcherInterface,
+    MatchResult,
+    Trace,
+    List,
+)
 from mappymatch.utils.crs import XY_CRS
 
 log = logging.getLogger(__name__)
@@ -26,8 +31,10 @@ class LCSSMatcher(MatcherInterface):
     A map matcher based on the paper:
 
     Zhu, Lei, Jacob R. Holden, and Jeffrey D. Gonder.
-    "Trajectory Segmentation Map-Matching Approach for Large-Scale, High-Resolution GPS Data."
-    Transportation Research Record: Journal of the Transportation Research Board 2645 (2017): 67-75.
+    "Trajectory Segmentation Map-Matching Approach for Large-Scale,
+    High-Resolution GPS Data."
+    Transportation Research Record: Journal of the Transportation Research
+    Board 2645 (2017): 67-75.
 
     """
 
@@ -141,7 +148,8 @@ class LCSSMatcher(MatcherInterface):
         processes: int = 1,
     ) -> List[MatchResult]:
         """
-        match traces in batches; useful for large traces as the computational complexity of the scoring
+        match traces in batches; useful for large traces as the computational
+        complexity of the scoring
         function is O(N^2)
 
         :param trace_batch:
