@@ -37,7 +37,9 @@ class NxMap(MapInterface):
 
         self.crs = crs
 
-        dist_weight = graph.graph.get("distance_weight", DEFAULT_DISTANCE_WEIGHT)
+        dist_weight = graph.graph.get(
+            "distance_weight", DEFAULT_DISTANCE_WEIGHT
+        )
         time_weight = graph.graph.get("time_weight", DEFAULT_TIME_WEIGHT)
         geom_key = graph.graph.get("geometry_key", DEFAULT_GEOMETRY_KEY)
         road_id_key = graph.graph.get("road_id", DEFAULT_ROAD_ID_KEY)
@@ -65,6 +67,7 @@ class NxMap(MapInterface):
                 d[self._geom_key],
                 origin_junction_id=u,
                 dest_junction_id=v,
+
             )
             road_lookup.append(road)
 
@@ -110,7 +113,9 @@ class NxMap(MapInterface):
             raise ValueError(
                 f"crs of origin {coord.crs} must match crs of map {self.crs}"
             )
-        nearest_index = self.rtree.nearest([Geometry(coord.geom.wkb)]).tolist()[-1][0]
+        nearest_index = self.rtree.nearest(
+            [Geometry(coord.geom.wkb)]
+        ).tolist()[-1][0]
 
         road = self.roads[nearest_index]
 
@@ -169,7 +174,9 @@ class NxMap(MapInterface):
         elif weight == PathWeight.TIME:
             weight_string = self._time_weight
         else:
-            raise TypeError(f"path weight {weight.name} is not supported by the NxMap")
+            raise TypeError(
+                f"path weight {weight.name} is not supported by the NxMap"
+            )
 
         nx_route = nx.shortest_path(
             self.g,
@@ -192,6 +199,13 @@ class NxMap(MapInterface):
 
             path.append(
                 Road(road_id, geom, metadata={"u": road_start_node, "v": road_end_node})
+                Road(
+                    road_id,
+                    geom,
+                    origin_junction_id=road_start_node, 
+                    dest_junction_id=road_end_node},
+                )
+
             )
 
         return path

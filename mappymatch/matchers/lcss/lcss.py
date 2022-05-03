@@ -83,26 +83,32 @@ class LCSSMatcher(MatcherInterface):
         rc = self.random_cuts
         dt = self.distance_threshold
         initial_segment = (
-            TrajectorySegment(trace=sub_trace, path=new_path(road_map, sub_trace, de))
+            TrajectorySegment(
+                trace=sub_trace, path=new_path(road_map, sub_trace, de)
+            )
             .score_and_match(de, dt)
             .compute_cutting_points(de, ct, rc)
         )
 
-        initial_scheme = split_trajectory_segment(road_map, initial_segment, de)
+        initial_scheme = split_trajectory_segment(
+            road_map, initial_segment, de
+        )
         scheme = initial_scheme
 
         n = 0
         while n < 10:
             next_scheme = []
             for segment in scheme:
-                scored_segment = segment.score_and_match(de, dt).compute_cutting_points(
-                    de, ct, rc
-                )
+                scored_segment = segment.score_and_match(
+                    de, dt
+                ).compute_cutting_points(de, ct, rc)
                 if scored_segment.score >= self.similarity_cutoff:
                     next_scheme.append(scored_segment)
                 else:
                     # split and check the score
-                    new_split = split_trajectory_segment(road_map, scored_segment, de)
+                    new_split = split_trajectory_segment(
+                        road_map, scored_segment, de
+                    )
                     joined_segment = ft.reduce(
                         _join_segment, new_split
                     ).score_and_match(de, dt)
@@ -117,7 +123,9 @@ class LCSSMatcher(MatcherInterface):
 
             scheme = next_scheme
 
-        joined_segment = ft.reduce(_join_segment, scheme).score_and_match(de, dt)
+        joined_segment = ft.reduce(_join_segment, scheme).score_and_match(
+            de, dt
+        )
 
         matches = joined_segment.matches
 

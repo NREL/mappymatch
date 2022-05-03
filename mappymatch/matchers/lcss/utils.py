@@ -117,6 +117,8 @@ def compress(cutting_points: List) -> Generator:
     :return: the compressed list of cutting points
     """
     sorted_cuts = sorted(cutting_points, key=lambda c: c.trace_index)
-    for k, g in groupby(enumerate(sorted_cuts), lambda x: x[0] - x[1].trace_index):
+    for k, g in groupby(
+        enumerate(sorted_cuts), lambda x: x[0] - x[1].trace_index
+    ):
         all_cps = list(map(itemgetter(1), g))
         yield all_cps[int(len(all_cps) / 2)]

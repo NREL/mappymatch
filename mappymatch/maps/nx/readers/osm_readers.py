@@ -23,17 +23,20 @@ METERS_TO_KM = 1 / 1000
 
 class NetworkType(Enum):
     """Network Types suuported by osmnx"""
-    all_private = 'all_private'
-    all = 'all'
-    bike = 'bike'
-    drive = 'drive'
-    drive_service = 'drive_service'
-    walk = 'walk'
+
+    all_private = "all_private"
+    all = "all"
+    bike = "bike"
+    drive = "drive"
+    drive_service = "drive_service"
+    walk = "walk"
 
 
-def read_osm_nxmap(geofence: Geofence,
-                   xy: bool = True,
-                   network_type: NetworkType = NetworkType.drive) -> NxMap:
+def read_osm_nxmap(
+    geofence: Geofence,
+    xy: bool = True,
+    network_type: NetworkType = NetworkType.drive,
+) -> NxMap:
     if geofence.crs != LATLON_CRS:
         raise TypeError(
             f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}"
@@ -91,10 +94,14 @@ def compress(g):
     return g
 
 
-def get_osm_networkx_graph(geofence: Geofence,
-                           xy: bool = True,
-                           network_type: NetworkType = NetworkType.drive) -> nx.MultiDiGraph:
-    g = ox.graph_from_polygon(geofence.geometry, network_type=network_type.value)
+def get_osm_networkx_graph(
+    geofence: Geofence,
+    xy: bool = True,
+    network_type: NetworkType = NetworkType.drive,
+) -> nx.MultiDiGraph:
+    g = ox.graph_from_polygon(
+        geofence.geometry, network_type=network_type.value
+    )
 
     if xy:
         g = ox.project_graph(g, XY_CRS)
@@ -124,7 +131,9 @@ def get_osm_networkx_graph(geofence: Geofence,
             # we'll build a pseudo-geometry using the x, y data from the nodes
             unode = g.nodes[u]
             vnode = g.nodes[v]
-            line = LineString([(unode["x"], unode["y"]), (vnode["x"], vnode["y"])])
+            line = LineString(
+                [(unode["x"], unode["y"]), (vnode["x"], vnode["y"])]
+            )
             d["geometry"] = line
             no_geom += 1
     if no_geom:

@@ -31,7 +31,9 @@ class Trace:
 
     def __add__(self, other: Trace) -> Trace:
         if self.crs != other.crs:
-            raise TypeError(f"cannot add two traces together with different crs")
+            raise TypeError(
+                f"cannot add two traces together with different crs"
+            )
         new_frame = pd.concat([self._frame, other._frame])
         return Trace(new_frame)
 
@@ -60,7 +62,9 @@ class Trace:
             frame = self._frame
 
         geohashes = set(
-            frame.geometry.apply(lambda g: encode(g.y, g.x, precision)).unique()
+            frame.geometry.apply(
+                lambda g: encode(g.y, g.x, precision)
+            ).unique()
         )
 
         return geohashes
@@ -121,7 +125,9 @@ class Trace:
         :return: the trace built from the dataframe
         """
         frame = GeoDataFrame(
-            geometry=points_from_xy(dataframe[lon_column], dataframe[lat_column]),
+            geometry=points_from_xy(
+                dataframe[lon_column], dataframe[lat_column]
+            ),
             index=dataframe.index,
             crs=LATLON_CRS,
         )
@@ -153,8 +159,8 @@ class Trace:
         data = open(filepath).read()
 
         lat_column, lon_column = "lat", "lon"
-        lat = np.array(re.findall(r'lat="([^"]+)',data),dtype=float)
-        lon = np.array(re.findall(r'lon="([^"]+)',data),dtype=float)
+        lat = np.array(re.findall(r'lat="([^"]+)', data), dtype=float)
+        lon = np.array(re.findall(r'lon="([^"]+)', data), dtype=float)
         df = pd.DataFrame(zip(lat, lon), columns=[lat_column, lon_column])
         return Trace.from_dataframe(df, xy, lat_column, lon_column)
 

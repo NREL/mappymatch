@@ -66,7 +66,9 @@ class TestLCSSMatcherForwardMerge(TestCase):
         """
         # setup inputted trajectory segments
         trace_1 = Trace.from_dataframe(
-            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
+            pd.DataFrame(
+                data={"latitude": [39.655193], "longitude": [-104.919294]}
+            )
         )
         trace_2 = Trace.from_dataframe(
             pd.DataFrame(
@@ -77,7 +79,9 @@ class TestLCSSMatcherForwardMerge(TestCase):
             )
         )
         trace_3 = Trace.from_dataframe(
-            pd.DataFrame(data={"latitude": [39.656103], "longitude": [-104.919698]})
+            pd.DataFrame(
+                data={"latitude": [39.656103], "longitude": [-104.919698]}
+            )
         )
         trace_4 = Trace.from_dataframe(
             pd.DataFrame(
@@ -112,6 +116,7 @@ class TestLCSSMatcherForwardMerge(TestCase):
             Road("main st", LineString(), origin_junction_id=6, dest_junction_id=7),
             Road("second str", LineString(), origin_junction_id=7, dest_junction_id=8),
         ]
+
 
         segment_1 = TrajectorySegment(trace_1, road_1)
         segment_2 = TrajectorySegment(trace_2, road_2)
@@ -180,10 +185,18 @@ class TestLCSSMatcherForwardMerge(TestCase):
             Road("second str", LineString(), origin_junction_id=7, dest_junction_id=8),
         ]
 
-        expected_segment_1 = TrajectorySegment(expected_trace_1, expected_road_1)
-        expected_segment_2 = TrajectorySegment(expected_trace_2, expected_road_2)
-        expected_segment_3 = TrajectorySegment(expected_trace_3, expected_road_3)
-        expected_segment_4 = TrajectorySegment(expected_trace_4, expected_road_4)
+        expected_segment_1 = TrajectorySegment(
+            expected_trace_1, expected_road_1
+        )
+        expected_segment_2 = TrajectorySegment(
+            expected_trace_2, expected_road_2
+        )
+        expected_segment_3 = TrajectorySegment(
+            expected_trace_3, expected_road_3
+        )
+        expected_segment_4 = TrajectorySegment(
+            expected_trace_4, expected_road_4
+        )
 
         expected_list = [
             expected_segment_1,
@@ -206,11 +219,15 @@ class TestLCSSMatcherForwardMerge(TestCase):
             for expected_trace, resulted_trace in zip(
                 expected_trajectory.trace, resulted_trajectory.trace
             ):
-                self.assertEqual(len(expected_trace.coords), len(resulted_trace.coords))
+                self.assertEqual(
+                    len(expected_trace.coords), len(resulted_trace.coords)
+                )
                 for expected_coord, resulted_coord in zip(
                     expected_trace.coords, resulted_trace.coords
                 ):
                     self.assertEqual(expected_coord.geom, resulted_coord.geom)
 
             # confirm that the paths are the same
-            self.assertListEqual(expected_trajectory.path, resulted_trajectory.path)
+            self.assertListEqual(
+                expected_trajectory.path, resulted_trajectory.path
+            )

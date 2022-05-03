@@ -12,7 +12,9 @@ from mappymatch.utils.crs import XY_CRS, LATLON_CRS
 
 def plot_geofence(geofence, m=None):
     if not geofence.crs == LATLON_CRS:
-        raise NotImplementedError("can currently only plot a geofence with lat lon crs")
+        raise NotImplementedError(
+            "can currently only plot a geofence with lat lon crs"
+        )
 
     if not m:
         c = geofence.geometry.centroid.coords[0]
@@ -36,7 +38,9 @@ def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
             location=(c.y, c.x), radius=5, color=point_color, tooltip=i
         ).add_to(m)
 
-    folium.PolyLine([(p.y, p.x) for p in trace.coords], color=line_color).add_to(m)
+    folium.PolyLine(
+        [(p.y, p.x) for p in trace.coords], color=line_color
+    ).add_to(m)
 
     return m
 
@@ -80,16 +84,16 @@ def plot_matches(matches: List[Match], road_map: NxMap):
 
     road_df = pd.DataFrame([match_to_road(m) for m in matches if m.road])
     road_df = road_df.loc[road_df.road_id.shift() != road_df.road_id]
-    road_gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=XY_CRS).drop(
-        columns=["geom"]
-    )
+    road_gdf = gpd.GeoDataFrame(
+        road_df, geometry=road_df.geom, crs=XY_CRS
+    ).drop(columns=["geom"])
     road_gdf = road_gdf.to_crs(LATLON_CRS)
 
     coord_df = pd.DataFrame([match_to_coord(m) for m in matches if m.road])
 
-    coord_gdf = gpd.GeoDataFrame(coord_df, geometry=coord_df.geom, crs=XY_CRS).drop(
-        columns=["geom"]
-    )
+    coord_gdf = gpd.GeoDataFrame(
+        coord_df, geometry=coord_df.geom, crs=XY_CRS
+    ).drop(columns=["geom"])
     coord_gdf = coord_gdf.to_crs(LATLON_CRS)
 
     mid_i = int(len(coord_gdf) / 2)
@@ -118,7 +122,9 @@ def plot_map(tmap: NxMap, m=None):
     # TODO make this generic to all map types, not just NxMap
     roads = list(tmap.g.edges(data=True))
     road_df = pd.DataFrame([r[2] for r in roads])
-    gdf = gpd.GeoDataFrame(road_df, geometry=road_df[tmap._geom_key], crs=tmap.crs)
+    gdf = gpd.GeoDataFrame(
+        road_df, geometry=road_df[tmap._geom_key], crs=tmap.crs
+    )
     if gdf.crs != LATLON_CRS:
         gdf = gdf.to_crs(LATLON_CRS)
 
