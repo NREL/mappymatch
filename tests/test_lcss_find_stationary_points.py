@@ -158,7 +158,7 @@ class TestLCSSMatcherFindStationaryPoints(TestCase):
     def test_find_stationary_points_mathing_points_just_under_limit(self):
         """
         This will test that find_stationary_point can find the stationary points that
-        are have a distance difference just under .001, making them close enough to be
+        have a distance difference just under .001, making them close enough to be
         stationary
         """
         trace = Trace.from_dataframe(
@@ -182,9 +182,8 @@ class TestLCSSMatcherFindStationaryPoints(TestCase):
 
     def test_find_stationary_points_mathing_points_just_over_limit(self):
         """
-        This will test that find_stationary_point can find the stationary points that
-        are have a distance difference just over .001, making them close enough to be
-        stationary
+        This will test that find_stationary_point can find points that have a distance
+        difference just over .001, making them far enough to not be stationary
         """
         trace = Trace.from_dataframe(
             pd.DataFrame(
