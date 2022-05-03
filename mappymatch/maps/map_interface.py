@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+from abc import ABCMeta, abstractmethod
 from enum import Enum
 from typing import List
 
 from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.road import Road
-from abc import ABCMeta, abstractmethod
 
 
 class PathWeight(Enum):

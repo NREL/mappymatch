@@ -1,9 +1,9 @@
 import logging as log
+from enum import Enum
 
 import networkx as nx
 import osmnx as ox
 from shapely.geometry import LineString
-from enum import Enum
 
 from mappymatch.constructs.geofence import Geofence
 from mappymatch.maps.nx.nx_map import NxMap
