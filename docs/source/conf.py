@@ -18,7 +18,7 @@ print(os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Yet Another Map Matcher'
+project = 'Mappymatch'
 copyright = '2022, National Renewable Energy Laboratory'
 author = 'National Renewable Energy Laboratory'
 
