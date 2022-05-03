@@ -1,7 +1,7 @@
 import functools as ft
 from itertools import groupby
 from operator import itemgetter
-from typing import List, Callable, Any, Generator
+from typing import Any, Callable, Generator, List
 
 
 def forward_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:

@@ -7,7 +7,7 @@ from shapely.geometry import Point
 
 from mappymatch.constructs.match import Match
 from mappymatch.maps.nx.nx_map import NxMap
-from mappymatch.utils.crs import XY_CRS, LATLON_CRS
+from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 
 
 def plot_geofence(geofence, m=None):

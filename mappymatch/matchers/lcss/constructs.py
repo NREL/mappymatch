@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import random
 import time
-from typing import NamedTuple, List, Union
+from typing import List, NamedTuple, Union
 
 import numpy as np
 from numpy import ndarray, signedinteger
@@ -12,7 +12,7 @@ from mappymatch.constructs.match import Match
 from mappymatch.constructs.road import Road
 from mappymatch.constructs.trace import Trace
 from mappymatch.matchers.lcss.utils import compress
-from mappymatch.utils.geo import road_to_coord_dist, coord_to_coord_dist
+from mappymatch.utils.geo import coord_to_coord_dist, road_to_coord_dist
 
 log = logging.getLogger(__name__)
 

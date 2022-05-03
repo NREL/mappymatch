@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import math
-from typing import NamedTuple, Any
+from typing import Any, NamedTuple
 
-from pyproj import Transformer, CRS
+from pyproj import CRS, Transformer
 from shapely.geometry import Point
 
 from mappymatch.utils.crs import LATLON_CRS

@@ -1,9 +1,10 @@
 from __future__ import annotations
+
 from pathlib import Path
 from typing import List, Union
 
 import networkx as nx
-from pygeos import STRtree, Geometry
+from pygeos import Geometry, STRtree
 from shapely.geometry import Point
 
 from mappymatch.constructs.coordinate import Coordinate

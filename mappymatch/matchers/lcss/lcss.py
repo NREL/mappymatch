@@ -8,12 +8,12 @@ from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.maps.map_interface import MapInterface
 from mappymatch.matchers.lcss.constructs import TrajectorySegment
 from mappymatch.matchers.lcss.ops import (
-    new_path,
-    split_trajectory_segment,
-    same_trajectory_scheme,
-    find_stationary_points,
-    drop_stationary_points,
     add_matches_for_stationary_points,
+    drop_stationary_points,
+    find_stationary_points,
+    new_path,
+    same_trajectory_scheme,
+    split_trajectory_segment,
 )
 from mappymatch.matchers.matcher_interface import *
 from mappymatch.utils.crs import XY_CRS
