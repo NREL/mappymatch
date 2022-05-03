@@ -101,20 +101,52 @@ class TestLCSSMatcherForwardMerge(TestCase):
         )
 
         road_1 = [
-            Road("first st", LineString(), origin_junction_id=3, dest_junction_id=1)
+            Road(
+                "first st",
+                LineString(),
+                origin_junction_id=3,
+                dest_junction_id=1,
+            )
         ]
         road_2 = [
-            Road("second st", LineString(), origin_junction_id=1, dest_junction_id=2)
+            Road(
+                "second st",
+                LineString(),
+                origin_junction_id=1,
+                dest_junction_id=2,
+            )
         ]
-        road_3 = [Road(234, LineString(), origin_junction_id=2, dest_junction_id=3)]
+        road_3 = [
+            Road(234, LineString(), origin_junction_id=2, dest_junction_id=3)
+        ]
         road_4 = [
-            Road("first st", LineString(), origin_junction_id=3, dest_junction_id=1),
-            Road("second st", LineString(), origin_junction_id=1, dest_junction_id=2),
+            Road(
+                "first st",
+                LineString(),
+                origin_junction_id=3,
+                dest_junction_id=1,
+            ),
+            Road(
+                "second st",
+                LineString(),
+                origin_junction_id=1,
+                dest_junction_id=2,
+            ),
             Road(123, LineString(), origin_junction_id=2, dest_junction_id=4),
         ]
         road_5 = [
-            Road("main st", LineString(), origin_junction_id=4, dest_junction_id=5),
-            Road("second str", LineString(), origin_junction_id=5, dest_junction_id=6),
+            Road(
+                "main st",
+                LineString(),
+                origin_junction_id=4,
+                dest_junction_id=5,
+            ),
+            Road(
+                "second str",
+                LineString(),
+                origin_junction_id=5,
+                dest_junction_id=6,
+            ),
         ]
 
         segment_1 = TrajectorySegment(trace_1, road_1)
@@ -165,18 +197,48 @@ class TestLCSSMatcherForwardMerge(TestCase):
         )
 
         expected_road_1 = [
-            Road("first st", LineString(), origin_junction_id=3, dest_junction_id=1),
-            Road("second st", LineString(), origin_junction_id=1, dest_junction_id=2),
+            Road(
+                "first st",
+                LineString(),
+                origin_junction_id=3,
+                dest_junction_id=1,
+            ),
+            Road(
+                "second st",
+                LineString(),
+                origin_junction_id=1,
+                dest_junction_id=2,
+            ),
         ]
         expected_road_2 = [
             Road(234, LineString(), origin_junction_id=2, dest_junction_id=3),
-            Road("first st", LineString(), origin_junction_id=3, dest_junction_id=1),
-            Road("second st", LineString(), origin_junction_id=1, dest_junction_id=2),
+            Road(
+                "first st",
+                LineString(),
+                origin_junction_id=3,
+                dest_junction_id=1,
+            ),
+            Road(
+                "second st",
+                LineString(),
+                origin_junction_id=1,
+                dest_junction_id=2,
+            ),
             Road(123, LineString(), origin_junction_id=2, dest_junction_id=4),
         ]
         expected_road_3 = [
-            Road("main st", LineString(), origin_junction_id=4, dest_junction_id=5),
-            Road("second str", LineString(), origin_junction_id=5, dest_junction_id=6),
+            Road(
+                "main st",
+                LineString(),
+                origin_junction_id=4,
+                dest_junction_id=5,
+            ),
+            Road(
+                "second str",
+                LineString(),
+                origin_junction_id=5,
+                dest_junction_id=6,
+            ),
         ]
 
         expected_segment_1 = TrajectorySegment(

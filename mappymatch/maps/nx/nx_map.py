@@ -67,7 +67,6 @@ class NxMap(MapInterface):
                 d[self._geom_key],
                 origin_junction_id=u,
                 dest_junction_id=v,
-
             )
             road_lookup.append(road)
 
@@ -198,14 +197,12 @@ class NxMap(MapInterface):
             road_id = edge_data[road_key][self._road_id_key]
 
             path.append(
-                Road(road_id, geom, metadata={"u": road_start_node, "v": road_end_node})
                 Road(
                     road_id,
                     geom,
-                    origin_junction_id=road_start_node, 
-                    dest_junction_id=road_end_node},
+                    origin_junction_id=road_start_node,
+                    dest_junction_id=road_end_node,
                 )
-
             )
 
         return path
