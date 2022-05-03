@@ -20,3 +20,6 @@ target-version = ['py38', ]
 
 [tool.isort]
 profile = "black"
+line_length = 79
+skip_gitignore = true
+filter_files = true

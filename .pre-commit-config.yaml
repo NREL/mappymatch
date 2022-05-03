@@ -9,4 +9,3 @@ repos:
     hooks:
     -   id: isort
         name: isort (python)
-        args: ["--profile", "black", "--filter-files", "--skip-gitignore", "-l", "79"]
