@@ -17,7 +17,9 @@ def split_large_trace(trace: Trace, ideal_size: int) -> List[Trace]:
     if len(trace) <= ideal_size:
         return [trace]
     else:
-        ts = [trace[i : i + ideal_size] for i in range(0, len(trace), ideal_size)]
+        ts = [
+            trace[i : i + ideal_size] for i in range(0, len(trace), ideal_size)
+        ]
 
         # check to make sure the last trace isn't too small
         if len(ts[-1]) <= 10:
@@ -27,7 +29,9 @@ def split_large_trace(trace: Trace, ideal_size: int) -> List[Trace]:
         return ts
 
 
-def remove_bad_start_from_trace(trace: Trace, distance_threshold: float) -> Trace:
+def remove_bad_start_from_trace(
+    trace: Trace, distance_threshold: float
+) -> Trace:
     """
     remove points at the beginning of a trace if there is a gap larger than the distance threshold
 

@@ -6,29 +6,29 @@ Helper functions and classes.
 Geo Utilities
 -------------
 
-.. automodule:: yamm.utils.geo
+.. automodule:: mappymatch.utils.geo
     :members:
 
 Geo Hash Utilities
 ------------------
 
-.. automodule:: yamm.utils.geohash
+.. automodule:: mappymatch.utils.geohash
     :members:
 
 Plot Utilities
 ------------------
 
-.. automodule:: yamm.utils.plot
+.. automodule:: mappymatch.utils.plot
     :members:
 
 Process Trace Utilities
 -----------------------
 
-.. automodule:: yamm.utils.process_trace
+.. automodule:: mappymatch.utils.process_trace
     :members:
 
 URL Utilities
 -------------
 
-.. automodule:: yamm.utils.url
+.. automodule:: mappymatch.utils.url
     :members:

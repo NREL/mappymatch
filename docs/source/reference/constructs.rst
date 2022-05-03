@@ -4,17 +4,17 @@ Constructs
 
 Constructs are the fundamental datastructures shared between all matching implementations.
 
-.. automodule:: yamm.constructs.coordinate
+.. automodule:: mappymatch.constructs.coordinate
     :members:
 
-.. automodule:: yamm.constructs.geofence
+.. automodule:: mappymatch.constructs.geofence
     :members:
 
-.. automodule:: yamm.constructs.match
+.. automodule:: mappymatch.constructs.match
     :members:
 
-.. automodule:: yamm.constructs.road
+.. automodule:: mappymatch.constructs.road
     :members:
 
-.. automodule:: yamm.constructs.trace
+.. automodule:: mappymatch.constructs.trace
     :members:

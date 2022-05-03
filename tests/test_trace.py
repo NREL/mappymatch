@@ -39,7 +39,10 @@ class TestTrace(TestCase):
         # in wgs84 lat lon
         pt1 = xy_to_latlon(trace.coords[0].x, trace.coords[0].y)
         pt2 = xy_to_latlon(trace.coords[-1].x, trace.coords[-1].y)
-        target_pt1, target_pt2 = (39.74445, -104.97347), (39.74392, -104.9734299)
+        target_pt1, target_pt2 = (39.74445, -104.97347), (
+            39.74392,
+            -104.9734299,
+        )
         self.assertAlmostEqual(pt1[0], target_pt1[0])
         self.assertAlmostEqual(pt1[1], target_pt1[1])
         self.assertAlmostEqual(pt2[0], target_pt2[0])

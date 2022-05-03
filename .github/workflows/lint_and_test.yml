@@ -1,0 +1,36 @@
+name: Lint and Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install black flake8 mypy usort
+    - name: Run black
+      if: always()
+      run: black mappymatch tests --check
+    - name: Run flake8
+      if: always()
+      run: flake8 --ignore E501 mappymatch tests
+    - name: Run mypi
+      if: always()
+      run: mypy mappymatch tests
+    - name: Run usort
+      if: always()
+      run: usort check mappymatch tests
+    - name: Run Tests
+      if: always()
+      run: |
+        echo "Not yet implemented"

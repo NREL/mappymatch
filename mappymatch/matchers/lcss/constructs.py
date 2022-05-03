@@ -107,7 +107,9 @@ class TrajectorySegment(NamedTuple):
                     point_similarity = 0
 
                 C[i][j] = max(
-                    (C[i - 1][j - 1] + point_similarity), C[i][j - 1], C[i - 1][j]
+                    (C[i - 1][j - 1] + point_similarity),
+                    C[i][j - 1],
+                    C[i - 1][j],
                 )
 
             if min_dist > max_distance:
@@ -158,7 +160,9 @@ class TrajectorySegment(NamedTuple):
                 p1 = np.argmax(
                     [coord_to_coord_dist(start, c) for c in self.trace.coords]
                 )
-                p2 = np.argmax([coord_to_coord_dist(end, c) for c in self.trace.coords])
+                p2 = np.argmax(
+                    [coord_to_coord_dist(end, c) for c in self.trace.coords]
+                )
                 assert not isinstance(p1, ndarray)
                 assert not isinstance(p2, ndarray)
                 cp1 = CuttingPoint(p1)
@@ -194,7 +198,8 @@ class TrajectorySegment(NamedTuple):
         n = len(self.trace)
         final_cuts = list(
             filter(
-                lambda cp: cp.trace_index not in [0, 1, n - 2, n - 1], compressed_cuts
+                lambda cp: cp.trace_index not in [0, 1, n - 2, n - 1],
+                compressed_cuts,
             )
         )
 
