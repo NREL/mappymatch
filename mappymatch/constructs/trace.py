@@ -23,7 +23,7 @@ class Trace:
     def __init__(self, frame: GeoDataFrame):
         self._frame = frame
 
-    def __getitem__(self, i):
+    def __getitem__(self, i) -> Trace:
         if isinstance(i, int):
             i = [i]
         new_frame = self._frame.iloc[i]
