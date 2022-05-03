@@ -1,9 +1,13 @@
+from __future__ import annotations
+
 import logging
 
 import requests
 
+from mappymatch.constructs.match import Match
 from mappymatch.constructs.road import Road
-from mappymatch.matchers.matcher_interface import *
+from mappymatch.constructs.trace import Trace
+from mappymatch.matchers.matcher_interface import MatcherInterface, MatchResult
 from mappymatch.utils.crs import LATLON_CRS
 from mappymatch.utils.url import multiurljoin
 
@@ -12,7 +16,7 @@ log = logging.getLogger(__name__)
 DEFAULT_OSRM_ADDRESS = "http://router.project-osrm.org"
 
 
-def parse_osrm_json(j: dict, trace: Trace) -> List[Match]:
+def parse_osrm_json(j: dict, trace: Trace) -> list[Match]:
     """
     parse the json response from the osrm match service
 
@@ -100,5 +104,5 @@ class OsrmMatcher(MatcherInterface):
 
         return result
 
-    def match_trace_batch(self, trace_batch: List[Trace]) -> List[MatchResult]:
+    def match_trace_batch(self, trace_batch: list[Trace]) -> list[MatchResult]:
         return [self.match_trace(t) for t in trace_batch]
