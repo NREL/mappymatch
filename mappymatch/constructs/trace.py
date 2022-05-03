@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+import re
 from functools import cached_property
 from pathlib import Path
-from typing import List, Union, Optional, Set
-import re
+from typing import List, Optional, Set, Union
 
 import numpy as np
 import pandas as pd

@@ -9,7 +9,7 @@ from mappymatch.matchers.lcss.constructs import TrajectorySegment
 from mappymatch.matchers.lcss.utils import reverse_merge
 
 
-class TestLCSSMatcherForwardMerge(TestCase):
+class TestLCSSMatcherReverseMerge(TestCase):
     def test_reverse_merge_beginning_no_merge(self):
         """
         This will test that reverse_merge can merge items at the beginning of the list

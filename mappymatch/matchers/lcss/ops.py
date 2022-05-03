@@ -1,7 +1,7 @@
 import logging
 import time
 from copy import deepcopy
-from typing import List, NamedTuple, Any
+from typing import Any, List, NamedTuple
 
 import numpy as np
 
@@ -10,8 +10,8 @@ from mappymatch.constructs.road import Road
 from mappymatch.constructs.trace import Trace
 from mappymatch.maps.map_interface import MapInterface, PathWeight
 from mappymatch.matchers.lcss.constructs import (
-    TrajectorySegment,
     TrajectoryScheme,
+    TrajectorySegment,
 )
 from mappymatch.matchers.lcss.utils import merge
 from mappymatch.matchers.matcher_interface import MatchResult
@@ -72,13 +72,12 @@ def new_path(
     distance_epsilon: float,
 ) -> List[Road]:
     """
-    Computes a shortest time and shortest distance path and returns the path that
-    most closely matches the trace.
+    Computes a shortest time and shortest distance path and returns the path
+    that most closely matches the trace.
 
     :param road_map:
     :param trace:
     :param distance_epsilon:
-
     :return:
     """
     if len(trace.coords) < 1:
@@ -124,7 +123,8 @@ def split_trajectory_segment(
     :param trajectory_segment: the trajectory segment to split
     :param distance_epsilon: the distance epsilon
 
-    :return: a list of split segments or the original segment if it can't be split
+    :return: a list of split segments or the original segment if it can't be
+    split
     """
     trace = trajectory_segment.trace
     cutting_points = trajectory_segment.cutting_points
@@ -140,9 +140,6 @@ def split_trajectory_segment(
     elif len(cutting_points) < 1:
         # no points to cut
         return [trajectory_segment]
-
-    o = trace.coords[0]
-    d = trace.coords[-1]
 
     new_paths = []
     new_traces = []
@@ -266,8 +263,7 @@ def add_matches_for_stationary_points(
     stationary_index: List[StationaryIndex],
 ) -> MatchResult:
     """
-    takes a set of matches and adds duplicate match entries for stationary points
-
+    takes a set of matches and adds duplicate match entries for stationary
     :param matches:
     :param stationary_index:
 

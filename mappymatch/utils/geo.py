@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from pyproj import Transformer, CRS
+from pyproj import CRS, Transformer
 from shapely.geometry import LineString
 from shapely.ops import transform
 
@@ -8,7 +8,7 @@ from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.geofence import Geofence
 from mappymatch.constructs.road import Road
 from mappymatch.constructs.trace import Trace
-from mappymatch.utils.crs import XY_CRS, LATLON_CRS
+from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 
 
 def xy_to_latlon(x: float, y: float) -> Tuple[float, float]:

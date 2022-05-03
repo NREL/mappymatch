@@ -1,16 +1,16 @@
 import logging as log
+from enum import Enum
 
 import networkx as nx
 import osmnx as ox
 from shapely.geometry import LineString
-from enum import Enum
 
 from mappymatch.constructs.geofence import Geofence
 from mappymatch.maps.nx.nx_map import NxMap
 from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 from mappymatch.utils.exceptions import MapException
 
-ox.config(log_console=True)
+ox.config(log_console=False)
 log.basicConfig(level=log.INFO)
 
 DEFAULT_MPH = 30

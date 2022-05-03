@@ -1,9 +1,10 @@
 from __future__ import annotations
+
 from pathlib import Path
 from typing import List, Union
 
 import networkx as nx
-from pygeos import STRtree, Geometry
+import rtree as rt
 from shapely.geometry import Point
 
 from mappymatch.constructs.coordinate import Coordinate
@@ -53,15 +54,17 @@ class NxMap(MapInterface):
         self._roads = self._build_rtree()
 
     def _build_rtree(self) -> List[Road]:
-        geoms = []
         road_lookup = []
-        for (
-            u,
-            v,
-            rid,
-            d,
-        ) in self.g.edges(data=True, keys=True):
-            geoms.append(Geometry(d[self._geom_key].wkb))
+
+        idx = rt.index.Index()
+        for i, gtuple in enumerate(self.g.edges(data=True, keys=True)):
+            u, v, k, d = gtuple
+            # rid = (u, v, k)
+            geom = d[self._geom_key]
+            # segment = list(geom.coords)
+            box = geom.bounds
+            idx.insert(i, box)
+
             road = Road(
                 d[self._road_id_key],
                 d[self._geom_key],
@@ -70,7 +73,7 @@ class NxMap(MapInterface):
             )
             road_lookup.append(road)
 
-        self.rtree = STRtree(geoms)
+        self.rtree = idx 
         return road_lookup
 
     @property
@@ -112,9 +115,12 @@ class NxMap(MapInterface):
             raise ValueError(
                 f"crs of origin {coord.crs} must match crs of map {self.crs}"
             )
-        nearest_index = self.rtree.nearest(
-            [Geometry(coord.geom.wkb)]
-        ).tolist()[-1][0]
+        nearest_candidates = list(self.rtree.nearest(coord.geom.bounds, 1))
+
+        if len(nearest_candidates) == 0:
+            raise ValueError(f"No roads found for {coord}")
+        
+        nearest_index = nearest_candidates[0]
 
         road = self.roads[nearest_index]
 
