@@ -44,7 +44,7 @@ def read_osm_nxmap(geofence: Geofence,
     return NxMap(g)
 
 
-def parse_road_network_graph(g) -> str:
+def parse_road_network_graph(g) -> nx.MultiDiGraph:
     length_meters: dict
     length_meters = nx.get_edge_attributes(g, "length")
     kilometers = {k: v * METERS_TO_KM for k, v in length_meters.items()}
