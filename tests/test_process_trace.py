@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from tests import get_test_dir
 from mappymatch.constructs.trace import Trace
 from mappymatch.utils.process_trace import remove_bad_start_from_trace
+from tests import get_test_dir
 
 
 class TestProcessTrace(TestCase):

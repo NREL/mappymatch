@@ -1,11 +1,12 @@
 from unittest import TestCase
+
 import pandas as pd
 from shapely.geometry import LineString
 
-from mappymatch.matchers.lcss.utils import merge
-from mappymatch.constructs.trace import Trace
 from mappymatch.constructs.road import Road
+from mappymatch.constructs.trace import Trace
 from mappymatch.matchers.lcss.constructs import TrajectorySegment
+from mappymatch.matchers.lcss.utils import merge
 
 
 class TestLCSSMatcherMerge(TestCase):
