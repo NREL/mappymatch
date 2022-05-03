@@ -11,7 +11,7 @@ class Geofence(NamedTuple):
     geometry: Polygon
 
     @classmethod
-    def from_geojson(cls, file: Union[Path, str]):
+    def from_geojson(cls, file: Union[Path, str]) -> Geofence:
         filepath = Path(file)
         frame = read_file(filepath)
 
