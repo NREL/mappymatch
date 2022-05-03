@@ -1,14 +1,15 @@
 from unittest import TestCase
+
 import pandas as pd
 from shapely.geometry import LineString
 
-from mappymatch.matchers.lcss.ops import same_trajectory_scheme
-from mappymatch.constructs.trace import Trace
 from mappymatch.constructs.road import Road
+from mappymatch.constructs.trace import Trace
 from mappymatch.matchers.lcss.constructs import (
-    TrajectorySegment,
     TrajectoryScheme,
+    TrajectorySegment,
 )
+from mappymatch.matchers.lcss.ops import same_trajectory_scheme
 
 
 class TestLCSSMatcherSameTrajectoryScheme(TestCase):

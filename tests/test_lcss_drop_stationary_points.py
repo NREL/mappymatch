@@ -1,11 +1,12 @@
 from unittest import TestCase
+
 import pandas as pd
 
+from mappymatch.constructs.trace import Trace
 from mappymatch.matchers.lcss.ops import (
     StationaryIndex,
     drop_stationary_points,
 )
-from mappymatch.constructs.trace import Trace
 
 
 class TestLCSSMatcherDropStationaryPoints(TestCase):

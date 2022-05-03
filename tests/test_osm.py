@@ -1,10 +1,10 @@
 from unittest import TestCase, skip
 
-from tests import get_test_dir
 from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.geofence import Geofence
-from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap, NetworkType
-from mappymatch.utils.crs import XY_CRS, LATLON_CRS
+from mappymatch.maps.nx.readers.osm_readers import NetworkType, read_osm_nxmap
+from mappymatch.utils.crs import LATLON_CRS, XY_CRS
+from tests import get_test_dir
 
 
 class TestOSMap(TestCase):
@@ -57,7 +57,7 @@ class TestOSMap(TestCase):
         # DEBUG: plot the street it choose using geojson.io
         # import geopandas
         # print(geopandas.GeoSeries(st31.geom).set_crs(XY_CRS).to_crs(LATLON_CRS).to_json())
-        possible_ids = ["3336866319-3336866337", "3336866337-3336866319"] 
+        possible_ids = ["3336866319-3336866337", "3336866337-3336866319"]
         self.assertTrue(st31.road_id in possible_ids)
 
         # Make sure the graph contains this road segment

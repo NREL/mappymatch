@@ -16,10 +16,10 @@ from mappymatch.matchers.lcss.ops import (
     split_trajectory_segment,
 )
 from mappymatch.matchers.matcher_interface import (
+    List,
     MatcherInterface,
     MatchResult,
     Trace,
-    List,
 )
 from mappymatch.utils.crs import XY_CRS
 
