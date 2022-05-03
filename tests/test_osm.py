@@ -25,7 +25,8 @@ class TestOSMap(TestCase):
         # DEBUG: plot the street it choose using geojson.io
         # import geopandas
         # print(geopandas.GeoSeries(st31.geom).set_crs(XY_CRS).to_crs(LATLON_CRS).to_json())
-        self.assertEqual(st31.road_id, "1321042414-3323569423")
+        possible_ids = ["1321042414-3323569423", "3323569423-1321042414"]
+        self.assertTrue(st31.road_id in possible_ids)
 
         # Make sure the graph contains this road segment
         e23_ave_node1 = osm_map.g.nodes[1321042414]
@@ -56,7 +57,8 @@ class TestOSMap(TestCase):
         # DEBUG: plot the street it choose using geojson.io
         # import geopandas
         # print(geopandas.GeoSeries(st31.geom).set_crs(XY_CRS).to_crs(LATLON_CRS).to_json())
-        self.assertEqual(st31.road_id, "3336866319-3336866337")
+        possible_ids = ["3336866319-3336866337", "3336866337-3336866319"] 
+        self.assertTrue(st31.road_id in possible_ids)
 
         # Make sure the graph contains this road segment
         e23_ave_node1 = osm_map.g.nodes[3336866319]

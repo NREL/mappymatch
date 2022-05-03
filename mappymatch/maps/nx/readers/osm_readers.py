@@ -10,7 +10,7 @@ from mappymatch.maps.nx.nx_map import NxMap
 from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 from mappymatch.utils.exceptions import MapException
 
-ox.config(log_console=True)
+ox.config(log_console=False)
 log.basicConfig(level=log.INFO)
 
 DEFAULT_MPH = 30
