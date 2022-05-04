@@ -12,6 +12,16 @@ from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 
 
 def xy_to_latlon(x: float, y: float) -> Tuple[float, float]:
+    """
+    Tramsform x,y coordinates to lat and lon
+
+    Args:
+        x: X.
+        y: Y.
+
+    Returns:
+    Transformed lat and lon as lat, lon.
+    """
     transformer = Transformer.from_crs(XY_CRS, LATLON_CRS)
     lat, lon = transformer.transform(x, y)
 
@@ -19,6 +29,16 @@ def xy_to_latlon(x: float, y: float) -> Tuple[float, float]:
 
 
 def latlon_to_xy(lat: float, lon: float) -> Tuple[float, float]:
+    """
+    Tramsform lat,lon coordinates to x and y.
+
+    Args:
+        lat: The latitude.
+        lon: The longitude.
+
+    Returns:
+    Transformed x and y as x, y.
+    """
     transformer = Transformer.from_crs(LATLON_CRS, XY_CRS)
     x, y = transformer.transform(lat, lon)
 
@@ -32,14 +52,20 @@ def geofence_from_trace(
     buffer_res: int = 2,
 ) -> Geofence:
     """
-    computes a bounding box surrounding a trace by taking the minimum and maximum x and y
+    Computes a bounding box surrounding a trace.
 
-    :param trace: the trace to compute the bounding box for
-    :param padding: how much padding (in meters) to add to the box
-    :param xy: should the geofence be projected to xy?
-    :param buffer_res: should the geofence be projected to xy?
+    The calculation is done using  the minimum and maximum x and y
 
-    :return: the computed bounding box
+    TODO: maintainer check.
+
+    Args:
+    trace: The trace to compute the bounding box for.
+    padding: The padding (in meters) to add to the box.
+    crs: should the geofence be projected to xy???
+    buffer_res: should the geofence be projected to xy???
+
+    Returns:
+        The computed bounding box.
     """
 
     trace_line_string = LineString([c.geom for c in trace.coords])
@@ -58,12 +84,16 @@ def geofence_from_trace(
 
 def road_to_coord_dist(road: Road, coord: Coordinate) -> float:
     """
-    helper function to compute the distance between a coordinate and a road
+    Compute the distance between a coordinate and a road.
 
-    :param road: the road object
-    :param coord: the coordinate object
+    TODO: Maintainer check.
 
-    :return: the distance
+    Args:
+    road: The road object.
+    coord: The coordinate object.
+
+    Returns:
+        The distance in ?
     """
 
     dist = coord.geom.distance(road.geom)
@@ -73,12 +103,16 @@ def road_to_coord_dist(road: Road, coord: Coordinate) -> float:
 
 def coord_to_coord_dist(a: Coordinate, b: Coordinate) -> float:
     """
-    helper function to compute the distance between to coordinates
+    Compute the distance between to coordinates.
 
-    :param a: coordinate a
-    :param b: coordinate b
+    TODO: maintainer check
 
-    :return: the distance
+    Args:
+        a: The starting coordinate?
+        b: The ending coordinate?
+
+    Returns:
+        The distance in ?
     """
     dist = a.geom.distance(b.geom)
 
