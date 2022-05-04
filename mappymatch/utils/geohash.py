@@ -23,6 +23,8 @@ from math import log10
 #  Note: the alphabet in geohash differs from the common base32
 #  alphabet described in IETF's RFC 4648
 #  (http://tools.ietf.org/html/rfc4648)
+
+# TODO: E:Determine if this is should move inside decode_exactly.
 __base32 = "0123456789bcdefghjkmnpqrstuvwxyz"
 __decodemap = {}
 for i in range(len(__base32)):
@@ -32,11 +34,19 @@ del i
 
 def decode_exactly(geohash):
     """
-    Decode the geohash to its exact values, including the error
-    margins of the result.  Returns four float values: latitude,
-    longitude, the plus/minus error for latitude (as a positive
-    number) and the plus/minus error for longitude (as a positive
-    number).
+    Decode the geohash to its exact values, error and margins.
+
+    TODO: maintainer check.
+
+    Args:
+        geohash
+
+    Returns:
+        4 tuple of floats
+            latitude,
+            longitude,
+            +/- error for latitude (as a positive number),
+            +/- error for longitude (as a positive number)
     """
     lat_interval, lon_interval = (-90.0, 90.0), (-180.0, 180.0)
     lat_err, lon_err = 90.0, 180.0
@@ -71,13 +81,23 @@ def decode_exactly(geohash):
             is_even = not is_even
     lat = (lat_interval[0] + lat_interval[1]) / 2
     lon = (lon_interval[0] + lon_interval[1]) / 2
-    return lat, lon, lat_err, lon_err
+
+    lat_long = (lat, lon, lat_err, lon_err)
+    return lat_long
 
 
 def decode(geohash):
     """
-    Decode geohash, returning two strings with latitude and longitude
-    containing only relevant digits and with trailing zeroes removed.
+    Decode geohash to lat and long strings.
+
+    TODO: maintainer check.
+
+    Args:
+        geohash: The geohash.
+
+    Returns:
+        Two tuple of strings (latitude, longitude) that preserves correct
+            digits and trailing zeros.
     """
     lat, lon, lat_err, lon_err = decode_exactly(geohash)
     # Format to the number of decimals that are known
@@ -87,13 +107,25 @@ def decode(geohash):
         lats = lats.rstrip("0")
     if "." in lons:
         lons = lons.rstrip("0")
-    return lats, lons
+    lats_lons = (lats, lons)
+    return lats_lons
 
 
 def encode(latitude, longitude, precision=12):
     """
-    Encode a position given in float arguments latitude, longitude to
-    a geohash which will have the character count precision.
+    Encode a position given in floats to a geohash
+
+    The geohash will have the character count precision.
+
+    TODO: maintainer check.
+
+    Args:
+        latitude: The latitude.
+        longitude: The longitude.
+        precision: The precision of ?
+
+    Returns:
+        The geohash
     """
     lat_interval, lon_interval = (-90.0, 90.0), (-180.0, 180.0)
     geohash = []
