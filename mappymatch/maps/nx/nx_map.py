@@ -50,27 +50,19 @@ class NxMap(MapInterface):
         self._roads = self._build_rtree()
 
     def _build_rtree(self) -> List[Road]:
-        road_lookup = []
+        def _inner_build_rtree():
+            idx = rt.index.Index()
+            for i, (u, v, k, d) in enumerate(self.g.edges(data=True, keys=True)):
+                idx.insert(i, d[self._geom_key].bounds)
+                yield Road(
+                    d[self._road_id_key],
+                    d[self._geom_key],
+                    origin_junction_id=u,
+                    dest_junction_id=v,
+                )
 
-        idx = rt.index.Index()
-        for i, gtuple in enumerate(self.g.edges(data=True, keys=True)):
-            u, v, k, d = gtuple
-            # rid = (u, v, k)
-            geom = d[self._geom_key]
-            # segment = list(geom.coords)
-            box = geom.bounds
-            idx.insert(i, box)
-
-            road = Road(
-                d[self._road_id_key],
-                d[self._geom_key],
-                origin_junction_id=u,
-                dest_junction_id=v,
-            )
-            road_lookup.append(road)
-
-        self.rtree = idx
-        return road_lookup
+            self.rtree = idx
+        return list(_inner_build_rtree())
 
     @property
     def roads(self) -> List[Road]:
