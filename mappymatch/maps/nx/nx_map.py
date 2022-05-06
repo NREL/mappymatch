@@ -177,14 +177,11 @@ class NxMap(MapInterface):
 
                 edge_data = self.g.get_edge_data(road_start_node, road_end_node)
 
-                road_key = next(edge_data.keys())
-
-                geom = edge_data[road_key][self._geom_key]
-                road_id = edge_data[road_key][self._road_id_key]
+                data = edge_data.values()[0]
 
                 yield Road(
-                        road_id,
-                        geom,
+                        data[self._road_id_key],
+                        data[self._geom_key],
                         origin_junction_id=road_start_node,
                         dest_junction_id=road_end_node,
                     )
