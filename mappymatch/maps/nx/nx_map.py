@@ -21,21 +21,17 @@ DEFAULT_ROAD_ID_KEY = "road_id"
 class NxMap(MapInterface):
     def __init__(self, graph: nx.MultiDiGraph):
         self.g = graph
-
-        if "crs" not in graph.graph:
+        if not (crs := graph.graph.get('crs')):
             raise ValueError(
                 "Input graph must have pyproj crs;"
                 "You can set it like: `graph.graph['crs'] = pyproj.CRS('EPSG:4326')`"
             )
-
-        crs = graph.graph["crs"]
 
         if not isinstance(crs, CRS):
             raise TypeError(
                 "Input graph must have pyproj crs;"
                 "You can set it like: `graph.graph['crs'] = pyproj.CRS('EPSG:4326')`"
             )
-
         self.crs = crs
 
         dist_weight = graph.graph.get(
@@ -191,7 +187,7 @@ class NxMap(MapInterface):
 
             edge_data = self.g.get_edge_data(road_start_node, road_end_node)
 
-            road_key = list(edge_data.keys())[0]
+            road_key = next(edge_data.keys())
 
             geom = edge_data[road_key][self._geom_key]
             road_id = edge_data[road_key][self._road_id_key]
