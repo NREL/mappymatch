@@ -170,25 +170,23 @@ class NxMap(MapInterface):
             weight=weight_string,
         )
 
-        path = []
-        for i in range(1, len(nx_route)):
-            road_start_node = nx_route[i - 1]
-            road_end_node = nx_route[i]
+        def inner_shortest_path():
+            for i in range(1, len(nx_route)):
+                road_start_node = nx_route[i - 1]
+                road_end_node = nx_route[i]
 
-            edge_data = self.g.get_edge_data(road_start_node, road_end_node)
+                edge_data = self.g.get_edge_data(road_start_node, road_end_node)
 
-            road_key = next(edge_data.keys())
+                road_key = next(edge_data.keys())
 
-            geom = edge_data[road_key][self._geom_key]
-            road_id = edge_data[road_key][self._road_id_key]
+                geom = edge_data[road_key][self._geom_key]
+                road_id = edge_data[road_key][self._road_id_key]
 
-            path.append(
-                Road(
-                    road_id,
-                    geom,
-                    origin_junction_id=road_start_node,
-                    dest_junction_id=road_end_node,
-                )
-            )
+                yield Road(
+                        road_id,
+                        geom,
+                        origin_junction_id=road_start_node,
+                        dest_junction_id=road_end_node,
+                    )
 
-        return path
+        return list(inner_shortest_path())
