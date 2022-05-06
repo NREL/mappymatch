@@ -47,7 +47,7 @@ class NxMap(MapInterface):
     def _build_rtree(self) -> List[Road]:
         def _inner_build_rtree():
             idx = rt.index.Index()
-            for i, (u, v, k, d) in enumerate(
+            for i, (u, v, _, d) in enumerate(
                 self.g.edges(data=True, keys=True)
             ):
                 idx.insert(i, d[self._geom_key].bounds)
