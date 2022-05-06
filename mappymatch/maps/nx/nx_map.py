@@ -21,7 +21,7 @@ DEFAULT_ROAD_ID_KEY = "road_id"
 class NxMap(MapInterface):
     def __init__(self, graph: nx.MultiDiGraph):
         self.g = graph
-        if not (crs := graph.graph.get('crs')):
+        if not (crs := graph.graph.get("crs")):
             raise ValueError(
                 "Input graph must have pyproj crs;"
                 "You can set it like: `graph.graph['crs'] = pyproj.CRS('EPSG:4326')`"
@@ -34,17 +34,12 @@ class NxMap(MapInterface):
             )
         self.crs = crs
 
-        dist_weight = graph.graph.get(
+        self._dist_weight = graph.graph.get(
             "distance_weight", DEFAULT_DISTANCE_WEIGHT
         )
-        time_weight = graph.graph.get("time_weight", DEFAULT_TIME_WEIGHT)
-        geom_key = graph.graph.get("geometry_key", DEFAULT_GEOMETRY_KEY)
-        road_id_key = graph.graph.get("road_id", DEFAULT_ROAD_ID_KEY)
-
-        self._dist_weight = dist_weight
-        self._time_weight = time_weight
-        self._geom_key = geom_key
-        self._road_id_key = road_id_key
+        self._time_weight = graph.graph.get("time_weight", DEFAULT_TIME_WEIGHT)
+        self._geom_key = graph.graph.get("geometry_key", DEFAULT_GEOMETRY_KEY)
+        self._road_id_key = graph.graph.get("road_id", DEFAULT_ROAD_ID_KEY)
 
         self._nodes = [nid for nid in self.g.nodes()]
         self._roads = self._build_rtree()
@@ -52,7 +47,9 @@ class NxMap(MapInterface):
     def _build_rtree(self) -> List[Road]:
         def _inner_build_rtree():
             idx = rt.index.Index()
-            for i, (u, v, k, d) in enumerate(self.g.edges(data=True, keys=True)):
+            for i, (u, v, k, d) in enumerate(
+                self.g.edges(data=True, keys=True)
+            ):
                 idx.insert(i, d[self._geom_key].bounds)
                 yield Road(
                     d[self._road_id_key],
@@ -62,6 +59,7 @@ class NxMap(MapInterface):
                 )
 
             self.rtree = idx
+
         return list(_inner_build_rtree())
 
     @property
