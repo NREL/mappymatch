@@ -115,16 +115,10 @@ class NxMap(MapInterface):
             raise ValueError(
                 f"crs of origin {coord.crs} must match crs of map {self.crs}"
             )
-        nearest_candidates = list(self.rtree.nearest(coord.geom.bounds, 1))
-
-        if len(nearest_candidates) == 0:
+        try:
+            return self.roads[next(self.rtree.nearest(coord.geom.bounds, 1))]
+        except StopIteration:
             raise ValueError(f"No roads found for {coord}")
-
-        nearest_index = nearest_candidates[0]
-
-        road = self.roads[nearest_index]
-
-        return road
 
     def shortest_path(
         self,
