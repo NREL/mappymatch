@@ -144,9 +144,11 @@ def split_trajectory_segment(
     new_paths = []
     new_traces = []
 
+    # using type: ignore below because, trace_index can only be a signedinteger or integer
+    # mypy wants it to only be an int, but this should never affect code functionality
     # start
     scp = cutting_points[0]
-    new_trace = trace[: scp.trace_index]
+    new_trace = trace[: scp.trace_index] # type: ignore
     new_paths.append(new_path(road_map, new_trace, distance_epsilon))
     new_traces.append(new_trace)
 
@@ -154,13 +156,13 @@ def split_trajectory_segment(
     for i in range(len(cutting_points) - 1):
         cp = cutting_points[i]
         ncp = cutting_points[i + 1]
-        new_trace = trace[cp.trace_index : ncp.trace_index]
+        new_trace = trace[cp.trace_index : ncp.trace_index] # type: ignore
         new_paths.append(new_path(road_map, new_trace, distance_epsilon))
         new_traces.append(new_trace)
 
     # end
     ecp = cutting_points[-1]
-    new_trace = trace[ecp.trace_index :]
+    new_trace = trace[ecp.trace_index :] # type: ignore
     new_paths.append(new_path(road_map, new_trace, distance_epsilon))
     new_traces.append(new_trace)
 

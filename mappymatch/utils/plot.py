@@ -11,6 +11,18 @@ from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 
 
 def plot_geofence(geofence, m=None):
+    """
+    Plot geofence.
+
+    TODO: E: Determine if this is a good use of a single letter variable name
+
+    Args:
+        geofence: The geofence to plot
+        m: the folium map to plot on
+
+    Returns:
+        The updated folium map with the geofence.
+    """
     if not geofence.crs == LATLON_CRS:
         raise NotImplementedError(
             "can currently only plot a geofence with lat lon crs"
@@ -26,6 +38,19 @@ def plot_geofence(geofence, m=None):
 
 
 def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
+    """
+    Plot a trace.
+
+    Args:
+        trace: The trace.
+        m: the folium map to plot on
+        point_color: The color the points will be plotted in.
+        line_color: The color for lines.
+
+    Returns:
+        An updated folium map with a plot of trace.
+    """
+
     if not trace.crs == LATLON_CRS:
         trace = trace.to_crs(LATLON_CRS)
 
@@ -47,15 +72,18 @@ def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
 
 def plot_matches(matches: List[Match], road_map: NxMap):
     """
-    plots a trace and the relevant matches on a folium map
+    Plots a trace and the relevant matches on a folium map.
 
-    :param matches: the matches
-    :param road_map: the road map
+    Args:
+    matches: The matches.
+    road_map: The road map.
 
-    :return: the folium map
+    Returns:
+        A folium map with trace and matches plotted.
     """
 
-    def match_to_road(m):
+    def _match_to_road(m):
+        """Private function."""
         d = {"road_id": m.road.road_id}
 
         edge_data = road_map.g.get_edge_data(
@@ -73,7 +101,8 @@ def plot_matches(matches: List[Match], road_map: NxMap):
 
         return d
 
-    def match_to_coord(m):
+    def _match_to_coord(m):
+        """Private function."""
         d = {
             "road_id": m.road.road_id,
             "geom": Point(m.coordinate.x, m.coordinate.y),
@@ -82,14 +111,14 @@ def plot_matches(matches: List[Match], road_map: NxMap):
 
         return d
 
-    road_df = pd.DataFrame([match_to_road(m) for m in matches if m.road])
+    road_df = pd.DataFrame([_match_to_road(m) for m in matches if m.road])
     road_df = road_df.loc[road_df.road_id.shift() != road_df.road_id]
     road_gdf = gpd.GeoDataFrame(
         road_df, geometry=road_df.geom, crs=XY_CRS
     ).drop(columns=["geom"])
     road_gdf = road_gdf.to_crs(LATLON_CRS)
 
-    coord_df = pd.DataFrame([match_to_coord(m) for m in matches if m.road])
+    coord_df = pd.DataFrame([_match_to_coord(m) for m in matches if m.road])
 
     coord_gdf = gpd.GeoDataFrame(
         coord_df, geometry=coord_df.geom, crs=XY_CRS
@@ -119,6 +148,17 @@ def plot_matches(matches: List[Match], road_map: NxMap):
 
 
 def plot_map(tmap: NxMap, m=None):
+    """
+    Plot the roads on an NxMap.
+
+    Args:
+        tmap: The Nxmap to plot.
+        m: the folium map to add to
+
+    Returns:
+        The folium map with the roads plotted.
+    """
+
     # TODO make this generic to all map types, not just NxMap
     roads = list(tmap.g.edges(data=True))
     road_df = pd.DataFrame([r[2] for r in roads])
