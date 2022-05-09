@@ -25,4 +25,14 @@ skip_gitignore = true
 filter_files = true
 
 [tool.interrogate]
-fail-under = 10
+fail-under = 10 
+
+# Placeholder currentely run with no options
+[tool.coverage.run]
+
+[tool.coverage.report]
+precision = 1
+fail_under = 50.0
+skip_covered = false
+skip_empty = true
+

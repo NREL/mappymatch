@@ -15,5 +15,6 @@ dependencies:
   - black
   - isort
   - interrogate
+  - coverage
 
 
