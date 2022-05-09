@@ -24,7 +24,7 @@ jobs:
     - name: Run flake8
       if: always()
       run: flake8 --ignore E501,E203 mappymatch tests
-    - name: Run mypi
+    - name: Run mypy
       if: always()
       run: mypy mappymatch tests --ignore-missing-imports
     - name: Run isort
