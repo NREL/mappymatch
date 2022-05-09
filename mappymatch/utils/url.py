@@ -12,8 +12,6 @@ def multiurljoin(urls: List[str]) -> str:
     """
     Make a url from uri's.
 
-    TODO: Maintainer check
-
     Args:
         urls: list of uri
 

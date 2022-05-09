@@ -1,7 +1,6 @@
-# TODO: E: Determine the point of this.
-
-
 class MapException(Exception):
-    """Docstring"""
+    """
+    An exception for any errors that occur with the MapInterface
+    """
 
     pass

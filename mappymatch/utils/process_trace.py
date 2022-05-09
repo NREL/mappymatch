@@ -9,14 +9,12 @@ def split_large_trace(trace: Trace, ideal_size: int) -> List[Trace]:
     """
     Split up a trace into a list of smaller traces.
 
-    TODO: maintainer check
-
     Args:
-        trace:
-        ideal_size:
+        trace: the trace to split.
+        ideal_size: the target number of coordinates for each new trace.
 
     Returns:
-        Trace as list.
+        A list of split traces.
     """
     if len(trace) <= ideal_size:
         return [trace]
@@ -40,8 +38,6 @@ def remove_bad_start_from_trace(
     Remove points at the beginning of a trace if it is a gap is too big.
 
     Too big is defined by distance threshold.
-
-    TODO: Maintainer check.
 
     Args:
         trace: The trace.

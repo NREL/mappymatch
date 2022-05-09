@@ -88,9 +88,7 @@ def decode_exactly(geohash):
 
 def decode(geohash):
     """
-    Decode geohash to lat and long strings.
-
-    TODO: maintainer check.
+    Decode geohash to lat and lon.
 
     Args:
         geohash: The geohash.
@@ -117,12 +115,10 @@ def encode(latitude, longitude, precision=12):
 
     The geohash will have the character count precision.
 
-    TODO: maintainer check.
-
     Args:
         latitude: The latitude.
         longitude: The longitude.
-        precision: The precision of ?
+        precision: The precision of the geohash
 
     Returns:
         The geohash

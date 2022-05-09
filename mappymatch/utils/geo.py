@@ -52,20 +52,18 @@ def geofence_from_trace(
     buffer_res: int = 2,
 ) -> Geofence:
     """
-    Computes a bounding box surrounding a trace.
+    Computes a bounding polygon surrounding a trace.
 
-    The calculation is done using  the minimum and maximum x and y
-
-    TODO: maintainer check.
+    This is done by computing a radial buffer around the entire trace (as a line).
 
     Args:
-    trace: The trace to compute the bounding box for.
-    padding: The padding (in meters) to add to the box.
-    crs: should the geofence be projected to xy???
-    buffer_res: should the geofence be projected to xy???
+    trace: The trace to compute the bounding polygon for.
+    padding: The padding (in meters) around the trace line.
+    crs: The coordinate reference system to use.
+    buffer_res: The resolution of the surrounding buffer.
 
     Returns:
-        The computed bounding box.
+        The computed bounding polygon.
     """
 
     trace_line_string = LineString([c.geom for c in trace.coords])
@@ -82,37 +80,16 @@ def geofence_from_trace(
     return Geofence(crs=trace.crs, geometry=polygon)
 
 
-def road_to_coord_dist(road: Road, coord: Coordinate) -> float:
-    """
-    Compute the distance between a coordinate and a road.
-
-    TODO: Maintainer check.
-
-    Args:
-    road: The road object.
-    coord: The coordinate object.
-
-    Returns:
-        The distance in ?
-    """
-
-    dist = coord.geom.distance(road.geom)
-
-    return dist
-
-
 def coord_to_coord_dist(a: Coordinate, b: Coordinate) -> float:
     """
-    Compute the distance between to coordinates.
-
-    TODO: maintainer check
+    Compute the distance between two coordinates.
 
     Args:
-        a: The starting coordinate?
-        b: The ending coordinate?
+        a: The first coordinate
+        b: The second coordinate
 
     Returns:
-        The distance in ?
+        The distance in meters
     """
     dist = a.geom.distance(b.geom)
 

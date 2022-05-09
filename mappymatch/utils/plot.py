@@ -14,15 +14,14 @@ def plot_geofence(geofence, m=None):
     """
     Plot geofence.
 
-    TODO: maintainer check.
     TODO: E: Determine if this is a good use of a single letter variable name
 
     Args:
-        geofence: ?
-        m: ?
+        geofence: The geofence to plot
+        m: the folium map to plot on
 
     Returns:
-        The geofence.
+        The updated folium map with the geofence.
     """
     if not geofence.crs == LATLON_CRS:
         raise NotImplementedError(
@@ -40,18 +39,16 @@ def plot_geofence(geofence, m=None):
 
 def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
     """
-    Plot the trace.
-
-    TODO: maintainer check.
+    Plot a trace.
 
     Args:
         trace: The trace.
-        m: ?
+        m: the folium map to plot on
         point_color: The color the points will be plotted in.
         line_color: The color for lines.
 
     Returns:
-        Plot of trace.
+        An updated folium map with a plot of trace.
     """
 
     if not trace.crs == LATLON_CRS:
@@ -76,8 +73,6 @@ def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
 def plot_matches(matches: List[Match], road_map: NxMap):
     """
     Plots a trace and the relevant matches on a folium map.
-
-    TODO: maintainer check.
 
     Args:
     matches: The matches.
@@ -154,16 +149,14 @@ def plot_matches(matches: List[Match], road_map: NxMap):
 
 def plot_map(tmap: NxMap, m=None):
     """
-    Makes folium from NxMap.
-
-    TODO: maintainer check.
+    Plot the roads on an NxMap.
 
     Args:
-        tmap: The Nxmap.
-        m:
+        tmap: The Nxmap to plot.
+        m: the folium map to add to
 
     Returns:
-        The folium map.
+        The folium map with the roads plotted.
     """
 
     # TODO make this generic to all map types, not just NxMap
