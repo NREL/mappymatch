@@ -1,7 +1,13 @@
 import logging
+from typing import List
 
+from mappymatch.constructs.trace import Trace
 from mappymatch.maps.map_interface import MapInterface
-from mappymatch.matchers.matcher_interface import *
+from mappymatch.matchers.matcher_interface import (
+    Match,
+    MatcherInterface,
+    MatchResult,
+)
 
 log = logging.getLogger(__name__)
 

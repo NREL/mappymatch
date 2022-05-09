@@ -49,9 +49,16 @@ def parse_osrm_json(j: dict, trace: Trace) -> list[Match]:
         if not nodes:
             raise ValueError("leg has no osm node information")
         link_id = f"({nodes[0]},{nodes[1]})"
+        origin_junction_id = f"{nodes[0]}"
+        destination_junction_id = f"{nodes[0]}"
 
-        # todo: we need to get geometry and distance info from OSRM if available
-        road = Road(road_id=link_id, geom=None)
+        # TODO: we need to get geometry, distance info from OSRM if available
+        road = Road(
+            road_id=link_id,
+            geom=None,
+            origin_junction_id=origin_junction_id,
+            dest_junction_id=destination_junction_id,
+        )
         match = Match(
             road=road, coordinate=trace.coords[i], distance=float("infinity")
         )

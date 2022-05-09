@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 import random
-import time
 from typing import List, NamedTuple, Union
 
 import numpy as np
@@ -18,7 +17,7 @@ log = logging.getLogger(__name__)
 
 
 class CuttingPoint(NamedTuple):
-    trace_index: Union[signedinteger, int] 
+    trace_index: Union[signedinteger, int]
 
 
 class TrajectorySegment(NamedTuple):
@@ -72,7 +71,7 @@ class TrajectorySegment(NamedTuple):
 
         if m < 1:
             # todo: find a better way to handle this edge case
-            raise Exception(f"traces of 0 points can't be matched")
+            raise Exception("traces of 0 points can't be matched")
         elif n < 2:
             # a path was not found for this segment; might not be matchable;
             # we set a score of zero and return a set of no-matches
