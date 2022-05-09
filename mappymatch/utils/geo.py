@@ -6,7 +6,6 @@ from shapely.ops import transform
 
 from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.geofence import Geofence
-from mappymatch.constructs.road import Road
 from mappymatch.constructs.trace import Trace
 from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 

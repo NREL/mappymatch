@@ -17,7 +17,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install black flake8 mypy usort
+        pip install black flake8 mypy isort
+        mypy --install-types
     - name: Run black
       if: always()
       run: black mappymatch tests --check
@@ -27,9 +28,9 @@ jobs:
     - name: Run mypi
       if: always()
       run: mypy mappymatch tests
-    - name: Run usort
+    - name: Run isort
       if: always()
-      run: usort check mappymatch tests
+      run: isort check mappymatch tests
     - name: Run Tests
       if: always()
       run: |
