@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 
 
 class CuttingPoint(NamedTuple):
-    trace_index: Union[signedinteger, int]
+    trace_index: Union[signedinteger, int] 
 
 
 class TrajectorySegment(NamedTuple):
@@ -165,6 +165,9 @@ class TrajectorySegment(NamedTuple):
                 )
                 assert not isinstance(p1, ndarray)
                 assert not isinstance(p2, ndarray)
+                # To do - np.argmax returns array of indices where the highest value is found.
+                # if there is only one highest value an int is returned. CuttingPoint takes an int.
+                # if an array is returned by argmax, this throws an error
                 cp1 = CuttingPoint(p1)
                 cp2 = CuttingPoint(p2)
 

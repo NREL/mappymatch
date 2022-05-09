@@ -47,7 +47,8 @@ def read_osm_nxmap(
     return NxMap(g)
 
 
-def parse_road_network_graph(g):
+def parse_road_network_graph(g) -> nx.MultiDiGraph:
+    length_meters: dict
     length_meters = nx.get_edge_attributes(g, "length")
     kilometers = {k: v * METERS_TO_KM for k, v in length_meters.items()}
     nx.set_edge_attributes(g, kilometers, "kilometers")
@@ -55,7 +56,7 @@ def parse_road_network_graph(g):
     return g
 
 
-def compress(g):
+def compress(g) -> nx.MultiDiGraph:
     """
     a hacky way to delete unnecessary data on the networkx graph
     :param g: graph to be compressed
