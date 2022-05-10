@@ -22,14 +22,23 @@ Then, use the environment.yml file (which was downloaded when you cloned the rep
 Should this instalation be performed before or after navigating into the subfolder mappymatch/mappymatch?
 The environment.yml file lives in the outer directory under the primary MappyMatch folder.
 
+
+
+
 ```
 conda env create -f environment.yml
+
+# Is there a reason we are not using the line below? It allows us to specify the name and the filename in one line.
+# conda env create -n mappymatch --file environment.yml
 ```
 
 To activate the mappymatch environment:
 ```
 conda activate mappymatch
+
 ```
+
+Finally, be sure to change your Python interpreter path to the ./mappymatch/bin/python interpreter
 
 There are a couple of extras available:
 
