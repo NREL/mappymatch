@@ -206,7 +206,7 @@ def match_to_road(m):
     road_key = list(edge_data.keys())[0]
 
     # TODO: this should be generic over all road maps
-    geom_key = road_map._geom_key
+    geom_key = road_map._geom_key # todo: needs someone familiar with the code to fix this. road_map is not defined.
 
     road_geom = edge_data[road_key][geom_key]
 
@@ -224,20 +224,20 @@ def match_to_coord(m):
     return d
 
 
-def plot_match_distances(matches: MatchResult):
+def plot_match_distances(matches: MatchResult): # TODO: -- MatchResult is not a defined Element.
     # build and display plots here.
-    # Setting up the Trace with sample csv file
     """
     Summary:
-    matches gets passed to plot_match_distances after it is calculated as follows.
 
-    trace = Trace.from_csv(root() / "resources/traces/sample_trace_1.csv")
-    geofence = geofence_from_trace(
-        trace, padding=1e3
-    )
-    road_map = read_osm_nxmap(geofence)
-    matcher = LCSSMatcher(road_map)
-    matches = matcher.match_trace(trace)
+        matches gets passed to plot_match_distances after it is calculated as follows.
+
+        trace = Trace.from_csv(root() / "resources/traces/sample_trace_1.csv")
+        geofence = geofence_from_trace(
+            trace, padding=1e3
+        )
+        road_map = read_osm_nxmap(geofence)
+        matcher = LCSSMatcher(road_map)
+        matches = matcher.match_trace(trace)
 
     Args:
         matches (MatchResult): _description_
@@ -248,7 +248,7 @@ def plot_match_distances(matches: MatchResult):
     road_df = pd.DataFrame([match_to_road(m) for m in matches if m.road])
     road_df = road_df.loc[road_df.road_id.shift() != road_df.road_id]
 
-    #TODO -- the data frame below still utilizes geopandas. Is this what you want to use or is there something else that should be implemented here?
+    # TODO: -- the data frame below still utilizes geopandas. Is this what you want to use or is there something else that should be implemented here?
     road_gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=XY_CRS).drop(
         columns=["geom"]
     ) # drop the geom column from the road_gdf data frame.
@@ -256,7 +256,7 @@ def plot_match_distances(matches: MatchResult):
 
     #! Coordinate Data Frame Section
     coord_df = pd.DataFrame([match_to_coord(m) for m in matches if m.road])
-    #TODO -- the data frame below still utilizes geopandas.
+    # TODO: -- the data frame below still utilizes geopandas.
     coord_gdf = gpd.GeoDataFrame(
         coord_df, geometry=coord_df.geom, crs=XY_CRS
     ).drop(columns=["geom"]) # drop the geom column from the coord_df data frame.
@@ -287,8 +287,14 @@ def plot_match_distances(matches: MatchResult):
     plt.xlabel("Point Along The Path") # label the x axis label "Point Along The Path"
     plt.show() # print the plot.
 
-
 def plot_prep(file_path='resources/traces/sample_trace_1.csv'): #
+    """
+    Summary:
+       provided a file path, the plot_prep function creates a trace, geofence, road_map, and matcher using LCSSMatcher and then passes the matches object to the plot_match_distances function.
+
+    Args:
+        file_path (str, optional): _description_. Defaults to 'resources/traces/sample_trace_1.csv'.
+    """
     trace = Trace.from_csv(root() / f"{file_path}")
     geofence = geofence_from_trace(
         trace, padding=1e3
@@ -298,3 +304,5 @@ def plot_prep(file_path='resources/traces/sample_trace_1.csv'): #
     matches = matcher.match_trace(trace)
 
     plot_match_distances(matches) # call plot match distances with the matches to generate insight plots.
+
+plot_prep()
