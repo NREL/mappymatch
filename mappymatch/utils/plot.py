@@ -1,34 +1,28 @@
-from typing import List
-
+from typing import List, Optional #TODO - Optional is not used.
 import folium
 import geopandas as gpd #TODO - we removed geopandas I believe.
 import pandas as pd
+import numpy as np
 from shapely.geometry import Point
-
 from mappymatch.constructs.match import Match
 from mappymatch.maps.nx.nx_map import NxMap
 from mappymatch.utils.crs import LATLON_CRS, XY_CRS
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
 from mappymatch.constructs.trace import Trace
 from mappymatch.utils.geo import geofence_from_trace
 from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap
+from mappymatch.maps.map_interface import MapInterface #TODO - MapInterface is not used.
 from mappymatch.matchers.lcss.lcss import LCSSMatcher
+from mappymatch import root
+
+# plotting imports from mappymatch utils as well as matplotlib
+#todo - all of the imports from mappymatch.utils.plot are not being used in this file.
 from mappymatch.utils.plot import (
     plot_geofence,
     plot_trace,
     plot_matches,
     plot_map,
 )
-from mappymatch import root
-from typing import List, Optional #TODO - Optional is not used.
-
-from shapely.geometry import Point
-
-from mappymatch.constructs.match import Match
-from mappymatch.maps.map_interface import MapInterface
-
+import matplotlib.pyplot as plt
 
 def plot_geofence(geofence, m=None):
     """
@@ -249,47 +243,49 @@ def plot_match_distances(matches: MatchResult):
         matches (MatchResult): _description_
     """
 
+    #! Road Data Frame Section
+    # define a pandas data frame containing the list of matches (each represented by m) where m.road = True
     road_df = pd.DataFrame([match_to_road(m) for m in matches if m.road])
-    # collect all points in matches that have an existing road = True
     road_df = road_df.loc[road_df.road_id.shift() != road_df.road_id]
+
+    #TODO -- the data frame below still utilizes geopandas. Is this what you want to use or is there something else that should be implemented here?
     road_gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=XY_CRS).drop(
         columns=["geom"]
     ) # drop the geom column from the road_gdf data frame.
     road_gdf = road_gdf.to_crs(LATLON_CRS)
 
+    #! Coordinate Data Frame Section
     coord_df = pd.DataFrame([match_to_coord(m) for m in matches if m.road])
-
+    #TODO -- the data frame below still utilizes geopandas.
     coord_gdf = gpd.GeoDataFrame(
         coord_df, geometry=coord_df.geom, crs=XY_CRS
-    ).drop(columns=["geom"])
-
+    ).drop(columns=["geom"]) # drop the geom column from the coord_df data frame.
     coord_gdf = coord_gdf.to_crs(
         LATLON_CRS
     )  # convert coordinates to latlon_crs format.
 
-    mid_i = int(len(coord_gdf) / 2)
-    mid_coord = coord_gdf.iloc[mid_i].geometry
+    mid_i = int(len(coord_gdf) / 2) # find the middle index of the coord_gdf data frame.
+    mid_coord = coord_gdf.iloc[mid_i].geometry # answer the question: what is the middle coordinate?
 
     y = coord_df.distance  # the distances from the expected line. Deviance.
     x = [x for x in range(0, len(y))]  # create blanks for x axis
-    # y = np.exp(np.sin(x))
 
-    for coord in coord_gdf.itertuples():
-        x_coord = coord.geometry.x
-        y_coord = coord.geometry.y
+    for coord in coord_gdf.itertuples(): # for every coordinate tuple within coord_gdf ...
+        x_coord = coord.geometry.x # identify the x coordinate geometry.
+        y_coord = coord.geometry.y # identify the y coordinate geometry.
 
-    for road in road_gdf.itertuples():
-        full_line = [(lat, lon) for lon, lat in road.geometry.coords]
+    for road in road_gdf.itertuples(): # for every road in the road_gdf data frame...
+        full_line = [(lat, lon) for lon, lat in road.geometry.coords] # identify the full line of that road in lat,long tuples.
 
-
-    plt.figure(figsize=(15, 7))
-    plt.autoscale(enable=True)
-    # plt.stem(x, y)
-    plt.scatter(x, y)
-    plt.title("Distance To Nearest Road")
-    plt.ylabel("Meters")
-    plt.xlabel("Point Along The Path")
-    plt.show()
+    #! Plotting Section
+    plt.figure(figsize=(15, 7)) # create a figure sized 15 x 7
+    plt.autoscale(enable=True) # autoscale the figure's contents to the data once it is plotted.
+    #todo ---- what was the purpose of plt.stem? -->  plt.stem(x, y)
+    plt.scatter(x, y) # create a scatter plot of our x (blanks), and our y (deviance from expected line) values.
+    plt.title("Distance To Nearest Road") # create a title for our plot.
+    plt.ylabel("Meters") # establish the y axis label "Meters"
+    plt.xlabel("Point Along The Path") # label the x axis label "Point Along The Path"
+    plt.show() # print the plot.
 
 
 def plot_prep(file_path='resources/traces/sample_trace_1.csv'): #
