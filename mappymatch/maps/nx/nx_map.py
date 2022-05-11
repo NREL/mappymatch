@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import List, Union
+from typing import List, Union, Generator
 
 import networkx as nx
 import rtree as rt
@@ -106,6 +106,22 @@ class NxMap(MapInterface):
         except StopIteration:
             raise ValueError(f"No roads found for {coord}")
 
+    def sequential_path(self, nx_route) -> Generator:
+        for i in range(1, len(nx_route)):
+            road_start_node = nx_route[i - 1]
+            road_end_node = nx_route[i]
+
+            edge_data = self.g.get_edge_data(road_start_node, road_end_node)
+
+            data = edge_data.values()[0]
+
+            yield Road(
+                data[self._road_id_key],
+                data[self._geom_key],
+                origin_junction_id=road_start_node,
+                dest_junction_id=road_end_node,
+            )
+
     def shortest_path(
         self,
         origin: Coordinate,
@@ -138,21 +154,17 @@ class NxMap(MapInterface):
         dstart = Point(dest_road.geom.coords[0])
         dend = Point(dest_road.geom.coords[-1])
 
-        u_dist = ostart.distance(origin.geom)
-        v_dist = oend.distance(origin.geom)
-
-        if u_dist <= v_dist:
-            origin_id = origin_road.origin_junction_id
-        else:
-            origin_id = origin_road.dest_junction_id
-
-        u_dist = dstart.distance(destination.geom)
-        v_dist = dend.distance(destination.geom)
-
-        if u_dist <= v_dist:
-            dest_id = dest_road.origin_junction_id
-        else:
-            dest_id = dest_road.dest_junction_id
+        origin_id = (
+            origin_road.origin_junction_id
+            if ostart.distance(origin.geom) <= oend.distance(origin.geom)
+            else origin_road.dest_junction_id
+        )
+        dest_id = (
+            dest_road.origin_junction_id
+            if dstart.distance(destination.geom)
+            <= dend.distance(destination.geom)
+            else dest_road.dest_junction_id
+        )
 
         if weight == PathWeight.DISTANCE:
             weight_string = self._dist_weight
@@ -170,20 +182,4 @@ class NxMap(MapInterface):
             weight=weight_string,
         )
 
-        def inner_shortest_path():
-            for i in range(1, len(nx_route)):
-                road_start_node = nx_route[i - 1]
-                road_end_node = nx_route[i]
-
-                edge_data = self.g.get_edge_data(road_start_node, road_end_node)
-
-                data = edge_data.values()[0]
-
-                yield Road(
-                        data[self._road_id_key],
-                        data[self._geom_key],
-                        origin_junction_id=road_start_node,
-                        dest_junction_id=road_end_node,
-                    )
-
-        return list(inner_shortest_path())
+        return list(self.sequential_path(nx_route))

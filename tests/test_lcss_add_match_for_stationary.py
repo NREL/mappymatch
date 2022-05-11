@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from cmath import exp
+from collections.abc import Iterable
 from copy import deepcopy
+from typing import Union
 from unittest import TestCase
 
 from shapely.geometry import LineString
@@ -13,6 +14,9 @@ from mappymatch.matchers.lcss.ops import (
     StationaryIndex,
     add_matches_for_stationary_points,
 )
+
+def make_roads(ids: Iterable[Union[str, int]]) -> Iterable[Road]:
+    return (Road())
 
 
 class TestLCSSAddMatchForStationary(TestCase):
