@@ -17,6 +17,7 @@ from mappymatch import root
 
 import matplotlib.pyplot as plt
 
+
 def plot_geofence(geofence, m=None):
     """
     Plot geofence.
@@ -189,28 +190,24 @@ def plot_map(tmap: NxMap, m=None):
 
 def plot_match_distances(matches: MatchResult):
     """
-        Summary: Plot the points deviance from known roads with matplotlib.
+    Summary: Plot the points deviance from known roads with matplotlib.
 
-        Issues:
-            we have two different dataframes one labeled with gdf and the other with df. --> to resolve this, the gdf labeled data frames have been changed to df labels.
+    Issues:
+        we have two different dataframes one labeled with gdf and the other with df. --> to resolve this, the gdf labeled data frames have been changed to df labels.
 
-        Args:
-            coord_df (pandas dataframe): coords of guessed points in the area.
+    Args:
+        coord_df (pandas dataframe): coords of guessed points in the area.
     """
 
     y = [m.distance for m in matches]
-    x = [x for x in range(0, len(y))]  # this line create placeholder values for x axis
+    x = [
+        x for x in range(0, len(y))
+    ]  # this line create placeholder values for x axis
 
     plt.figure(figsize=(15, 7))
-    plt.autoscale(
-        enable=True
-    )
-    plt.scatter(
-        x, y
-    )
+    plt.autoscale(enable=True)
+    plt.scatter(x, y)
     plt.title("Distance To Nearest Road")
     plt.ylabel("Meters")
-    plt.xlabel(
-        "Point Along The Path"
-    )
+    plt.xlabel("Point Along The Path")
     plt.show()
