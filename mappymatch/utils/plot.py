@@ -1,9 +1,9 @@
-from typing import List, Optional  # TODO - Optional is not used.
+from typing import List  # TODO - Optional is not used.
 import folium
 
 import geopandas as gpd  # TODO - we removed geopandas I believe.
 import pandas as pd
-import numpy as np
+
 from shapely.geometry import Point
 from mappymatch.constructs.match import Match
 from mappymatch.maps.nx.nx_map import NxMap
@@ -11,20 +11,12 @@ from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 from mappymatch.constructs.trace import Trace
 from mappymatch.utils.geo import geofence_from_trace
 from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap
-from mappymatch.maps.map_interface import (
-    MapInterface,
-)  # TODO - MapInterface is not used.
 from mappymatch.matchers.lcss.lcss import LCSSMatcher
 from mappymatch import root
 
 # plotting imports from mappymatch utils as well as matplotlib
 # todo - all of the imports from mappymatch.utils.plot are not being used in this file.
-from mappymatch.utils.plot import (
-    plot_geofence,
-    plot_trace,
-    plot_matches,
-    plot_map,
-)
+
 import matplotlib.pyplot as plt
 
 
@@ -164,7 +156,7 @@ def plot_matches(matches: List[Match], road_map: NxMap):
 
     # The road_df and coord_df variables for our plot_match_distances function later on are available here for plotting.
     # calling the plotting function with coordinate data frames already loaded in memory.
-    plot_match_distances(road_df, coord_df)
+    plot_match_distances(coord_df)
 
     return fmap
 
@@ -202,7 +194,7 @@ def plot_map(tmap: NxMap, m=None):
     return m
 
 
-def plot_match_distances(road_df, coord_df):
+def plot_match_distances(coord_df):
     # todo MatchResult is not a defined Element, removed from the args list above (was (matches: MatchResult)).
     # build and display plots here.
     """
@@ -212,37 +204,36 @@ def plot_match_distances(road_df, coord_df):
         we have two different dataframes one labeled with gdf and the other with df. --> to resolve this, the gdf labeled data frames have been changed to df labels.
 
     Args:
-        road_df (pandas dataframe): coords of roadline geometries in the data.
         coord_df (pandas dataframe): coords of guessed points in the area.
     """
 
-    #! Road Data Frame Section
-    # define a pandas data frame containing the list of matches (each represented by m) where m.road = True
+    # Road Data Frame Section
+    # Define a pandas data frame containing the list of matches (each represented by m) where m.road = True
 
-    mid_i = int(
-        len(coord_df) / 2
-    )  # find the middle index of the coord_gdf data frame.
-    mid_coord = coord_df.iloc[
-        mid_i
-    ].geometry  # answer the question: what is the middle coordinate?
+    # mid_i = int(
+    #     len(coord_df) / 2
+    # )  # find the middle index of the coord_gdf data frame.
+    # mid_coord = coord_df.iloc[
+    #     mid_i
+    # ].geometry  # answer the question: what is the middle coordinate?
 
     y = coord_df.distance  # the distances from the expected line. Deviance.
     x = [x for x in range(0, len(y))]  # create blanks for x axis
 
-    for (
-        coord
-    ) in (
-        coord_df.itertuples()
-    ):  # for every coordinate tuple within coord_gdf ...
-        x_coord = coord.geometry.x  # identify the x coordinate geometry.
-        y_coord = coord.geometry.y  # identify the y coordinate geometry.
+    # for (
+    #     coord
+    # ) in (
+    #     coord_df.itertuples()
+    # ):  # for every coordinate tuple within coord_gdf ...
+    #     x_coord = coord.geometry.x  # identify the x coordinate geometry.
+    #     y_coord = coord.geometry.y  # identify the y coordinate geometry.
 
-    for (
-        road
-    ) in road_df.itertuples():  # for every road in the road_gdf data frame...
-        full_line = [
-            (lat, lon) for lon, lat in road.geometry.coords
-        ]  # identify the full line of that road in lat,long tuples.
+    # for (
+    #     road
+    # ) in road_df.itertuples():  # for every road in the road_gdf data frame...
+    #     full_line = [
+    #         (lat, lon) for lon, lat in road.geometry.coords
+    #     ]  # identify the full line of that road in lat,long tuples.
 
     #! Plotting Section
     plt.figure(figsize=(15, 7))  # create a figure sized 15 x 7
@@ -283,7 +274,8 @@ def plot_prep(file_path):  #
         matches, road_map
     )  # call the plot_matches function which will plot the matches with matplotlib
 
+
 # change file path to the desired matches as a csv file.
-file_path = "resources/traces/sample_trace_2.csv"
+file_path = "resources/traces/sample_trace_3.csv"
 
 plot_prep(file_path)
