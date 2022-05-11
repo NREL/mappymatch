@@ -8,12 +8,7 @@ from shapely.geometry import Point
 from mappymatch.constructs.match import Match
 from mappymatch.maps.nx.nx_map import NxMap
 from mappymatch.utils.crs import LATLON_CRS, XY_CRS
-from mappymatch.constructs.trace import Trace
-from mappymatch.utils.geo import geofence_from_trace
-from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap
-from mappymatch.matchers.lcss.lcss import LCSSMatcher
 from mappymatch.matchers.matcher_interface import MatchResult
-from mappymatch import root
 
 import matplotlib.pyplot as plt
 
