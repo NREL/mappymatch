@@ -214,28 +214,3 @@ def plot_match_distances(matches: MatchResult):
         "Point Along The Path"
     )
     plt.show()
-
-
-def plot_prep(file_path):  #
-    """
-    Summary:
-       provided a file path, the plot_prep function creates a trace, geofence, road_map, and matcher using LCSSMatcher and then passes the matches object to the plot_matches function. This function generates a fmap, but it also runs the plot_match_distances function before it finishes executing. With some tweaking this can be customized to the users preferences.
-
-    Args:
-        file_path (str, optional): _description_. Defaults to 'resources/traces/sample_trace_1.csv'.
-    """
-    try:
-        trace = Trace.from_csv(root() / f"{file_path}")
-    except Exception:
-        trace = Trace.from_csv(
-            f"{file_path}"
-        )  # catches any file entry errors.
-    geofence = geofence_from_trace(trace, padding=1e3)
-    road_map = read_osm_nxmap(geofence)
-    matcher = LCSSMatcher(road_map)
-    matches = matcher.match_trace(trace)
-    plot_match_distances(matches) # call the plot_matches function which will plot the matches with matplotlib
-
-file_path = "resources/traces/sample_trace_3.csv"
-
-fmap_result = plot_prep(file_path)
