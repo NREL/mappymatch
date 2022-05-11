@@ -160,8 +160,9 @@ def plot_matches(matches: List[Match], road_map: NxMap):
             tooltip=road.road_id,
         ).add_to(fmap)
 
-    # Saving the road_df and coord_df variables for our plot_match_distances function later on.
-    #!road_df,coord_df
+    # The road_df and coord_df variables for our plot_match_distances function later on are available here for plotting.
+    # calling the plotting function with coordinate data frames already loaded in memory.
+    plot_match_distances(road_df,coord_df)
 
     return fmap
 
@@ -199,27 +200,18 @@ def plot_map(tmap: NxMap, m=None):
     return m
 
 
-def plot_match_distances(matches,road_df,coord_df):
+def plot_match_distances(road_df,coord_df):
     # todo MatchResult is not a defined Element, removed from the args list above (was (matches: MatchResult)).
     # build and display plots here.
     """
-    Summary:
-
-        matches gets passed to plot_match_distances after it is calculated as follows.
-
-        trace = Trace.from_csv(root() / "resources/traces/sample_trace_1.csv")
-        geofence = geofence_from_trace(
-            trace, padding=1e3
-        )
-        road_map = read_osm_nxmap(geofence)
-        matcher = LCSSMatcher(road_map)
-        matches = matcher.match_trace(trace)
-
-    Args:
-        matches (MatchResult): _description_
+    Summary: Plot the points deviance from known roads with matplotlib.
 
     Issues:
         we have two different dataframes one labeled with gdf and the other with df. --> to resolve this, the gdf labeled data frames have been changed to df labels.
+
+    Args:
+        road_df (pandas dataframe): coords of roadline geometries in the data.
+        coord_df (pandas dataframe): coords of guessed points in the area.
     """
 
     #! Road Data Frame Section
@@ -248,23 +240,28 @@ def plot_match_distances(matches,road_df,coord_df):
     plt.xlabel("Point Along The Path") # label the x axis label "Point Along The Path"
     plt.show() # print the plot.
 
+
 def plot_prep(file_path): #
     """
     Summary:
-       provided a file path, the plot_prep function creates a trace, geofence, road_map, and matcher using LCSSMatcher and then passes the matches object to the plot_match_distances function.
+       provided a file path, the plot_prep function creates a trace, geofence, road_map, and matcher using LCSSMatcher and then passes the matches object to the plot_matches function. This function generates a fmap, but it also runs the plot_match_distances function before it finishes executing. With some tweaking this can be customized to the users preferences.
 
     Args:
         file_path (str, optional): _description_. Defaults to 'resources/traces/sample_trace_1.csv'.
     """
-    trace = Trace.from_csv(root() / f"{file_path}")
+    try:
+        trace = Trace.from_csv(root() / f"{file_path}")
+    except Exception:
+        trace = Trace.from_csv(f"{file_path}") # catches any file entry errors.
     geofence = geofence_from_trace(
         trace, padding=1e3
     )
     road_map = read_osm_nxmap(geofence)
     matcher = LCSSMatcher(road_map)
     matches = matcher.match_trace(trace)
+    fmap_result = plot_matches(matches,road_map) # call the plot_matches function which will plot the matches with matplotlib
 
-    plot_match_distances(matches) # call plot match distances with the matches to generate insight plots.
 
-file_path = '/Users/grahamwaters/Documents/Untouchable_Files/mappymatch/resources/traces/sample_trace_2.csv'
+file_path = 'resources/traces/sample_trace_2.csv'
+
 plot_prep(file_path)
