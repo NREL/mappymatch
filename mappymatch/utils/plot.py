@@ -190,19 +190,18 @@ def plot_map(tmap: NxMap, m=None):
 
 def plot_match_distances(matches: MatchResult):
     """
-    Summary: Plot the points deviance from known roads with matplotlib.
-
-    Issues:
-        we have two different dataframes one labeled with gdf and the other with df. --> to resolve this, the gdf labeled data frames have been changed to df labels.
+    Plot the points deviance from known roads with matplotlib.
 
     Args:
-        coord_df (pandas dataframe): coords of guessed points in the area.
+        matches (MatchResult): The coordinates of guessed points in the area in the form of a MatchResult object.
     """
 
-    y = [m.distance for m in matches]
+    y = [
+        m.distance for m in matches
+    ]  # y contains distances to the expected line for all of the matches which will be plotted on the y-axis.
     x = [
-        x for x in range(0, len(y))
-    ]  # this line create placeholder values for x axis
+        i for i in range(0, len(y))
+    ]  # x contains placeholder values for every y value (distance measurement) along the x-axis.
 
     plt.figure(figsize=(15, 7))
     plt.autoscale(enable=True)
