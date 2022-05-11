@@ -151,10 +151,6 @@ def plot_matches(matches: List[Match], road_map: NxMap):
             tooltip=road.road_id,
         ).add_to(fmap)
 
-    # The road_df and coord_df variables for our plot_match_distances function later on are available here for plotting.
-    # calling the plotting function with coordinate data frames already loaded in memory.
-    plot_match_distances(coord_df)
-
     return fmap
 
 
@@ -238,10 +234,7 @@ def plot_prep(file_path):  #
     road_map = read_osm_nxmap(geofence)
     matcher = LCSSMatcher(road_map)
     matches = matcher.match_trace(trace)
-    fmap_result = plot_matches(
-        matches, road_map
-    )  # call the plot_matches function which will plot the matches with matplotlib
-    return fmap_result
+    plot_match_distances(matches) # call the plot_matches function which will plot the matches with matplotlib
 
 file_path = "resources/traces/sample_trace_3.csv"
 
