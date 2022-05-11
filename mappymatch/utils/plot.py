@@ -235,7 +235,7 @@ def plot_match_distances(coord_df):
     #         (lat, lon) for lon, lat in road.geometry.coords
     #     ]  # identify the full line of that road in lat,long tuples.
 
-    #! Plotting Section
+    # Plotting Section
     plt.figure(figsize=(15, 7))  # create a figure sized 15 x 7
     plt.autoscale(
         enable=True
@@ -273,9 +273,10 @@ def plot_prep(file_path):  #
     fmap_result = plot_matches(
         matches, road_map
     )  # call the plot_matches function which will plot the matches with matplotlib
+    return fmap_result
 
 
 # change file path to the desired matches as a csv file.
 file_path = "resources/traces/sample_trace_3.csv"
 
-plot_prep(file_path)
+fmap_result = plot_prep(file_path)
