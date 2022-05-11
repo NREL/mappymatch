@@ -1,7 +1,7 @@
-from typing import List  # TODO - Optional is not used.
+from typing import List
 import folium
 
-import geopandas as gpd  # TODO - we removed geopandas I believe.
+import geopandas as gpd
 import pandas as pd
 
 from shapely.geometry import Point
@@ -14,11 +14,7 @@ from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap
 from mappymatch.matchers.lcss.lcss import LCSSMatcher
 from mappymatch import root
 
-# plotting imports from mappymatch utils as well as matplotlib
-# todo - all of the imports from mappymatch.utils.plot are not being used in this file.
-
 import matplotlib.pyplot as plt
-
 
 def plot_geofence(geofence, m=None):
     """
@@ -129,7 +125,7 @@ def plot_matches(matches: List[Match], road_map: NxMap):
     road_gdf = road_gdf.to_crs(LATLON_CRS)
 
     coord_df = pd.DataFrame([_match_to_coord(m) for m in matches if m.road])
-    # todo -- still using geopandas below
+
     coord_gdf = gpd.GeoDataFrame(
         coord_df, geometry=coord_df.geom, crs=XY_CRS
     ).drop(columns=["geom"])
@@ -246,8 +242,6 @@ def plot_prep(file_path):  #
     )  # call the plot_matches function which will plot the matches with matplotlib
     return fmap_result
 
-
-# change file path to the desired matches as a csv file.
 file_path = "resources/traces/sample_trace_3.csv"
 
 fmap_result = plot_prep(file_path)
