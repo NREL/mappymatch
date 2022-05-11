@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import Generator
 from collections.abc import Iterable
 from copy import deepcopy
 from typing import Union
@@ -15,32 +16,29 @@ from mappymatch.matchers.lcss.ops import (
     add_matches_for_stationary_points,
 )
 
-def make_roads(ids: Iterable[Union[str, int]]) -> Iterable[Road]:
-    return (Road())
+
+TEST_ROADS = ("first st", "second st", "main st", "second str", 123, 234)
+TEST_COORDS = (
+    (39.655193, -104.919294),
+    (39.655494, -104.91943),
+    (39.655801, -104.919567),
+    (39.656103, -104.919698),
+    (39.656406, -104.919831),
+    (39.656707, -104.919964),
+)
+
+
+def make_roads(ids: Iterable[Union[str, int]] = TEST_ROADS) -> Generator[Road]:
+    return (Road(id, LineString(), "a", "b") for id in ids)
 
 
 class TestLCSSAddMatchForStationary(TestCase):
     def test_add_matches_no_stationary_points(self):
         """This will test the "null case" which is to say, no stationary points"""
         # Road(id: str|int, geom: LineString, metadata: dict)
-        roads = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road(234, LineString(), "a", "b"),
-        ]
+        roads = make_roads()
 
-        lat_longs = [
-            (39.655193, -104.919294),
-            (39.655494, -104.91943),
-            (39.655801, -104.919567),
-            (39.656103, -104.919698),
-            (39.656406, -104.919831),
-            (39.656707, -104.919964),
-        ]
-        coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in lat_longs]
+        coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in TEST_COORDS]
         # Match(road, coordinate, distance)
         matches = [Match(r, c, 0.1) for r, c in zip(roads, coords)]
 
@@ -57,24 +55,9 @@ class TestLCSSAddMatchForStationary(TestCase):
 
     def test_add_matches_one_stationary_point_at_beginning(self):
         """Test adding a single stationary point at the beginning"""
-        roads = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road(234, LineString(), "a", "b"),
-        ]
+        roads = make_roads()
 
-        lat_longs = [
-            (39.655193, -104.919294),
-            (39.655494, -104.91943),
-            (39.655801, -104.919567),
-            (39.656103, -104.919698),
-            (39.656406, -104.919831),
-            (39.656707, -104.919964),
-        ]
-        coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in lat_longs]
+        coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in TEST_COORDS]
         # Match(road, coordinate, distance)
         matches = [Match(r, c, 0.1) for r, c in zip(roads, coords)]
 
@@ -99,24 +82,9 @@ class TestLCSSAddMatchForStationary(TestCase):
     def test_add_matches_one_stationary_point_at_end(self):
         """Test adding a single stationary point at the end"""
         # Road(id: str|int, geom: LineString, metadata: dict)
-        roads = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road(234, LineString(), "a", "b"),
-        ]
+        roads = make_roads()
 
-        lat_longs = [
-            (39.655193, -104.919294),
-            (39.655494, -104.91943),
-            (39.655801, -104.919567),
-            (39.656103, -104.919698),
-            (39.656406, -104.919831),
-            (39.656707, -104.919964),
-        ]
-        coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in lat_longs]
+        coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in TEST_COORDS]
         # Match(road, coordinate, distance)
         matches = [Match(r, c, 0.1) for r, c in zip(roads, coords)]
 
@@ -141,24 +109,9 @@ class TestLCSSAddMatchForStationary(TestCase):
     def test_add_matches_one_stationary_point_in_middle(self):
         """Test adding a single stationary point in the middle"""
         # Road(id: str|int, geom: LineString, metadata: dict)
-        roads = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road(234, LineString(), "a", "b"),
-        ]
+        roads = make_roads()
 
-        lat_longs = [
-            (39.655193, -104.919294),
-            (39.655494, -104.91943),
-            (39.655801, -104.919567),
-            (39.656103, -104.919698),
-            (39.656406, -104.919831),
-            (39.656707, -104.919964),
-        ]
-        coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in lat_longs]
+        coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in TEST_COORDS]
         # Match(road, coordinate, distance)
         matches = [Match(r, c, 0.1) for r, c in zip(roads, coords)]
 
@@ -198,24 +151,9 @@ class TestLCSSAddMatchForStationary(TestCase):
     def test_add_matches_multiple_stationary_points(self):
         """Test adding multiple stationary points"""
         # Road(id: str|int, geom: LineString, metadata: dict)
-        roads = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road(234, LineString(), "a", "b"),
-        ]
+        roads = make_roads()
 
-        lat_longs = [
-            (39.655193, -104.919294),
-            (39.655494, -104.91943),
-            (39.655801, -104.919567),
-            (39.656103, -104.919698),
-            (39.656406, -104.919831),
-            (39.656707, -104.919964),
-        ]
-        coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in lat_longs]
+        coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in TEST_COORDS]
         # Match(road, coordinate, distance)
         matches: list[Match] = [
             Match(r, c, 0.1) for r, c in zip(roads, coords)
