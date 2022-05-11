@@ -20,9 +20,15 @@ class Coordinate(NamedTuple):
     geom: Point
     crs: CRS
 
-    def __repr__(self):
+    def _string_rep(self):
         crs_a = self.crs.to_authority() if self.crs else "Null"
         return f"Coordinate(coordinate_id={self.coordinate_id}, x={self.x}, y={self.y}, crs={crs_a})"
+
+    def __repr__(self):
+        return self._string_rep()
+
+    def __str__(self):
+        return self._string_rep()
 
     @classmethod
     def from_lat_lon(cls, lat: float, lon: float) -> Coordinate:
