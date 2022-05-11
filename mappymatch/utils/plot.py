@@ -194,9 +194,7 @@ def plot_map(tmap: NxMap, m=None):
     return m
 
 
-def plot_match_distances(coord_df):
-    # todo MatchResult is not a defined Element, removed from the args list above (was (matches: MatchResult)).
-    # build and display plots here.
+def plot_match_distances(matches):
     """
     Summary: Plot the points deviance from known roads with matplotlib.
 
@@ -207,35 +205,9 @@ def plot_match_distances(coord_df):
         coord_df (pandas dataframe): coords of guessed points in the area.
     """
 
-    # Road Data Frame Section
-    # Define a pandas data frame containing the list of matches (each represented by m) where m.road = True
-
-    # mid_i = int(
-    #     len(coord_df) / 2
-    # )  # find the middle index of the coord_gdf data frame.
-    # mid_coord = coord_df.iloc[
-    #     mid_i
-    # ].geometry  # answer the question: what is the middle coordinate?
-
-    y = coord_df.distance  # the distances from the expected line. Deviance.
+    y = [m.distance for m in matches]
     x = [x for x in range(0, len(y))]  # create blanks for x axis
 
-    # for (
-    #     coord
-    # ) in (
-    #     coord_df.itertuples()
-    # ):  # for every coordinate tuple within coord_gdf ...
-    #     x_coord = coord.geometry.x  # identify the x coordinate geometry.
-    #     y_coord = coord.geometry.y  # identify the y coordinate geometry.
-
-    # for (
-    #     road
-    # ) in road_df.itertuples():  # for every road in the road_gdf data frame...
-    #     full_line = [
-    #         (lat, lon) for lon, lat in road.geometry.coords
-    #     ]  # identify the full line of that road in lat,long tuples.
-
-    # Plotting Section
     plt.figure(figsize=(15, 7))  # create a figure sized 15 x 7
     plt.autoscale(
         enable=True
