@@ -50,8 +50,10 @@ This can be installed via pip:
 ```
 pip install ".[plot]"
 ```
-
-
+The last step is to install the pre-commit hooks.
+```
+pre-commit install
+```
 ## Example Usage
 
 The current primary workflow is to use [osmnx](https://github.com/gboeing/osmnx) to download a road network and match it using the `LCSSMatcher`.

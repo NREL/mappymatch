@@ -1,5 +1,7 @@
 from typing import List, Optional #TODO - Optional is not used.
 import folium
+import os
+
 import geopandas as gpd #TODO - we removed geopandas I believe.
 import pandas as pd
 import numpy as np
@@ -133,7 +135,7 @@ def plot_matches(matches: List[Match], road_map: NxMap):
     road_gdf = road_gdf.to_crs(LATLON_CRS)
 
     coord_df = pd.DataFrame([_match_to_coord(m) for m in matches if m.road])
-
+    # todo -- still using geopandas below
     coord_gdf = gpd.GeoDataFrame(
         coord_df, geometry=coord_df.geom, crs=XY_CRS
     ).drop(columns=["geom"])
@@ -157,6 +159,9 @@ def plot_matches(matches: List[Match], road_map: NxMap):
             color="red",
             tooltip=road.road_id,
         ).add_to(fmap)
+
+    # Saving the road_df and coord_df variables for our plot_match_distances function later on.
+    #!road_df,coord_df
 
     return fmap
 
@@ -193,38 +198,9 @@ def plot_map(tmap: NxMap, m=None):
 
     return m
 
-#ADD - functions from the visualization file
-def match_to_road(m):
-    d = {"road_id": m.road.road_id}
 
-    metadata = m.road.metadata
-    u = metadata["u"]
-    v = metadata["v"]
-
-    edge_data = road_map.g.get_edge_data(u, v)
-
-    road_key = list(edge_data.keys())[0]
-
-    # TODO: this should be generic over all road maps
-    geom_key = road_map._geom_key # todo: needs someone familiar with the code to fix this. road_map is not defined.
-
-    road_geom = edge_data[road_key][geom_key]
-
-    d["geom"] = road_geom
-
-    return d
-
-def match_to_coord(m):
-    d = {
-        "road_id": m.road.road_id,
-        "geom": Point(m.coordinate.x, m.coordinate.y),
-        "distance": m.distance,
-    }
-
-    return d
-
-
-def plot_match_distances(matches: MatchResult): # TODO: -- MatchResult is not a defined Element.
+def plot_match_distances(matches,road_df,coord_df):
+    # todo MatchResult is not a defined Element, removed from the args list above (was (matches: MatchResult)).
     # build and display plots here.
     """
     Summary:
@@ -241,40 +217,25 @@ def plot_match_distances(matches: MatchResult): # TODO: -- MatchResult is not a 
 
     Args:
         matches (MatchResult): _description_
+
+    Issues:
+        we have two different dataframes one labeled with gdf and the other with df. --> to resolve this, the gdf labeled data frames have been changed to df labels.
     """
 
     #! Road Data Frame Section
     # define a pandas data frame containing the list of matches (each represented by m) where m.road = True
-    road_df = pd.DataFrame([match_to_road(m) for m in matches if m.road])
-    road_df = road_df.loc[road_df.road_id.shift() != road_df.road_id]
 
-    # TODO: -- the data frame below still utilizes geopandas. Is this what you want to use or is there something else that should be implemented here?
-    road_gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=XY_CRS).drop(
-        columns=["geom"]
-    ) # drop the geom column from the road_gdf data frame.
-    road_gdf = road_gdf.to_crs(LATLON_CRS)
-
-    #! Coordinate Data Frame Section
-    coord_df = pd.DataFrame([match_to_coord(m) for m in matches if m.road])
-    # TODO: -- the data frame below still utilizes geopandas.
-    coord_gdf = gpd.GeoDataFrame(
-        coord_df, geometry=coord_df.geom, crs=XY_CRS
-    ).drop(columns=["geom"]) # drop the geom column from the coord_df data frame.
-    coord_gdf = coord_gdf.to_crs(
-        LATLON_CRS
-    )  # convert coordinates to latlon_crs format.
-
-    mid_i = int(len(coord_gdf) / 2) # find the middle index of the coord_gdf data frame.
-    mid_coord = coord_gdf.iloc[mid_i].geometry # answer the question: what is the middle coordinate?
+    mid_i = int(len(coord_df) / 2) # find the middle index of the coord_gdf data frame.
+    mid_coord = coord_df.iloc[mid_i].geometry # answer the question: what is the middle coordinate?
 
     y = coord_df.distance  # the distances from the expected line. Deviance.
     x = [x for x in range(0, len(y))]  # create blanks for x axis
 
-    for coord in coord_gdf.itertuples(): # for every coordinate tuple within coord_gdf ...
+    for coord in coord_df.itertuples(): # for every coordinate tuple within coord_gdf ...
         x_coord = coord.geometry.x # identify the x coordinate geometry.
         y_coord = coord.geometry.y # identify the y coordinate geometry.
 
-    for road in road_gdf.itertuples(): # for every road in the road_gdf data frame...
+    for road in road_df.itertuples(): # for every road in the road_gdf data frame...
         full_line = [(lat, lon) for lon, lat in road.geometry.coords] # identify the full line of that road in lat,long tuples.
 
     #! Plotting Section
@@ -287,7 +248,7 @@ def plot_match_distances(matches: MatchResult): # TODO: -- MatchResult is not a 
     plt.xlabel("Point Along The Path") # label the x axis label "Point Along The Path"
     plt.show() # print the plot.
 
-def plot_prep(file_path='resources/traces/sample_trace_1.csv'): #
+def plot_prep(file_path): #
     """
     Summary:
        provided a file path, the plot_prep function creates a trace, geofence, road_map, and matcher using LCSSMatcher and then passes the matches object to the plot_match_distances function.
@@ -305,4 +266,5 @@ def plot_prep(file_path='resources/traces/sample_trace_1.csv'): #
 
     plot_match_distances(matches) # call plot match distances with the matches to generate insight plots.
 
-plot_prep()
+file_path = '/Users/grahamwaters/Documents/Untouchable_Files/mappymatch/resources/traces/sample_trace_2.csv'
+plot_prep(file_path)
