@@ -54,18 +54,20 @@ class NxMap(MapInterface):
         self._roads = self._build_rtree()
 
     def _strip_verbose_data(self):
-        too_verbose = ('_nodes', '_roads')
-        base_dict = {k: v for k, v in self.__dict__.items() if not k in too_verbose}
+        too_verbose = ("_nodes", "_roads")
+        base_dict = {
+            k: v for k, v in self.__dict__.items() if not k in too_verbose
+        }
         for label in too_verbose:
-            member_len = len(eval(f'self.{label}'))
-            base_dict[label] = f'list of {member_len} elements'
-        return ', '.join(f'{k}: {v}' for k, v in base_dict.items())
+            member_len = len(eval(f"self.{label}"))
+            base_dict[label] = f"list of {member_len} elements"
+        return ", ".join(f"{k}: {v}" for k, v in base_dict.items())
 
     def __str__(self):
-        return 'NXMap(' + self._strip_verbose_data() + ')'
+        return "NXMap(" + self._strip_verbose_data() + ")"
 
     def __repr__(self):
-        return 'NXMap(' + self._strip_verbose_data() + ')'
+        return "NXMap(" + self._strip_verbose_data() + ")"
 
     def _build_rtree(self) -> List[Road]:
         road_lookup = []

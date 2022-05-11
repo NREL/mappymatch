@@ -54,11 +54,18 @@ class LCSSMatcher(MatcherInterface):
         self.random_cuts = random_cuts
         self.distance_threshold = distance_threshold
 
+    def _string_rep(self):
+        return (
+            "LCSSMatcher("
+            + ", ".join(f"{k}: {v}" for k, v in self.__dict__.items())
+            + ")"
+        )
+
     def __repr__(self):
-        return(repr(self.__dict__))
+        return self._string_rep()
 
     def __str__(self):
-        return(str(self.__dict__))
+        return self._string_rep()
 
     def match_trace(self, trace: Trace) -> MatchResult:
         def _join_segment(a: TrajectorySegment, b: TrajectorySegment):
