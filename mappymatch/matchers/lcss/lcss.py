@@ -55,11 +55,10 @@ class LCSSMatcher(MatcherInterface):
         self.distance_threshold = distance_threshold
 
     def _string_rep(self):
-        return (
-            "LCSSMatcher("
-            + ", ".join(f"{k}: {v}" for k, v in self.__dict__.items())
-            + ")"
+        base_dict_str = ", ".join(
+            f"{k}: {v}" for k, v in self.__dict__.items()
         )
+        return "LCSSMatcher(" + base_dict_str + ")"
 
     def __repr__(self):
         return self._string_rep()

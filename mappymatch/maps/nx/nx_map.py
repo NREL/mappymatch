@@ -56,7 +56,7 @@ class NxMap(MapInterface):
     def _strip_verbose_data(self):
         too_verbose = ("_nodes", "_roads")
         base_dict = {
-            k: v for k, v in self.__dict__.items() if not k in too_verbose
+            k: v for k, v in self.__dict__.items() if k not in too_verbose
         }
         for label in too_verbose:
             member_len = len(eval(f"self.{label}"))
