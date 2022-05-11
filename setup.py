@@ -23,7 +23,7 @@ setup(
         "Topic :: Scientific/Engineering",
     ],
     packages=find_packages(),
-    python_requires=">=3.8", #! should we update this in the environment.yml file?
+    python_requires=">=3.8",
     install_requires=[
         "osmnx",
         "pygeos",
