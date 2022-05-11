@@ -18,12 +18,6 @@ cd path/to/mappymatch
 
 Then, use the environment.yml file (which was downloaded when you cloned the repo) to install dependencies:
 
----> Question about this ordering (for @nreinicke or admin).
-Should this instalation be performed before or after navigating into the subfolder mappymatch/mappymatch?
-The environment.yml file lives in the outer directory under the primary MappyMatch folder.
-
-
-
 
 ```
 conda env create -f environment.yml
