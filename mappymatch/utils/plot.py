@@ -283,7 +283,7 @@ def plot_prep(file_path):  #
         matches, road_map
     )  # call the plot_matches function which will plot the matches with matplotlib
 
-
+# change file path to the desired matches as a csv file.
 file_path = "resources/traces/sample_trace_2.csv"
 
 plot_prep(file_path)
