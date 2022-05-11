@@ -12,6 +12,7 @@ from mappymatch.constructs.trace import Trace
 from mappymatch.utils.geo import geofence_from_trace
 from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap
 from mappymatch.matchers.lcss.lcss import LCSSMatcher
+from mappymatch.matchers.matcher_interface import MatchResult
 from mappymatch import root
 
 import matplotlib.pyplot as plt
@@ -190,7 +191,7 @@ def plot_map(tmap: NxMap, m=None):
     return m
 
 
-def plot_match_distances(matches):
+def plot_match_distances(matches: MatchResult):
     """
         Summary: Plot the points deviance from known roads with matplotlib.
 
