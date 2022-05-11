@@ -1,8 +1,7 @@
-from typing import List, Optional #TODO - Optional is not used.
+from typing import List, Optional  # TODO - Optional is not used.
 import folium
-import os
 
-import geopandas as gpd #TODO - we removed geopandas I believe.
+import geopandas as gpd  # TODO - we removed geopandas I believe.
 import pandas as pd
 import numpy as np
 from shapely.geometry import Point
@@ -12,12 +11,14 @@ from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 from mappymatch.constructs.trace import Trace
 from mappymatch.utils.geo import geofence_from_trace
 from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap
-from mappymatch.maps.map_interface import MapInterface #TODO - MapInterface is not used.
+from mappymatch.maps.map_interface import (
+    MapInterface,
+)  # TODO - MapInterface is not used.
 from mappymatch.matchers.lcss.lcss import LCSSMatcher
 from mappymatch import root
 
 # plotting imports from mappymatch utils as well as matplotlib
-#todo - all of the imports from mappymatch.utils.plot are not being used in this file.
+# todo - all of the imports from mappymatch.utils.plot are not being used in this file.
 from mappymatch.utils.plot import (
     plot_geofence,
     plot_trace,
@@ -25,6 +26,7 @@ from mappymatch.utils.plot import (
     plot_map,
 )
 import matplotlib.pyplot as plt
+
 
 def plot_geofence(geofence, m=None):
     """
@@ -162,7 +164,7 @@ def plot_matches(matches: List[Match], road_map: NxMap):
 
     # The road_df and coord_df variables for our plot_match_distances function later on are available here for plotting.
     # calling the plotting function with coordinate data frames already loaded in memory.
-    plot_match_distances(road_df,coord_df)
+    plot_match_distances(road_df, coord_df)
 
     return fmap
 
@@ -200,7 +202,7 @@ def plot_map(tmap: NxMap, m=None):
     return m
 
 
-def plot_match_distances(road_df,coord_df):
+def plot_match_distances(road_df, coord_df):
     # todo MatchResult is not a defined Element, removed from the args list above (was (matches: MatchResult)).
     # build and display plots here.
     """
@@ -217,31 +219,49 @@ def plot_match_distances(road_df,coord_df):
     #! Road Data Frame Section
     # define a pandas data frame containing the list of matches (each represented by m) where m.road = True
 
-    mid_i = int(len(coord_df) / 2) # find the middle index of the coord_gdf data frame.
-    mid_coord = coord_df.iloc[mid_i].geometry # answer the question: what is the middle coordinate?
+    mid_i = int(
+        len(coord_df) / 2
+    )  # find the middle index of the coord_gdf data frame.
+    mid_coord = coord_df.iloc[
+        mid_i
+    ].geometry  # answer the question: what is the middle coordinate?
 
     y = coord_df.distance  # the distances from the expected line. Deviance.
     x = [x for x in range(0, len(y))]  # create blanks for x axis
 
-    for coord in coord_df.itertuples(): # for every coordinate tuple within coord_gdf ...
-        x_coord = coord.geometry.x # identify the x coordinate geometry.
-        y_coord = coord.geometry.y # identify the y coordinate geometry.
+    for (
+        coord
+    ) in (
+        coord_df.itertuples()
+    ):  # for every coordinate tuple within coord_gdf ...
+        x_coord = coord.geometry.x  # identify the x coordinate geometry.
+        y_coord = coord.geometry.y  # identify the y coordinate geometry.
 
-    for road in road_df.itertuples(): # for every road in the road_gdf data frame...
-        full_line = [(lat, lon) for lon, lat in road.geometry.coords] # identify the full line of that road in lat,long tuples.
+    for (
+        road
+    ) in road_df.itertuples():  # for every road in the road_gdf data frame...
+        full_line = [
+            (lat, lon) for lon, lat in road.geometry.coords
+        ]  # identify the full line of that road in lat,long tuples.
 
     #! Plotting Section
-    plt.figure(figsize=(15, 7)) # create a figure sized 15 x 7
-    plt.autoscale(enable=True) # autoscale the figure's contents to the data once it is plotted.
-    #todo ---- what was the purpose of plt.stem? -->  plt.stem(x, y)
-    plt.scatter(x, y) # create a scatter plot of our x (blanks), and our y (deviance from expected line) values.
-    plt.title("Distance To Nearest Road") # create a title for our plot.
-    plt.ylabel("Meters") # establish the y axis label "Meters"
-    plt.xlabel("Point Along The Path") # label the x axis label "Point Along The Path"
-    plt.show() # print the plot.
+    plt.figure(figsize=(15, 7))  # create a figure sized 15 x 7
+    plt.autoscale(
+        enable=True
+    )  # autoscale the figure's contents to the data once it is plotted.
+    # todo ---- what was the purpose of plt.stem? -->  plt.stem(x, y)
+    plt.scatter(
+        x, y
+    )  # create a scatter plot of our x (blanks), and our y (deviance from expected line) values.
+    plt.title("Distance To Nearest Road")  # create a title for our plot.
+    plt.ylabel("Meters")  # establish the y axis label "Meters"
+    plt.xlabel(
+        "Point Along The Path"
+    )  # label the x axis label "Point Along The Path"
+    plt.show()  # print the plot.
 
 
-def plot_prep(file_path): #
+def plot_prep(file_path):  #
     """
     Summary:
        provided a file path, the plot_prep function creates a trace, geofence, road_map, and matcher using LCSSMatcher and then passes the matches object to the plot_matches function. This function generates a fmap, but it also runs the plot_match_distances function before it finishes executing. With some tweaking this can be customized to the users preferences.
@@ -252,16 +272,18 @@ def plot_prep(file_path): #
     try:
         trace = Trace.from_csv(root() / f"{file_path}")
     except Exception:
-        trace = Trace.from_csv(f"{file_path}") # catches any file entry errors.
-    geofence = geofence_from_trace(
-        trace, padding=1e3
-    )
+        trace = Trace.from_csv(
+            f"{file_path}"
+        )  # catches any file entry errors.
+    geofence = geofence_from_trace(trace, padding=1e3)
     road_map = read_osm_nxmap(geofence)
     matcher = LCSSMatcher(road_map)
     matches = matcher.match_trace(trace)
-    fmap_result = plot_matches(matches,road_map) # call the plot_matches function which will plot the matches with matplotlib
+    fmap_result = plot_matches(
+        matches, road_map
+    )  # call the plot_matches function which will plot the matches with matplotlib
 
 
-file_path = 'resources/traces/sample_trace_2.csv'
+file_path = "resources/traces/sample_trace_2.csv"
 
 plot_prep(file_path)
