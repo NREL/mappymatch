@@ -21,9 +21,6 @@ Then, use the environment.yml file (which was downloaded when you cloned the rep
 
 ```
 conda env create -f environment.yml
-
-# Is there a reason we are not using the line below? It allows us to specify the name and the filename in one line.
-# conda env create -n mappymatch --file environment.yml
 ```
 
 To activate the mappymatch environment:
