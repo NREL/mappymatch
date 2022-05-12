@@ -12,10 +12,13 @@ git clone https://github.com/NREL/mappymatch.git
 
 Change directory into the mappymatch folder:
 ```
-cd path/to/mappymatch   # from here, your path to mappymatch is likely .\mappymatch\
+cd path/to/mappymatch
+# from here, your path to mappymatch is likely .\mappymatch\
 ```
 
 Then, use the environment.yml file (which was downloaded when you cloned the repo) to install dependencies:
+
+
 ```
 conda env create -f environment.yml
 ```
@@ -23,7 +26,10 @@ conda env create -f environment.yml
 To activate the mappymatch environment:
 ```
 conda activate mappymatch
+
 ```
+
+Finally, be sure to change your Python interpreter path to the ./mappymatch/bin/python interpreter
 
 There are a couple of extras available:
 
@@ -35,13 +41,15 @@ This can be installed via pip:
 ```
 pip install ".[plot]"
 ```
-
-
+The last step is to install the pre-commit hooks.
+```
+pre-commit install
+```
 ## Example Usage
 
 The current primary workflow is to use [osmnx](https://github.com/gboeing/osmnx) to download a road network and match it using the `LCSSMatcher`.
 
-The `LCSSMatcher` implements the map matching algorithm described in this paper: 
+The `LCSSMatcher` implements the map matching algorithm described in this paper:
 
 [Zhu, Lei, Jacob R. Holden, and Jeffrey D. Gonder.
 "Trajectory Segmentation Map-Matching Approach for Large-Scale, High-Resolution GPS Data."

@@ -1,13 +1,16 @@
 from typing import List
-
 import folium
+
 import geopandas as gpd
 import pandas as pd
-from shapely.geometry import Point
 
+from shapely.geometry import Point
 from mappymatch.constructs.match import Match
 from mappymatch.maps.nx.nx_map import NxMap
 from mappymatch.utils.crs import LATLON_CRS, XY_CRS
+from mappymatch.matchers.matcher_interface import MatchResult
+
+import matplotlib.pyplot as plt
 
 
 def plot_geofence(geofence, m=None):
@@ -178,3 +181,27 @@ def plot_map(tmap: NxMap, m=None):
         ).add_to(m)
 
     return m
+
+
+def plot_match_distances(matches: MatchResult):
+    """
+    Plot the points deviance from known roads with matplotlib.
+
+    Args:
+        matches (MatchResult): The coordinates of guessed points in the area in the form of a MatchResult object.
+    """
+
+    y = [
+        m.distance for m in matches
+    ]  # y contains distances to the expected line for all of the matches which will be plotted on the y-axis.
+    x = [
+        i for i in range(0, len(y))
+    ]  # x contains placeholder values for every y value (distance measurement) along the x-axis.
+
+    plt.figure(figsize=(15, 7))
+    plt.autoscale(enable=True)
+    plt.scatter(x, y)
+    plt.title("Distance To Nearest Road")
+    plt.ylabel("Meters")
+    plt.xlabel("Point Along The Path")
+    plt.show()

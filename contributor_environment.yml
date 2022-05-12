@@ -1,4 +1,4 @@
-name: yamm
+name: mappymatch
 channels:
   - conda-forge
   - defaults
@@ -8,12 +8,10 @@ dependencies:
   - pygeos
   - folium
   - requests
-  - pytest 
+  - pytest
   - sphinx=4.5.0
   - sphinx_rtd_theme=1.0.0
   - pre-commit
   - black
   - isort
   - interrogate
-
-
