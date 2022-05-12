@@ -16,7 +16,3 @@ dependencies:
   - isort
   - interrogate
   - coverage
-
-
-=======
->>>>>>> da1b3759065613630a20c02a44a6f9bb1b4bea12
