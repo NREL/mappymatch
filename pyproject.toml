@@ -27,7 +27,6 @@ filter_files = true
 [tool.interrogate]
 fail-under = 10 
 
-# Placeholder currentely run with no options
 [tool.coverage.run]
 # Ensures coverage for all if, elif, else branches. 
 # https://coverage.readthedocs.io/en/6.3.2/branch.html#branch
