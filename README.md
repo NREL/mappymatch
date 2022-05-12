@@ -76,3 +76,7 @@ matcher = LCSSMatcher(road_map)
 
 matches = matcher.match_trace(trace)
 ```
+
+##Example Notebooks
+
+Example JupyterLab notebooks making use of mappymatch can be found in the [mappymatch examples repository](https://github.com/NREL/mappymatch-examples).
