@@ -41,10 +41,10 @@ class Trace:
         return len(self._frame)
 
     def __repr__(self):
-        return(f'_frame: \n{str(self._frame)}')
+        return f"_frame: \n{str(self._frame)}"
 
     def __str__(self):
-        return(f'_frame: \n{str(self._frame)}')
+        return f"_frame: \n{str(self._frame)}"
 
     @property
     def index(self) -> pd.Index:
