@@ -1,3 +1,4 @@
+files: ''
 repos: 
 -   repo: https://github.com/psf/black
     rev: 22.3.0
@@ -13,5 +14,6 @@ repos:
     rev: 1.5.0
     hooks:
     -   id: interrogate
+        exclude: "docs"
         args: [-c, pyproject.toml]
-
+        

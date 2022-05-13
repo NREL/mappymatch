@@ -26,6 +26,10 @@ filter_files = true
 
 [tool.interrogate]
 fail-under = 10 
+exclude = ["tests", "docs", "examples", "resources"]
+paths = ["mappymatch"]
+# Ignore the docs configuration file.
+ignore-regex = ["conf.py"]
 
 [tool.coverage.run]
 # Ensures coverage for all if, elif, else branches. 
