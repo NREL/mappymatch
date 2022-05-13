@@ -25,4 +25,16 @@ skip_gitignore = true
 filter_files = true
 
 [tool.interrogate]
-fail-under = 10
+fail-under = 10 
+
+[tool.coverage.run]
+# Ensures coverage for all if, elif, else branches. 
+# https://coverage.readthedocs.io/en/6.3.2/branch.html#branch
+branch = true
+
+[tool.coverage.report]
+precision = 1
+fail_under = 50.0
+skip_covered = false
+skip_empty = true
+
