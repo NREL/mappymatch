@@ -13,5 +13,5 @@ repos:
     rev: 1.5.0
     hooks:
     -   id: interrogate
-        args: [-vv, -c, pyproject.toml, mappymatch]
+        args: [mappymatch, -c, pyproject.toml]
 
