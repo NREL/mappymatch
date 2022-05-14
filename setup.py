@@ -1,6 +1,6 @@
 from os import path
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 # Get the long description from the README file
 here = path.abspath(path.dirname(__file__))
@@ -26,16 +26,17 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "osmnx",
-        "pygeos",
+        "networkx",
+        "geopandas",
+        "shapely",
+        "rtree",
+        "pyproj",
+        "pandas",
+        "numpy",
+        "requests",
+        "matplotlib",
+        "folium",
     ],
-    extras_require={
-        "osrm": [
-            "requests",
-        ],
-        "plot": [
-            "folium",
-        ],
-    },
     include_package_data=True,
     package_data={
         "mappymatch.resources": ["*"],

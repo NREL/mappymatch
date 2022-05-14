@@ -3,7 +3,14 @@ mappymatch is a pure-python package developed by the National Renewable Energy L
 
 ## Setup
 
-### Standard Method
+### With pip 
+
+```
+pip install mappymatch
+```
+
+### With conda
+Some users have reported difficulty installing with pip. As an alternate method you can install using [anaconda](https://www.anaconda.com/).
 
 Clone the repo:
 ```
@@ -13,11 +20,9 @@ git clone https://github.com/NREL/mappymatch.git
 Change directory into the mappymatch folder:
 ```
 cd path/to/mappymatch
-# from here, your path to mappymatch is likely .\mappymatch\
 ```
 
-Then, use the environment.yml file (which was downloaded when you cloned the repo) to install dependencies:
-
+Then, use the environment.yml file (in the repo) to install dependencies:
 
 ```
 conda env create -f environment.yml
@@ -26,25 +31,8 @@ conda env create -f environment.yml
 To activate the mappymatch environment:
 ```
 conda activate mappymatch
-
 ```
 
-Finally, be sure to change your Python interpreter path to the ./mappymatch/bin/python interpreter
-
-There are a couple of extras available:
-
-* `plot`: Needed to plot the result.
-
-At least `plot` is needed to run the examples.
-
-This can be installed via pip:
-```
-pip install ".[plot]"
-```
-The last step is to install the pre-commit hooks.
-```
-pre-commit install
-```
 ## Example Usage
 
 The current primary workflow is to use [osmnx](https://github.com/gboeing/osmnx) to download a road network and match it using the `LCSSMatcher`.
@@ -77,6 +65,6 @@ matcher = LCSSMatcher(road_map)
 matches = matcher.match_trace(trace)
 ```
 
-##Example Notebooks
+## Example Notebooks
 
 Example JupyterLab notebooks making use of mappymatch can be found in the [mappymatch examples repository](https://github.com/NREL/mappymatch-examples).

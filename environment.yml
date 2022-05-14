@@ -5,5 +5,17 @@ channels:
 dependencies:
   - python=3.8
   - osmnx
+  - geopandas
+  - shapely
+  - rtree
+  - pyproj
+  - pandas
+  - numpy
+  - matplotlib
   - folium
   - requests
+  - pip
+  - pip:
+    - -e .
+
+

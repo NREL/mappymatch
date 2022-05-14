@@ -5,9 +5,18 @@ channels:
 dependencies:
   - python=3.8
   - osmnx
-  - pygeos
+  - geopandas
+  - shapely
+  - rtree
+  - pyproj
+  - pandas
+  - numpy
+  - matplotlib
   - folium
   - requests
+  - pip
+  - pip:
+    - -e .
   - pytest
   - sphinx=4.5.0
   - sphinx_rtd_theme=1.0.0
@@ -16,3 +25,4 @@ dependencies:
   - isort
   - interrogate
   - coverage
+  - mypy
