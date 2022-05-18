@@ -62,7 +62,7 @@ Build from the source (First time only)
          python -m unittest discover 
 
       .. code-block:: sh 
-         :caption: Return should look something this, but test number may vary 
+         :caption: Return should look something this, but test number may vary. 
 
          ................................................ 
          ---------------------------------------------------------------
