@@ -9,6 +9,8 @@ Getting Started
 ----------------- 
 We are happy your are even considering helping. We hope this guide makes the process seamless. We really appreciate your help! 
 
+There are a lot of tools in our tool chain. Most of the time they will be seamless to you. Checkout the Tools in our toolchain section.
+
 
 Overview: 
 
@@ -79,13 +81,37 @@ Setup upstream remote (First time only)
 
 
 
+Tools in our toolchain 
+--------------------------------------- 
+
+.. note:: 
+   All command line code is run from the project root except where noted and all command line example use the setting configured for the repo. 
+
+.. tip:: 
+   Coverage and Isort automatically find their configuration files.
+
+Black 
+__________________________________
+
+Implemented as a Pre-Commit hook. 
+
+`Black <https://github.com/psf/black>`_ is an opinionated code formatter so you don't have to be.  
+
+Command line use: 
+
+.. code-block:: sh 
+
+   black --config pyproject.toml
 
 
-Using Coverage (Not currently implement in CI) :
+Coverage 
+___________________________________ 
 
-`Coverage <https://coverage.readthedocs.io/en/latest/>`_ is a tool used to monitor test coverage. It does so by excuting the tests and monitoring which lines are run. 
+Not Implemented as CI
 
-To use it from your command line: 
+`Coverage <https://coverage.readthedocs.io/en/latest/>`_ is a tool used to monitor test coverage. It does so by executing the tests and monitoring which lines are run. 
+
+Command line use: 
 
 .. code-block:: sh 
    :caption: Run the tests with coverage monitoring.
@@ -95,4 +121,54 @@ To use it from your command line:
 .. code-block:: sh
    :caption: View the coverage report.
 
-   coverage report -m
+   coverage report -m 
+
+Interrogate 
+__________________________________
+Implemented as Pre-Commit hook. 
+
+`Interrogate <https://interrogate.readthedocs.io/en/latest/index.html>`_ reports on the level of and enforces docstring coverage for the code base. 
+
+Command line use 
+
+.. code-block:: sh 
+
+   interrogate -c pyproject.toml
+
+
+Isort 
+__________________________________
+
+Implemented as Pre-Commit hook. 
+
+`Isort <https://pycqa.github.io/isort/>`_ automatically groups and sorts your import statements so you don't have to. 
+
+Command line use: 
+
+.. code-block:: sh 
+
+   isort 
+
+Pre-Commit
+__________________________________
+
+Implements all the precommit hooks.
+
+`Pre-Commit <https://pre-commit.com/>`_ is a framework for managing and maintaining multilanguage pre-commit hooks. Before the commit executes and pre-commit hooks are run to do useful things like code formatting. This means the unformatted code never enters your code base. 
+
+Command line use: 
+
+.. code-block:: sh 
+   :caption: Run once to install hooks as setup by .pre-commit-config.yaml
+
+   pre-commit install 
+
+.. code-block:: sh
+   :caption: Make change to the code base, add files to the staging area, and commit changes as you normally would.
+
+   git commit -m "Updated tools in toolchain docs section."
+
+You will get a success or failure. 
+
+
+For success, no other steps are needed.
