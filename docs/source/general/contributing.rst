@@ -170,5 +170,33 @@ Command line use:
 
 You will get a success or failure. 
 
+.. code-block:: sh
+   :caption: Example output for success. No other steps are needed.
 
-For success, no other steps are needed.
+   black................................................(no files to check)Skipped
+   isort (python).......................................(no files to check)Skipped
+   interrogate..........................................(no files to check)Skipped
+   [create_contributing_docs 30c2bf3] Updated tools in toolchain docs section.
+   1 file changed, 80 insertions(+), 4 deletions(-)
+
+.. code-block:: sh
+   :caption: Example output for failure. See next code block for follow on steps.
+
+   black....................................................................Failed
+   - hook id: black
+   - files were modified by this hook
+
+   reformatted mappymatch\utils\url.py
+
+   All done! \u2728 \U0001f370 \u2728
+   1 file reformatted.
+
+   isort (python)...........................................................Passed
+   interrogate..............................................................Passed
+   
+
+.. code-block:: sh 
+   :caption: Re-add the files to the staging area. Commit again. 
+
+   git add --all 
+   git commit -m "Update contributing docs for precommit-failure."
