@@ -9,25 +9,8 @@ Getting Started
 ----------------- 
 We are happy your are even considering helping. We hope this guide makes the process seamless. We really appreciate your help! 
 
-There are a lot of tools in our tool chain. Most of the time they will be seamless to you. Checkout the Tools in our toolchain section.
+If you are new to open source contribution, please checkout Tools in our toolchain and best practices sections. 
 
-
-Overview: 
-
-   #. Pull a branch from your fork of mappymatch 
-   #. Setup git precommit hooks (First time only)
-   #. Review best practices (First time only)
-   #. Read the overview for each tool in our precommit tool chain (First time only) 
-   #. Review Git forking workflow (First time only)
-   #. Make your changes and commit your changes 
-   #. Complete your Git workflow to open your Pull Review (PR)
-   #. Repository maintainer reviews your changes and recommends changes. 
-   #. Make the recommended changes. 
-   #. Complete your Git workflow to push the changes to you PR 
-   #. Repository maintained accepts changes and merges PR. 
-   #. Repeat
-
- 
 
 Select an issue 
 ----------------
@@ -63,7 +46,7 @@ Build from the source (First time only)
 
          python -m unittest discover 
 
-      .. code-block:: sh 
+      .. code-block:: output
          :caption: Return should look something this, but test number may vary. 
 
          ................................................ 
@@ -73,12 +56,60 @@ Build from the source (First time only)
          OK
 
 
-Setup upstream remote (First time only) 
+Install Pre-Commit hooks (First time only)
 --------------------------------------------------------------------
+.. code-block:: sh 
+   
+   pre-commit install
 
 
+Setup Git workflow (First time only) 
+--------------------------------------------------------------------
+.. code-block:: sh 
+   :caption: Setup upstream remote. 
+   
+   git remote add upstream https://github.com/NREL/mappymatch.git 
 
 
+Execute Changes and Git workflow 
+---------------------------------------------------------------
+.. code-block:: 
+   :caption: Checkout a branch from your forked repository 
+   
+   git checkout -b <descriptive_branch_name>
+
+Make your changes and add commits 
+
+Pull in changes from upstream. This is best done periodically, if you have the branch checked out for a long time.
+
+.. code-block:: 
+   :caption: Switch to main branch, pull changes from upstream, resolve conflicts that arise. 
+   
+   git checkout main 
+   git pull upstream
+
+.. code-block:: 
+   :caption: Switch to your branch, pull the changes from your main repository, and resolve conflicts that arise.
+   
+   git checkout <descriptive_branch_name>
+   git pull main 
+
+Push changes to get ready for PR. 
+
+.. code-block:: 
+   :caption: Push your changes to remote for your forked repository.
+
+   git push origin <descriptive_branch_name>
+
+
+Open PR
+---------------------------------------------
+
+Finish a PR 
+---------------------------------------------
+
+Best practices
+---------------------------------------------
 
 
 Tools in our toolchain 
@@ -170,7 +201,7 @@ Command line use:
 
 You will get a success or failure. 
 
-.. code-block:: sh
+.. code-block:: output
    :caption: Example output for success. No other steps are needed.
 
    black................................................(no files to check)Skipped
@@ -179,7 +210,7 @@ You will get a success or failure.
    [create_contributing_docs 30c2bf3] Updated tools in toolchain docs section.
    1 file changed, 80 insertions(+), 4 deletions(-)
 
-.. code-block:: sh
+.. code-block:: output
    :caption: Example output for failure. See next code block for follow on steps.
 
    black....................................................................Failed
@@ -196,7 +227,7 @@ You will get a success or failure.
    
 
 .. code-block:: sh 
-   :caption: Re-add the files to the staging area. Commit again. 
+   :caption: Re-add the files to the staging area. Commit again. You should get a success.
 
    git add --all 
    git commit -m "Update contributing docs for precommit-failure."
