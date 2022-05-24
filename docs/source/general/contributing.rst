@@ -102,17 +102,35 @@ Push changes to get ready for PR.
    git push origin <descriptive_branch_name>
 
 
-Open PR
+Open a PR
 ---------------------------------------------
 
-Finish a PR 
----------------------------------------------
+   #. Go to the `repo/PR <https://github.com/NREL/mappymatch/pulls>`_ and click on ``New pull request`` in the upper right.
+   #. Click on ``Compare across forks`` in the top middle. 
+   #. Leave the ``base repository`` section alone. For the ``head repository`` select your fork and your branch. 
+   #. Review the code diffs and then click ``Create pull request``. 
+   #. Check back after a fewer minutes to make sure the CI steps pass. If they fail, then make the fixes and push your branch to your forked repo again. The PR will update and rerun the CI. 
+
+Finish the PR 
+--------------------------------------------- 
+
+   #. Check back in a few days for maintainer requests for changes. Don't be surprised or offended by the changes. Most PRs require some changes.  
+   #. Make the changes and push your branch to your forked repo again. 
+   #. The maintainer will merge your branch. 
+   #. Delete you branch 
+   #. Pull the changes into your forked repo. 
+
+      .. code-block:: sh
+
+         git checkout main 
+         git pull upstream main 
+
 
 Best practices
 ---------------------------------------------
+TBD
 
-
-Tools in our toolchain 
+Tools in our toolbelt
 --------------------------------------- 
 
 .. note:: 
