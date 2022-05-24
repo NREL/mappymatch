@@ -9,24 +9,27 @@ Getting Started
 ----------------- 
 We are happy your are even considering helping. We hope this guide makes the process seamless. We really appreciate your help! 
 
-If you are new to open source contribution, please checkout Tools in our toolchain and best practices sections. 
+If you are new to open source contribution, please checkout :ref:`best-practices` and :ref:`toolbelt`. 
 
+.. note:: 
+   All command line code is run from the project root except where noted.
+
+.. tip:: 
+   In :code:`git clone <forked_repo_https_link.git>` , text inside the < >, and the < > get replaced with the appropriate specific text. The < > visually separate the syntax which remains unchanged from the text that needs to be changed. It is a common development pattern that is confusing if you have not seen it before. To see another example of it, type :code:`git --help` on your command line.
 
 Select an issue 
 ----------------
-Look through the open issues and for an issue labelled ``good first issue`` or ``documentation`` that currently unassigned. 
+Look through the open issues and for an issue labelled ``good first issue`` or ``documentation`` that is unassigned. 
 
-# TODO make github action for take and remove
+Once you have selected an issue, then assign it to yourself by placing the word ``take`` as a comment. This will initiate a github action to assign it to you. It may take a few seconds or require you to refresh the page. Your goal is to finish the process from self assigning the issue to submitting the initial Pull Request (PR) in less than 2 weeks. This keeps your work from diverging too much from the main branch. 
 
-Once you have selected an issue, then assign it to yourself by placing the word ``take`` as a comment. This will initiate a github action to assign it to you. It may take a few seconds or require you to refresh the page. Your goal is to finish the process from self assigning the issue to submitting initial Pull Request (PR) in less than 2 weeks. This keeps your work from diverging too much from the main branch. 
-
-That being said, life happens, we appreciate you however you decide to help. If something comes up, and you need to unassign an issue (place the word ``remove`` as a comment) or post in the issue that you are still working on something, then that is okay. 
+That being said, life happens, we appreciate you however you decide to help. If something comes up, and you need to unassign an issue (place the word ``remove`` as a comment) or post that you are still working on it, then that is okay. 
 
 
 Build from the source (First time only)
 ----------------------------------------------
-   #. On the github site, go to the `repo <https://github.com/NREL/mappymatch>`_ and click on ``Fork`` in the upper right.
-   #. Navigate to your fork which will be <you_user_name>/mappymatch . Click on the green ``Code`` drop down and copy the https link. 
+   #. Go to the `repo <https://github.com/NREL/mappymatch>`_ and click on :guilabel:`Fork` in the upper right.
+   #. Navigate to your fork which will be <you_user_name>/mappymatch . Click on the green :guilabel:`Code` drop down and copy the https link. 
    #. From the command line:  
 
       .. code-block:: sh 
@@ -42,12 +45,12 @@ Build from the source (First time only)
          conda activate mappy_match 
 
       .. code-block:: sh 
-         :caption: Verify install by running tests. 
+         :caption: Verify installation by running tests. 
 
          python -m unittest discover 
 
       .. code-block:: output
-         :caption: Return should look something this, but test number may vary. 
+         :caption: Return should look like this, but the number of tests will vary. 
 
          ................................................ 
          ---------------------------------------------------------------
@@ -73,42 +76,44 @@ Setup Git workflow (First time only)
 
 Execute Changes and Git workflow 
 ---------------------------------------------------------------
-.. code-block:: 
-   :caption: Checkout a branch from your forked repository 
+
+   #. 
+      .. code-block:: 
+         :caption: Checkout a branch from your forked repository 
    
-   git checkout -b <descriptive_branch_name>
+         git checkout -b <descriptive_branch_name>
 
-Make your changes and add commits 
+   #. Make your changes and add commits 
 
-Pull in changes from upstream. This is best done periodically, if you have the branch checked out for a long time.
+   #. Pull in changes from upstream. This is best done periodically, if you have the branch checked out for a long time.
 
-.. code-block:: 
-   :caption: Switch to main branch, pull changes from upstream, resolve conflicts that arise. 
+      .. code-block:: 
+         :caption: Switch to main branch, pull changes from upstream, resolve conflicts that arise. 
    
-   git checkout main 
-   git pull upstream
+         git checkout main 
+         git pull upstream main
 
-.. code-block:: 
-   :caption: Switch to your branch, pull the changes from your main repository, and resolve conflicts that arise.
+      .. code-block:: 
+         :caption: Switch to your branch, pull the changes from your main repository, and resolve conflicts that arise.
    
-   git checkout <descriptive_branch_name>
-   git pull main 
+         git checkout <descriptive_branch_name>
+         git pull origin main 
 
-Push changes to get ready for PR. 
+   #. Push changes to get ready for PR. 
 
-.. code-block:: 
-   :caption: Push your changes to remote for your forked repository.
+      .. code-block:: 
+         :caption: Push your changes to remote for your forked repository.
 
-   git push origin <descriptive_branch_name>
+         git push origin <descriptive_branch_name>
 
 
 Open a PR
 ---------------------------------------------
 
-   #. Go to the `repo/PR <https://github.com/NREL/mappymatch/pulls>`_ and click on ``New pull request`` in the upper right.
-   #. Click on ``Compare across forks`` in the top middle. 
-   #. Leave the ``base repository`` section alone. For the ``head repository`` select your fork and your branch. 
-   #. Review the code diffs and then click ``Create pull request``. 
+   #. Go to the `repo/PR <https://github.com/NREL/mappymatch/pulls>`_ and click on :guilabel:`New pull request` in the upper right.
+   #. Click on :guilabel:`Compare across forks` in the top middle. 
+   #. Leave the ``base repository`` section alone. For the ``head repository`` section select your fork and your branch. 
+   #. **Review the code diffs** and then click :guilabel:`Create pull request`. 
    #. Check back after a fewer minutes to make sure the CI steps pass. If they fail, then make the fixes and push your branch to your forked repo again. The PR will update and rerun the CI. 
 
 Finish the PR 
@@ -125,19 +130,30 @@ Finish the PR
          git checkout main 
          git pull upstream main 
 
+.. _best-practices:
 
 Best practices
 ---------------------------------------------
-TBD
+TBD 
+
+Previewing documentation locally 
+--------------------------------------------
+To preview the documentation locally:
+
+   #. From the command line, use `Sphinx <https://www.sphinx-doc.org/en/master/>`_ to rebuild the docs.
+
+      .. code-block:: sh 
+
+         sphinx-build -b html ./docs/source ./docs/_build 
+   
+   #. Open ``docs/_build/index.html`` with your browser.
+
+.. _toolbelt:
 
 Tools in our toolbelt
 --------------------------------------- 
-
 .. note:: 
-   All command line code is run from the project root except where noted and all command line example use the setting configured for the repo. 
-
-.. tip:: 
-   Coverage and Isort automatically find their configuration files.
+   All command line examples use settings configured for the repo. Coverage and Isort automatically find their configuration files.
 
 Black 
 __________________________________
@@ -203,17 +219,17 @@ __________________________________
 
 Implements all the precommit hooks.
 
-`Pre-Commit <https://pre-commit.com/>`_ is a framework for managing and maintaining multilanguage pre-commit hooks. Before the commit executes and pre-commit hooks are run to do useful things like code formatting. This means the unformatted code never enters your code base. 
+`Pre-Commit <https://pre-commit.com/>`_ is a framework for managing and maintaining multilanguage pre-commit hooks. Before the commit executes, pre-commit hooks are run to do useful things like code formatting. This means the unformatted code never enters your code base. 
 
 Command line use: 
 
 .. code-block:: sh 
-   :caption: Run once to install hooks as setup by .pre-commit-config.yaml
+   :caption: Run once to install hooks configured by .pre-commit-config.yaml
 
    pre-commit install 
 
 .. code-block:: sh
-   :caption: Make change to the code base, add files to the staging area, and commit changes as you normally would.
+   :caption: Make changes to the code base, add files to the staging area, and commit changes as you normally would.
 
    git commit -m "Updated tools in toolchain docs section."
 
@@ -249,3 +265,4 @@ You will get a success or failure.
 
    git add --all 
    git commit -m "Update contributing docs for precommit-failure."
+

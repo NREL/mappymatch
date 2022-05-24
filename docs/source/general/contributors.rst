@@ -1,7 +1,7 @@
 Contributors
 ===================
 
-As with any open source project, many people came together create this library. 
+As with any open source project, many people came together to create this library. 
 
 Owners 
 ----------
@@ -18,9 +18,8 @@ Core maintainers
 
 Special thanks 
 --------------------
-Special thanks to:
 
-    * The many contributors from Pycon 2022! You really got the project off the ground. 
+    * The many contributors from Pycon US 2022! You really got the project off the ground. 
     * The `National Renewal Energy Laboratory <https://www.nrel.gov/>`_ for open sourcing the initial groundwork. 
     * Open source maintainers even if you only contributed one commit.
 
