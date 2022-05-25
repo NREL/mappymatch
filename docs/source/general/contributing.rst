@@ -42,7 +42,7 @@ Build from the source (First time only)
 
          cd mappymatch
          conda create -f contributor_environment.yml
-         conda activate mappy_match 
+         conda activate mappymatch 
 
       .. code-block:: sh 
          :caption: Verify installation by running tests. 
