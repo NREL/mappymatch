@@ -40,7 +40,7 @@ Build from the source (First time only)
       .. code-block:: sh
          :caption: Create the Conda environment, and activate it. You will need to run each command separately.
 
-         cd mappy_match
+         cd mappymatch
          conda create -f contributor_environment.yml
          conda activate mappy_match 
 
