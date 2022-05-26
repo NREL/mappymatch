@@ -21,7 +21,7 @@ Select an issue
 ----------------
 Look through the open issues and for an issue labelled ``good first issue`` or ``documentation`` that is unassigned. 
 
-Once you have selected an issue, then assign it to yourself by placing the word ``take`` as a comment. This will initiate a github action to assign it to you. It may take a few seconds or require you to refresh the page. Your goal is to finish the process from self assigning the issue to submitting the initial Pull Request (PR) in less than 2 weeks. This keeps your work from diverging too much from the main branch. 
+Once you have selected an issue, then assign it to yourself by placing the word ``take`` as a comment. This will indicate to other contributors that you're working on the issue. Your goal is to finish the process from self assigning the issue to submitting the initial Pull Request (PR) in less than 2 weeks. This keeps your work from diverging too much from the main branch. 
 
 That being said, life happens, we appreciate you however you decide to help. If something comes up, and you need to unassign an issue (place the word ``remove`` as a comment) or post that you are still working on it, then that is okay. 
 
