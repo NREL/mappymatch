@@ -18,6 +18,7 @@ MapPyMatch is a pure-python package developed by the National Renewable Energy L
    reference/index
    general/contributing
    general/changelog
+   general/contributors
  
 .. Indices and tables
 .. ==================
