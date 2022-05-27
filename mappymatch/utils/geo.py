@@ -19,7 +19,7 @@ def xy_to_latlon(x: float, y: float) -> Tuple[float, float]:
         y: Y.
 
     Returns:
-    Transformed lat and lon as lat, lon.
+        Transformed lat and lon as lat, lon.
     """
     transformer = Transformer.from_crs(XY_CRS, LATLON_CRS)
     lat, lon = transformer.transform(x, y)
@@ -36,7 +36,7 @@ def latlon_to_xy(lat: float, lon: float) -> Tuple[float, float]:
         lon: The longitude.
 
     Returns:
-    Transformed x and y as x, y.
+        Transformed x and y as x, y.
     """
     transformer = Transformer.from_crs(LATLON_CRS, XY_CRS)
     x, y = transformer.transform(lat, lon)
@@ -56,10 +56,10 @@ def geofence_from_trace(
     This is done by computing a radial buffer around the entire trace (as a line).
 
     Args:
-    trace: The trace to compute the bounding polygon for.
-    padding: The padding (in meters) around the trace line.
-    crs: The coordinate reference system to use.
-    buffer_res: The resolution of the surrounding buffer.
+        trace: The trace to compute the bounding polygon for.
+        padding: The padding (in meters) around the trace line.
+        crs: The coordinate reference system to use.
+        buffer_res: The resolution of the surrounding buffer.
 
     Returns:
         The computed bounding polygon.

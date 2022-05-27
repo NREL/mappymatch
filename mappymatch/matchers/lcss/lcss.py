@@ -36,6 +36,13 @@ class LCSSMatcher(MatcherInterface):
     Transportation Research Record: Journal of the Transportation Research
     Board 2645 (2017): 67-75.
 
+    Args:
+        road_map: The road map to use for matching
+        distance_epsilon: The distance epsilon to use for matching (default: 50 meters)
+        similarity_cutoff: The similarity cutoff to use for stopping the algorithm (default: 0.9)
+        cutting_threshold: The distance threshold to use for computing cutting points (default: 10 meters)
+        random_cuts: The number of random cuts to add at each iteration (default: 0)
+        distance_threshold: The distance threshold above which no match is made (default: 10000 meters)
     """
 
     def __init__(
@@ -147,15 +154,6 @@ class LCSSMatcher(MatcherInterface):
         trace_batch: List[Trace],
         processes: int = 1,
     ) -> List[MatchResult]:
-        """
-        match traces in batches; useful for large traces as the computational
-        complexity of the scoring
-        function is O(N^2)
-
-        :param trace_batch:
-        :param processes:
-        :return:
-        """
 
         if processes > 1:
             results = [self.match_trace(t) for t in trace_batch]

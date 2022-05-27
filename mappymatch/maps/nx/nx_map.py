@@ -19,6 +19,14 @@ DEFAULT_ROAD_ID_KEY = "road_id"
 
 
 class NxMap(MapInterface):
+    """
+    A road map that uses a networkx graph to represent its roads.
+
+    Attributes:
+        g: The networkx graph that represents the road map
+        crs: The coordinate reference system of the map
+    """
+
     def __init__(self, graph: nx.MultiDiGraph):
         self.g = graph
 
@@ -85,9 +93,11 @@ class NxMap(MapInterface):
         """
         Build a NxMap instance from a file
 
-        :param file: the graph pickle file to load
+        Args:
+            file: The graph pickle file to load the graph from
 
-        :return: a NxMap instance
+        Returns:
+            A NxMap instance
         """
         p = Path(file)
         if not p.suffix == ".pickle":
@@ -98,6 +108,12 @@ class NxMap(MapInterface):
         return NxMap(g)
 
     def to_file(self, outfile: Union[str, Path]):
+        """
+        Save the graph to a pickle file
+
+        Args:
+            outfile: The file to save the graph to
+        """
         nx.write_gpickle(self.g, str(outfile))
 
     def nearest_road(
@@ -105,11 +121,13 @@ class NxMap(MapInterface):
         coord: Coordinate,
     ) -> Road:
         """
-        a helper function to get the nearest road.
+        A helper function to get the nearest road.
 
-        :param coord:
+        Args:
+            coord: The coordinate to find the nearest road to
 
-        :return:
+        Returns:
+            The nearest road to the coordinate
         """
         if coord.crs != self.crs:
             raise ValueError(
@@ -133,12 +151,15 @@ class NxMap(MapInterface):
         weight: PathWeight = PathWeight.TIME,
     ) -> List[Road]:
         """
-        computes the shortest path between an origin and a destination
+        Computes the shortest path between an origin and a destination
 
-        :param origin:
-        :param destination:
-        :param weight:
-        :return:
+        Args:
+            origin: The origin coordinate
+            destination: The destination coordinate
+            weight: The weight to use for the path
+
+        Returns:
+            A list of roads that form the shortest path
         """
         if origin.crs != self.crs:
             raise ValueError(

@@ -7,4 +7,5 @@ API Reference
    constructs
    maps
    matchers
+   readers
    utils

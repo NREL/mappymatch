@@ -9,32 +9,27 @@ mappymatch.constructs.coordinate module
 
 .. automodule:: mappymatch.constructs.coordinate
    :members:
-   :show-inheritance:
 
 mappymatch.constructs.geofence module
 -------------------------------------
 
 .. automodule:: mappymatch.constructs.geofence
    :members:
-   :show-inheritance:
 
 mappymatch.constructs.match module
 ----------------------------------
 
 .. automodule:: mappymatch.constructs.match
    :members:
-   :show-inheritance:
 
 mappymatch.constructs.road module
 ---------------------------------
 
 .. automodule:: mappymatch.constructs.road
    :members:
-   :show-inheritance:
 
 mappymatch.constructs.trace module
 ----------------------------------
 
 .. automodule:: mappymatch.constructs.trace
    :members:
-   :show-inheritance:
