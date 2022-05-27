@@ -13,7 +13,14 @@ CoordinateId: Any
 
 class Coordinate(NamedTuple):
     """
-    coordinate a CRS and a geometry
+    Represents a single coordinate with a CRS and a geometry
+
+    Attributes:
+        coordinate_id: The unique identifier for this coordinate
+        geom: The geometry of this coordinate
+        crs: The CRS of this coordinate
+        x: The x value of this coordinate
+        y: The y value of this coordinate
     """
 
     coordinate_id: CoordinateId
@@ -27,12 +34,14 @@ class Coordinate(NamedTuple):
     @classmethod
     def from_lat_lon(cls, lat: float, lon: float) -> Coordinate:
         """
-        build a coordinate from a latitude/longitude
+        Build a coordinate from a latitude/longitude
 
-        :param lat the latitude
-        :param lon the longitude
+        Args:
+            lat: The latitude
+            lon: The longitude
 
-        :return: the coordinate
+        Returns:
+            A new coordinate
         """
         return cls(coordinate_id=None, geom=Point(lon, lat), crs=LATLON_CRS)
 
@@ -45,6 +54,15 @@ class Coordinate(NamedTuple):
         return self.geom.y
 
     def to_crs(self, new_crs: CRS) -> Coordinate:
+        """
+        Convert this coordinate to a new CRS
+
+        Args:
+            new_crs: The new CRS to convert to
+
+        Returns:
+            A new coordinate with the new CRS
+        """
         new_x: float
         new_y: float
         transformer: Transformer

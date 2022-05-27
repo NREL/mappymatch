@@ -9,11 +9,28 @@ from shapely.geometry import Polygon
 
 
 class Geofence(NamedTuple):
+    """
+    A geofence is basically a shapely polygon with a CRS
+
+    Args:
+        geom: The polygon geometry of the geofence
+        crs: The CRS of the geofence
+    """
+
     crs: CRS
     geometry: Polygon
 
     @classmethod
     def from_geojson(cls, file: Union[Path, str]) -> Geofence:
+        """
+        Creates a new geofence from a geojson file.
+
+        Args:
+            file: The path to the geojson file
+
+        Returns:
+            A new geofence
+        """
         filepath = Path(file)
         frame = read_file(filepath)
 
