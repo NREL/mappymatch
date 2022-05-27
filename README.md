@@ -3,11 +3,7 @@ mappymatch is a pure-python package developed by the National Renewable Energy L
 
 ## Installation 
 
-```
-pip install mappymatch
-```
-
-If you have trouble installing, check out [the docs](https://mappymatch.readthedocs.io/en/latest/general/install.html) for more detailed instructions.
+Check out [the docs](https://mappymatch.readthedocs.io/en/latest/general/install.html) for install instructions.
 
 ## Example Usage
 

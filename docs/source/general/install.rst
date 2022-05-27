@@ -1,18 +1,8 @@
 Install
 ================== 
 
-From PyPI
-^^^^^^^^^
-
-.. code-block::
-
-  pip install mappymatch 
-
-Using Conda 
-^^^^^^^^^^^
-Some users have reported difficulty installing with pip. 
-As an alternate method you can install using `anaconda <https://www.anaconda.com/>`_.
-
+From Source (recommended) 
+^^^^^^^^^^^^^^^^^^^^^^^^^
 Clone the repo::
 
    git clone https://github.com/NREL/mappymatch.git && cd mappymatch
@@ -25,6 +15,12 @@ To activate the mappymatch environment::
 
    conda activate mappymatch
 
+From PyPI
+^^^^^^^^^
+
+.. code-block::
+
+  pip install mappymatch 
 
 .. warning::
 
@@ -46,7 +42,13 @@ To activate the mappymatch environment::
    * `GDAL wheels <https://www.lfd.uci.edu/~gohlke/pythonlibs/#gdal>`_
    * `Fiona wheels <https://www.lfd.uci.edu/~gohlke/pythonlibs/#fiona>`_
 
-   1. Download the correct GDAL and Fiona wheels for your architecture and Python version
-   2. Install the GDAL wheel into the virtual environment `pip install <path_to_GDAL_whl>`
-   3. Install the Fiona wheel into the virtual environment `pip install <path_to_Fiona_whl>`
-   4. Use pip to install the remaining packages `pip install <path/to/mappymatch>`
+   #. Download the correct GDAL and Fiona wheels for your architecture and Python version
+   #. Install the GDAL wheel into the virtual environment `pip install <path_to_GDAL_whl>`
+   #. Install the Fiona wheel into the virtual environment `pip install <path_to_Fiona_whl>`
+   #. Use pip to install the remaining packages `pip install <path/to/mappymatch>`
+
+
+From Conda
+^^^^^^^^^^
+
+|:construction:| We're currently working on a Conda package for mappymatch.
