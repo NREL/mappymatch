@@ -37,6 +37,12 @@ setup(
         "matplotlib",
         "folium",
     ],
+    extras_require={
+        "docs": [
+            "sphinx==4.5.0",
+            "sphinx_rtd_theme==1.0.0",
+        ],
+    },
     include_package_data=True,
     package_data={
         "mappymatch.resources": ["*"],
