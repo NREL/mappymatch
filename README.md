@@ -1,37 +1,9 @@
 # mappymatch
 mappymatch is a pure-python package developed by the National Renewable Energy Laboratory that maintains a collection of map matching algorithms and wrappers. The package was designed for ease of use and portabilty across platforms.
 
-## Setup
+## Installation 
 
-### With pip 
-
-```
-pip install mappymatch
-```
-
-### With conda
-Some users have reported difficulty installing with pip. As an alternate method you can install using [anaconda](https://www.anaconda.com/).
-
-Clone the repo:
-```
-git clone https://github.com/NREL/mappymatch.git
-```
-
-Change directory into the mappymatch folder:
-```
-cd path/to/mappymatch
-```
-
-Then, use the environment.yml file (in the repo) to install dependencies:
-
-```
-conda env create -f environment.yml
-```
-
-To activate the mappymatch environment:
-```
-conda activate mappymatch
-```
+Check out [the docs](https://mappymatch.readthedocs.io/en/latest/general/install.html) for install instructions.
 
 ## Example Usage
 
