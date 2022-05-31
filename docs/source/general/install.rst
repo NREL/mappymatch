@@ -2,7 +2,7 @@ Install
 ================== 
 
 From Source (recommended) 
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 Clone the repo::
 
    git clone https://github.com/NREL/mappymatch.git && cd mappymatch
@@ -16,7 +16,7 @@ To activate the mappymatch environment::
    conda activate mappymatch
 
 From PyPI
-^^^^^^^^^
+---------
 
 .. code-block::
 
@@ -49,6 +49,6 @@ From PyPI
 
 
 From Conda
-^^^^^^^^^^
+----------
 
 |:construction:| We're currently working on a Conda package for mappymatch.
