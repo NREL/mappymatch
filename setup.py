@@ -41,6 +41,7 @@ setup(
         "docs": [
             "sphinx==4.5.0",
             "sphinx_rtd_theme==1.0.0",
+            "sphinxemoji==0.2.0",
         ],
     },
     include_package_data=True,
