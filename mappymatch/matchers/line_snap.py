@@ -15,6 +15,9 @@ log = logging.getLogger(__name__)
 class LineSnapMatcher(MatcherInterface):
     """
     A crude (but fast) map matcher that just snaps points to the nearest road network link.
+
+    Attributes:
+        map: The map to match against
     """
 
     def __init__(self, road_map: MapInterface):

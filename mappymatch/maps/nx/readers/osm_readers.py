@@ -22,7 +22,9 @@ METERS_TO_KM = 1 / 1000
 
 
 class NetworkType(Enum):
-    """Network Types suuported by osmnx"""
+    """
+    Network Types suuported by osmnx
+    """
 
     all_private = "all_private"
     all = "all"
@@ -37,6 +39,17 @@ def read_osm_nxmap(
     xy: bool = True,
     network_type: NetworkType = NetworkType.drive,
 ) -> NxMap:
+    """
+    Read an OSM network graph into a NxMap
+
+    Args:
+        geofence: the geofence to clip the graph to
+        xy: whether to use xy coordinates or lat/lon
+        network_type: the network type to use for the graph
+
+    Returns:
+        a NxMap
+    """
     if geofence.crs != LATLON_CRS:
         raise TypeError(
             f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}"
@@ -48,6 +61,15 @@ def read_osm_nxmap(
 
 
 def parse_road_network_graph(g) -> nx.MultiDiGraph:
+    """
+    Parse the road network graph to add additional attributes
+
+    Args:
+        g: the road network graph
+
+    Returns:
+        the parsed road network graph
+    """
     length_meters: dict
     length_meters = nx.get_edge_attributes(g, "length")
     kilometers = {k: v * METERS_TO_KM for k, v in length_meters.items()}
@@ -59,8 +81,12 @@ def parse_road_network_graph(g) -> nx.MultiDiGraph:
 def compress(g) -> nx.MultiDiGraph:
     """
     a hacky way to delete unnecessary data on the networkx graph
-    :param g: graph to be compressed
-    :return: compressed graph
+
+    Args:
+        g: the networkx graph to compress
+
+    Returns:
+        the compressed networkx graph
     """
     keys_to_delete = [
         "oneway",
@@ -100,6 +126,17 @@ def get_osm_networkx_graph(
     xy: bool = True,
     network_type: NetworkType = NetworkType.drive,
 ) -> nx.MultiDiGraph:
+    """
+    Get an OSM network graph
+
+    Args:
+        geofence: the geofence to clip the graph to
+        xy: whether to use xy coordinates or lat/lon
+        network_type: the network type to use for the graph
+
+    Returns:
+        a networkx graph of the OSM network
+    """
     g = ox.graph_from_polygon(
         geofence.geometry, network_type=network_type.value
     )

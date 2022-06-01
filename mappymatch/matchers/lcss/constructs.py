@@ -17,12 +17,26 @@ log = logging.getLogger(__name__)
 
 
 class CuttingPoint(NamedTuple):
+    """
+    A cutting point represents where the LCSS algorithm cuts the trace into a sub-segment.
+
+    Attributes:
+        trace_index: An index of where to cut the trace
+    """
+
     trace_index: Union[signedinteger, int]
 
 
 class TrajectorySegment(NamedTuple):
     """
-    represents a trace and path matching
+    Represents a pairing of a trace and candidate path
+
+    Attributes:
+        trace: The trace in the segment
+        path: The candidate path in the segment
+        matches: The matches between the trace and the path
+        score: The similarity score between the trace and the path
+        cutting_points: The points where the trace and path are to be cut
     """
 
     trace: Trace
@@ -39,13 +53,40 @@ class TrajectorySegment(NamedTuple):
         new_paths = self.path + other.path
         return TrajectorySegment(new_traces, new_paths)
 
-    def set_score(self, score: float):
+    def set_score(self, score: float) -> TrajectorySegment:
+        """
+        Sets the score of the trajectory segment
+
+        Args:
+            score: The score of the trajectory segment
+
+        Returns:
+            The updated trajectory segment
+        """
         return self._replace(score=score)
 
-    def set_cutting_points(self, cutting_points):
+    def set_cutting_points(self, cutting_points) -> TrajectorySegment:
+        """
+        Sets the cutting points of the trajectory segment
+
+        Args:
+            cutting_points: The cutting points of the trajectory segment
+
+        Returns:
+            The updated trajectory segment
+        """
         return self._replace(cutting_points=cutting_points)
 
-    def set_matches(self, matches):
+    def set_matches(self, matches) -> TrajectorySegment:
+        """
+        Sets the matches of the trajectory segment
+
+        Args:
+            matches: The matches of the trajectory segment
+
+        Returns:
+            The updated trajectory segment
+        """
         return self._replace(matches=matches)
 
     def score_and_match(
@@ -54,12 +95,14 @@ class TrajectorySegment(NamedTuple):
         max_distance: float,
     ) -> TrajectorySegment:
         """
-        computes the score of a trace, pair matching and also matches the coordinates to the nearest road.
+        Computes the score of a trace, pair matching and also matches the coordinates to the nearest road.
 
-        :param distance_epsilon
-        :param max_distance
+        Args:
+            distance_epsilon: The distance threshold for matching
+            max_distance: The maximum distance between the trace and the path
 
-        return: updated trajectory segment with a score and matched points
+        Returns:
+            The updated trajectory segment with a score and matches
         """
         trace = self.trace
         path = self.path
@@ -137,11 +180,13 @@ class TrajectorySegment(NamedTuple):
          - computing the furthest point
          - adding points that are close to the distance epsilon
 
-        :param distance_epsilon:
-        :param cutting_thresh:
-        :param random_cuts:
+        Args:
+            distance_epsilon: The distance threshold for matching
+            cutting_thresh: The threshold for cutting the trace
+            random_cuts: The number of random cuts to add
 
-        :return: the updated trajectory segment with cutting points
+        Returns:
+            The updated trajectory segment with cutting points
         """
         cutting_points = []
 

@@ -21,13 +21,15 @@ log = logging.getLogger(__name__)
 
 def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
     """
-    computes the similarity score between a trace and a path
+    Computes the similarity score between a trace and a path
 
-    :param trace:
-    :param path:
-    :param distance_epsilon:
+    Args:
+        trace: the trace to compare
+        path: the path to compare
+        distance_epsilon: the distance epsilon
 
-    :return:
+    Returns:
+        the similarity score
     """
     s = time.time()
     m = len(trace.coords)
@@ -75,10 +77,13 @@ def new_path(
     Computes a shortest time and shortest distance path and returns the path
     that most closely matches the trace.
 
-    :param road_map:
-    :param trace:
-    :param distance_epsilon:
-    :return:
+    Args:
+        road_map: the road map to match to
+        trace: the trace to match
+        distance_epsilon: the distance epsilon
+
+    Returns:
+        the path that most closely matches the trace
     """
     if len(trace.coords) < 1:
         return []
@@ -119,12 +124,13 @@ def split_trajectory_segment(
 
     Merge back any segments that are too short
 
-    :param road_map: the road map to match to
-    :param trajectory_segment: the trajectory segment to split
-    :param distance_epsilon: the distance epsilon
+    Args:
+        road_map: the road map to match to
+        trajectory_segment: the trajectory segment to split
+        distance_epsilon: the distance epsilon
 
-    :return: a list of split segments or the original segment if it can't be
-    split
+    Returns:
+        a list of split segments or the original segment if it can't be split
     """
     trace = trajectory_segment.trace
     cutting_points = trajectory_segment.cutting_points
@@ -186,12 +192,14 @@ def same_trajectory_scheme(
     scheme1: TrajectoryScheme, scheme2: TrajectoryScheme
 ) -> bool:
     """
-    compares two trajectory schemes for equality
+    Compares two trajectory schemes for equality
 
-    :param scheme1:
-    :param scheme2:
+    Args:
+        scheme1: the first trajectory scheme
+        scheme2: the second trajectory scheme
 
-    :return: are the schemes the same?
+    Returns:
+        True if the two schemes are equal, False otherwise
     """
     same_paths = all(map(lambda a, b: a.path == b.path, scheme1, scheme2))
     same_traces = all(
@@ -202,17 +210,27 @@ def same_trajectory_scheme(
 
 
 class StationaryIndex(NamedTuple):
+    """
+    An index of a stationary point in a trajectory
+
+    Attributes:
+        trace_index: the index of the trace
+        coord_index: the index of the coordinate
+    """
+
     i_index: List[int]  # i based index on the trace
     c_index: List[Any]  # coordinate ids
 
 
 def find_stationary_points(trace: Trace) -> List[StationaryIndex]:
     """
-    find the positional index of all stationary points in a trace
+    Find the positional index of all stationary points in a trace
 
-    :param trace:
+    Args:
+        trace: the trace to find the stationary points in
 
-    :return:
+    Returns:
+        a list of stationary indices
     """
     f = trace._frame
     coords = trace.coords
@@ -247,12 +265,14 @@ def drop_stationary_points(
     trace: Trace, stationary_index: List[StationaryIndex]
 ) -> Trace:
     """
-    drops stationary points from the trace, keeping the first point
+    Drops stationary points from the trace, keeping the first point
 
-    :param trace:
-    :param stationary_index:
+    Args:
+        trace: the trace to drop the stationary points from
+        stationary_index: the stationary indices to drop
 
-    :return:
+    Returns:
+        the trace with the stationary points dropped
     """
     for si in stationary_index:
         trace = trace.drop(si.c_index[1:])
@@ -265,11 +285,14 @@ def add_matches_for_stationary_points(
     stationary_index: List[StationaryIndex],
 ) -> MatchResult:
     """
-    takes a set of matches and adds duplicate match entries for stationary
-    :param matches:
-    :param stationary_index:
+    Takes a set of matches and adds duplicate match entries for stationary
 
-    :return:
+    Args:
+        matches: the matches to add the stationary points to
+        stationary_index: the stationary indices to add
+
+    Returns:
+        the matches with the stationary points added
     """
     matches = deepcopy(matches)
 

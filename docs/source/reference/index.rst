@@ -2,9 +2,10 @@ API Reference
 =============
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3 
 
    constructs
    maps
    matchers
+   readers
    utils

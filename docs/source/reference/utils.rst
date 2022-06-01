@@ -3,32 +3,38 @@ Utils
 
 Helper functions and classes.
 
-Geo Utilities
--------------
+mappymatch.utils.crs module
+---------------------------
+
+.. automodule:: mappymatch.utils.crs
+   :members:
+
+mappymatch.utils.exceptions module
+----------------------------------
+
+.. automodule:: mappymatch.utils.exceptions
+   :members:
+
+mappymatch.utils.geo module
+---------------------------
 
 .. automodule:: mappymatch.utils.geo
-    :members:
+   :members:
 
-Geo Hash Utilities
-------------------
-
-.. automodule:: mappymatch.utils.geohash
-    :members:
-
-Plot Utilities
-------------------
+mappymatch.utils.plot module
+----------------------------
 
 .. automodule:: mappymatch.utils.plot
-    :members:
+   :members:
 
-Process Trace Utilities
------------------------
+mappymatch.utils.process\_trace module
+--------------------------------------
 
 .. automodule:: mappymatch.utils.process_trace
-    :members:
+   :members:
 
-URL Utilities
--------------
+mappymatch.utils.url module
+---------------------------
 
 .. automodule:: mappymatch.utils.url
-    :members:
+   :members:
