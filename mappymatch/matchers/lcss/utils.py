@@ -18,10 +18,12 @@ def forward_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
     >>> forward_merge([1,2,3,4,5], lambda x: x < 3)
     >>> [6, 4, 5]
 
-    :param merge_list: the list to merge
-    :param condition: the merge condition
+    Args:
+        merge_list: the list to merge
+        condition: the merge condition
 
-    :return: a list of the merged items
+    Returns:
+        a list of the merged items
     """
     items = []
 
@@ -61,10 +63,12 @@ def reverse_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
     >>> list(reverse_merge([1,2,3,4,5], lambda x: x < 3))
     >>> [3, 3, 4, 5]
 
-    :param merge_list: the list to merge
-    :param condition: the merge condition
+    Args:
+        merge_list: the list to merge
+        condition: the merge condition
 
-    :return: a list of the merged items
+    Returns:
+        a list of the merged items
     """
     items = []
 
@@ -93,12 +97,14 @@ def reverse_merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
 
 def merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
     """
-    combines the forward and reverse merges to catch edge cases at the tail ends of the list
+    Combines the forward and reverse merges to catch edge cases at the tail ends of the list
 
-    :param merge_list: the list to merge
-    :param condition: the merge condition
+    Args:
+        merge_list: the list to merge
+        condition: the merge condition
 
-    :return: a list of the merged items
+    Returns:
+        a list of the merged items
     """
     f_merge = forward_merge(merge_list, condition)
 
@@ -110,11 +116,13 @@ def merge(merge_list: List, condition: Callable[[Any], bool]) -> List:
 
 def compress(cutting_points: List) -> Generator:
     """
-    compress a list of cutting points if they happen to be directly adjacent to another
+    Compress a list of cutting points if they happen to be directly adjacent to another
 
-    :param cutting_points: the list of cutting points to compress
+    Args:
+        cutting_points: the list of cutting points
 
-    :return: the compressed list of cutting points
+    Returns:
+        a generator of compressed cutting points
     """
     sorted_cuts = sorted(cutting_points, key=lambda c: c.trace_index)
     for k, g in groupby(

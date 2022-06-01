@@ -68,3 +68,16 @@ html_theme_options = {
 html_static_path = ["_static"]
 # TODO Revised based on discussion #120.
 add_module_names = True
+
+# -- Post process ------------------------------------------------------------
+import collections
+
+
+def remove_namedtuple_attrib_docstring(app, what, name, obj, skip, options):
+    if type(obj) is collections._tuplegetter:
+        return True
+    return skip
+
+
+def setup(app):
+    app.connect("autodoc-skip-member", remove_namedtuple_attrib_docstring)
