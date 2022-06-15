@@ -1,16 +1,15 @@
 from typing import List
+
 import folium
-
 import geopandas as gpd
+import matplotlib.pyplot as plt
 import pandas as pd
-
 from shapely.geometry import Point
+
 from mappymatch.constructs.match import Match
 from mappymatch.maps.nx.nx_map import NxMap
-from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 from mappymatch.matchers.matcher_interface import MatchResult
-
-import matplotlib.pyplot as plt
+from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 
 
 def plot_geofence(geofence, m=None):
@@ -177,7 +176,8 @@ def plot_map(tmap: NxMap, m=None):
 
     for t in gdf.itertuples():
         folium.PolyLine(
-            [(lat, lon) for lon, lat in t.geometry.coords], color="red"
+            [(lat, lon) for lon, lat in t.geometry.coords],
+            color="red",
         ).add_to(m)
 
     return m

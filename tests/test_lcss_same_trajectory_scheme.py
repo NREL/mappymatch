@@ -6,7 +6,6 @@ from shapely.geometry import LineString
 from mappymatch.constructs.road import Road
 from mappymatch.constructs.trace import Trace
 from mappymatch.matchers.lcss.constructs import (
-    TrajectoryScheme,
     TrajectorySegment,
 )
 from mappymatch.matchers.lcss.ops import same_trajectory_scheme

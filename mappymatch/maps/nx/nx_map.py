@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List, Union
 
 import networkx as nx
+import numpy as np
 import rtree as rt
 from shapely.geometry import Point
 
@@ -116,15 +117,13 @@ class NxMap(MapInterface):
         """
         nx.write_gpickle(self.g, str(outfile))
 
-    def nearest_road(
-        self,
-        coord: Coordinate,
-    ) -> Road:
+    def nearest_road(self, coord: Coordinate, buffer: float = 10.0) -> Road:
         """
         A helper function to get the nearest road.
 
         Args:
             coord: The coordinate to find the nearest road to
+            buffer: The buffer to search around the coordinate
 
         Returns:
             The nearest road to the coordinate
@@ -133,12 +132,20 @@ class NxMap(MapInterface):
             raise ValueError(
                 f"crs of origin {coord.crs} must match crs of map {self.crs}"
             )
-        nearest_candidates = list(self.rtree.nearest(coord.geom.bounds, 1))
+        nearest_candidates = list(
+            self.rtree.nearest(coord.geom.buffer(buffer).bounds, 1)
+        )
 
         if len(nearest_candidates) == 0:
             raise ValueError(f"No roads found for {coord}")
-
-        nearest_index = nearest_candidates[0]
+        elif len(nearest_candidates) == 1:
+            nearest_index = nearest_candidates[0]
+        else:
+            distances = [
+                self.roads[i].geom.distance(coord.geom)
+                for i in nearest_candidates
+            ]
+            nearest_index = nearest_candidates[np.argmin(distances)]
 
         road = self.roads[nearest_index]
 
