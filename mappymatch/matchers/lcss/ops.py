@@ -71,16 +71,13 @@ def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
 def new_path(
     road_map: MapInterface,
     trace: Trace,
-    distance_epsilon: float,
 ) -> List[Road]:
     """
-    Computes a shortest time and shortest distance path and returns the path
-    that most closely matches the trace.
+    Computes a shortest path and returns the path
 
     Args:
         road_map: the road map to match to
         trace: the trace to match
-        distance_epsilon: the distance epsilon
 
     Returns:
         the path that most closely matches the trace
@@ -91,33 +88,16 @@ def new_path(
     origin = trace.coords[0]
     destination = trace.coords[-1]
 
-    time_path = road_map.shortest_path(
+    new_path = road_map.shortest_path(
         origin, destination, weight=PathWeight.TIME
     )
 
-    dist_path = road_map.shortest_path(
-        origin, destination, weight=PathWeight.DISTANCE
-    )
-
-    if time_path == dist_path:
-        return time_path
-
-    if not time_path and not dist_path:
-        return []
-
-    time_score = score(trace, time_path, distance_epsilon)
-    dist_score = score(trace, dist_path, distance_epsilon)
-
-    if dist_score > time_score:
-        return dist_path
-    else:
-        return time_path
+    return new_path
 
 
 def split_trajectory_segment(
     road_map: MapInterface,
     trajectory_segment: TrajectorySegment,
-    distance_epsilon: float,
 ) -> List[TrajectorySegment]:
     """
     Splits a trajectory segment based on the provided cutting points.
@@ -155,7 +135,7 @@ def split_trajectory_segment(
     # start
     scp = cutting_points[0]
     new_trace = trace[: scp.trace_index]  # type: ignore
-    new_paths.append(new_path(road_map, new_trace, distance_epsilon))
+    new_paths.append(new_path(road_map, new_trace))
     new_traces.append(new_trace)
 
     # mids
@@ -163,13 +143,13 @@ def split_trajectory_segment(
         cp = cutting_points[i]
         ncp = cutting_points[i + 1]
         new_trace = trace[cp.trace_index : ncp.trace_index]  # type: ignore
-        new_paths.append(new_path(road_map, new_trace, distance_epsilon))
+        new_paths.append(new_path(road_map, new_trace))
         new_traces.append(new_trace)
 
     # end
     ecp = cutting_points[-1]
     new_trace = trace[ecp.trace_index :]  # type: ignore
-    new_paths.append(new_path(road_map, new_trace, distance_epsilon))
+    new_paths.append(new_path(road_map, new_trace))
     new_traces.append(new_trace)
 
     if not any(new_paths):

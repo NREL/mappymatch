@@ -98,15 +98,13 @@ class LCSSMatcher(MatcherInterface):
         dt = self.distance_threshold
         initial_segment = (
             TrajectorySegment(
-                trace=sub_trace, path=new_path(road_map, sub_trace, de)
+                trace=sub_trace, path=new_path(road_map, sub_trace)
             )
             .score_and_match(de, dt)
             .compute_cutting_points(de, ct, rc)
         )
 
-        initial_scheme = split_trajectory_segment(
-            road_map, initial_segment, de
-        )
+        initial_scheme = split_trajectory_segment(road_map, initial_segment)
         scheme = initial_scheme
 
         n = 0
@@ -121,7 +119,7 @@ class LCSSMatcher(MatcherInterface):
                 else:
                     # split and check the score
                     new_split = split_trajectory_segment(
-                        road_map, scored_segment, de
+                        road_map, scored_segment
                     )
                     joined_segment = ft.reduce(
                         _join_segment, new_split

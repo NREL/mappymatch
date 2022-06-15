@@ -177,7 +177,8 @@ def plot_map(tmap: NxMap, m=None):
 
     for t in gdf.itertuples():
         folium.PolyLine(
-            [(lat, lon) for lon, lat in t.geometry.coords], color="red"
+            [(lat, lon) for lon, lat in t.geometry.coords],
+            color="red",
         ).add_to(m)
 
     return m
