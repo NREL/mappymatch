@@ -4,8 +4,8 @@ from pathlib import Path
 from typing import List, Union
 
 import networkx as nx
-import rtree as rt
 import numpy as np
+import rtree as rt
 from shapely.geometry import Point
 
 from mappymatch.constructs.coordinate import Coordinate
