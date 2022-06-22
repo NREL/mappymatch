@@ -1,0 +1,8 @@
+FROM continuumio/miniconda3
+WORKDIR /docker
+COPY . .
+RUN conda env create -f image_build/test_environment_python_310.yml 
+# Make RUN commands use the new environment:
+SHELL ["conda", "run", "-n", "mappymatch", "/bin/bash", "-c"]
+
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "mappymatch", "python", "-m", "unittest", "discover"]

@@ -4,7 +4,4 @@ FROM rowlando13/mappymatch:python_38_base_test
 WORKDIR /mappymatch
 COPY . . 
 
-# Make RUN commands use the new environment:
-SHELL ["conda", "run", "-n", "mappymatch", "/bin/bash", "-c"]
 
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "mappymatch", "python", "-m", "unittest", "discover"]
