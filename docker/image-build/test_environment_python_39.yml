@@ -1,0 +1,19 @@
+name: mappymatch
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - osmnx
+  - geopandas
+  - shapely
+  - rtree
+  - pyproj
+  - pandas
+  - numpy
+  - matplotlib
+  - folium
+  - requests
+  - pip
+  - pytest
+  

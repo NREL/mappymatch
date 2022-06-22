@@ -1,0 +1,4 @@
+FROM continuumio/miniconda3
+WORKDIR /docker
+COPY . . 
+RUN conda env create -f build/test_environment_python_38.yml
