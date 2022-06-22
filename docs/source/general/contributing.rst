@@ -5,11 +5,17 @@ Contributing
    :depth: 2
    :local: 
 
-Getting Started
------------------ 
-We are happy your are even considering helping. We hope this guide makes the process seamless. We really appreciate your help! 
+Ways to contribute
+------------------------- 
+We're excited that you're considering contributing to the mappymatch package!
+There are a variety of ways in which you can contribute beyond writing code.
+
+   #. Asking questions: 
+   #. 
 
 If you are new to open source contribution, please checkout :ref:`best-practices` and :ref:`toolbelt`. 
+
+
 
 .. note:: 
    All command line code is run from the project root except where noted.

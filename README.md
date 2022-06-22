@@ -1,5 +1,5 @@
 # mappymatch
-mappymatch is a pure-python package developed by the National Renewable Energy Laboratory that maintains a collection of map matching algorithms and wrappers. The package was designed for ease of use and portabilty across platforms.
+Mappymatch is a pure-python package developed by the National Renewable Energy Laboratory for matching GPS traces (GPS points captured while transiting) to the route they represent on a maps. The same thing Google maps does when you are using it. Supported matching algorithms LCSS and ____. Supported map formats are OSM and ____.
 
 ## Installation 
 
