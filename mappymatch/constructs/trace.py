@@ -49,7 +49,7 @@ class Trace:
     def __str__(self):
         output_lines = [
             "Mappymatch Trace object",
-            f'coords_list: {self.coords_list if hasattr(self, "coords_list") else None}',
+            f'coords: {self.coords if hasattr(self, "coords") else None}',
             f'frame: {self._frame if hasattr(self, "_frame") else None}',
         ]
         return "\n".join(output_lines)
@@ -301,3 +301,8 @@ class Trace:
             file: the file to write to
         """
         self._frame.to_file(file, driver="GeoJSON")
+
+
+class InheritTrace(Trace):
+    def __init__(self):
+        pass
