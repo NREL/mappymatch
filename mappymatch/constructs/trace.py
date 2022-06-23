@@ -301,8 +301,3 @@ class Trace:
             file: the file to write to
         """
         self._frame.to_file(file, driver="GeoJSON")
-
-
-class InheritTrace(Trace):
-    def __init__(self):
-        pass
