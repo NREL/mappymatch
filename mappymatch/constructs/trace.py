@@ -50,7 +50,7 @@ class Trace:
         output_lines = [
             "Mappymatch Trace object",
             f'coords: {self.coords if hasattr(self, "coords") else None}',
-            f'frame: {self._frame if hasattr(self, "_frame") else None}',
+            f"frame: {self._frame}",
         ]
         return "\n".join(output_lines)
 
