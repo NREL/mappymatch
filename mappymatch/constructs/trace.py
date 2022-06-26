@@ -46,6 +46,17 @@ class Trace:
     def __len__(self):
         return len(self._frame)
 
+    def __str__(self):
+        output_lines = [
+            "Mappymatch Trace object",
+            f'coords: {self.coords if hasattr(self, "coords") else None}',
+            f"frame: {self._frame}",
+        ]
+        return "\n".join(output_lines)
+
+    def __repr__(self):
+        return self.__str__()
+
     @property
     def index(self) -> pd.Index:
         return self._frame.index

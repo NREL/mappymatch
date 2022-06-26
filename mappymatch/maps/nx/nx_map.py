@@ -85,6 +85,17 @@ class NxMap(MapInterface):
         self.rtree = idx
         return road_lookup
 
+    def __str__(self):
+        output_lines = [
+            "Mappymatch NxMap object",
+            f"roads: {len(self._roads)} Road objects",
+            f"graph: {self.g}",
+        ]
+        return "\n".join(output_lines)
+
+    def __repr__(self):
+        return self.__str__()
+
     @property
     def roads(self) -> List[Road]:
         return self._roads
