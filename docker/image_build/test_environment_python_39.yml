@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.8
+  - python=3.9
   - osmnx
   - geopandas
   - shapely
@@ -16,14 +16,4 @@ dependencies:
   - requests
   - pip
   - pytest
-  - sphinx=4.5.0
-  - sphinx_rtd_theme=1.0.0
-  - pre-commit
-  - black
-  - isort
-  - interrogate
-  - coverage
-  - mypy 
-  - pip:
-    - -e . 
-    - sphinxemoji==0.2.0
+  

@@ -1,4 +1,4 @@
-name: Lint and Test
+name: Lint only
 
 on: [push]
 
@@ -30,7 +30,3 @@ jobs:
     - name: Run isort
       if: always()
       run: isort check mappymatch tests
-    - name: Run Tests
-      if: always()
-      run: |
-        echo "Not yet implemented"

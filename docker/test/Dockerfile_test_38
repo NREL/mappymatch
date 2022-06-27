@@ -1,0 +1,7 @@
+# Ref: https://pythonspeed.com/articles/activate-conda-dockerfile/
+
+FROM rowlando13/mappymatch:python_38_base_test
+WORKDIR /mappymatch
+COPY . . 
+
+

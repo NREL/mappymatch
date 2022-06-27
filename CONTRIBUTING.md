@@ -1,8 +1,5 @@
 # Contributing to mappymatch
 
-We're excited that you're considering contributing to the mappymatch package!
-There are a variety of ways in which you can contribute beyond writing code.
-This document provides a high-level overview of how you can get involved.
 
 
 ## Asking Questions
