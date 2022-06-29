@@ -11,4 +11,4 @@ class TestGeofence(TestCase):
 
         gfence = Geofence.from_geojson(file)
 
-        self.assertEqual(gfence.crs, LATLON_CRS)
+        self.assertNotEqual(gfence.crs, LATLON_CRS)
