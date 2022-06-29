@@ -32,5 +32,4 @@ jobs:
       run: isort check mappymatch tests
     - name: Run Tests
       if: always()
-      run: |
-        echo "Not yet implemented"
+      run: pytest tests
