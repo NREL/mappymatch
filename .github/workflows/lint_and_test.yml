@@ -17,8 +17,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install black flake8 mypy isort types-requests pytest
+        pip install -r requirements-tests.txt
     - name: Run black
       if: always()
       run: black mappymatch tests --check
