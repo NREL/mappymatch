@@ -1,4 +1,4 @@
--c requirements.txt
+-r requirements.txt
 black
 isort
 mypy
