@@ -4,26 +4,6 @@ channels:
   - defaults
 dependencies:
   - python=3.8
-  - osmnx
-  - geopandas
-  - shapely
-  - rtree
-  - pyproj
-  - pandas
-  - numpy
-  - matplotlib
-  - folium
-  - requests
   - pip
   - pip:
-    - -e .
-  - pytest
-  - sphinx=4.5.0
-  - sphinx_rtd_theme=1.0.0
-  - sphinxemoji==0.2.0
-  - pre-commit
-  - black
-  - isort
-  - interrogate
-  - coverage
-  - mypy
+    - -r requirements-dev.txt
