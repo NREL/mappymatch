@@ -1,0 +1,9 @@
+-c requirements.txt
+-c requirements-tests.txt
+sphinx
+sphinx_rtd_theme
+sphinxemoji
+pre-commit
+interrogate
+coverage
+pip-tools
