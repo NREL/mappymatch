@@ -43,6 +43,23 @@ setup(
             "sphinx_rtd_theme==1.0.0",
             "sphinxemoji==0.2.0",
         ],
+        "tests": [
+            "black",
+            "isort",
+            "mypy",
+            "types-requests",
+            "flake8",
+            "pytest",
+        ],
+        "dev": [
+            "sphinx",
+            "sphinx_rtd_theme",
+            "sphinxemoji",
+            "pre-commit",
+            "interrogate",
+            "coverage",
+            "pip-tools",
+        ],
     },
     include_package_data=True,
     package_data={
