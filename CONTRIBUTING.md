@@ -66,6 +66,28 @@ change or improvement:
 
 #### 2. Clone the Repo Locally and Install Dependencies
 
+It's advisable to [create and activate a virtual environment](https://docs.python.org/3/library/venv.html) before beginning development.
+
+```
+python3 -m venv /path/to/new/virtual/environment
+
+source /path/to/new/virtual/environment/bin/activate
+```
+
+Change directory to the mappymatch folder:
+
+```
+git clone https://github.com/<your_github_username>/mappymatch.git
+```
+
+Install the dependencies
+
+```
+pip install -r requirements-dev.txt
+```
+
+#### 2a. Alternately, Clone the Repo Locally and Install Dependencies via conda
+
 ```
 git clone https://github.com/<your_github_username>/mappymatch.git
 ```
@@ -74,6 +96,7 @@ Change directory into the mappymatch folder:
 ```
 cd path/to/mappymatch   # from here, your path to mappymatch is likely .\mappymatch\
 ```
+
 
 Then, use the contributor_environment.yml file (which was downloaded when you
 cloned the repo) to install dependencies:
