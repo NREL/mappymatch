@@ -8,33 +8,59 @@ alabaster==0.7.12
     # via sphinx
 attrs==21.4.0
     # via
-    #   -c requirements-tests.txt
-    #   -c requirements.txt
+    #   -r requirements-tests.txt
+    #   -r requirements.txt
+    #   fiona
     #   interrogate
+    #   pytest
 babel==2.10.3
     # via sphinx
+black==22.6.0
+    # via -r requirements-tests.txt
+branca==0.5.0
+    # via
+    #   -r requirements.txt
+    #   folium
 build==0.8.0
     # via pip-tools
 certifi==2022.6.15
     # via
-    #   -c requirements.txt
+    #   -r requirements.txt
+    #   fiona
+    #   pyproj
     #   requests
 cfgv==3.3.1
     # via pre-commit
 charset-normalizer==2.1.0
     # via
-    #   -c requirements.txt
+    #   -r requirements.txt
     #   requests
 click==8.1.3
     # via
-    #   -c requirements-tests.txt
-    #   -c requirements.txt
+    #   -r requirements-tests.txt
+    #   -r requirements.txt
+    #   black
+    #   click-plugins
+    #   cligj
+    #   fiona
     #   interrogate
     #   pip-tools
+click-plugins==1.1.1
+    # via
+    #   -r requirements.txt
+    #   fiona
+cligj==0.7.2
+    # via
+    #   -r requirements.txt
+    #   fiona
 colorama==0.4.5
     # via interrogate
 coverage==6.4.1
     # via -r requirements-dev.in
+cycler==0.11.0
+    # via
+    #   -r requirements.txt
+    #   matplotlib
 distlib==0.3.4
     # via virtualenv
 docutils==0.17.1
@@ -43,68 +69,186 @@ docutils==0.17.1
     #   sphinx-rtd-theme
 filelock==3.7.1
     # via virtualenv
+fiona==1.8.21
+    # via
+    #   -r requirements.txt
+    #   geopandas
+flake8==4.0.1
+    # via -r requirements-tests.txt
+folium==0.12.1.post1
+    # via -r requirements.txt
+fonttools==4.34.2
+    # via
+    #   -r requirements.txt
+    #   matplotlib
+geopandas==0.11.0
+    # via
+    #   -r requirements.txt
+    #   osmnx
 identify==2.5.1
     # via pre-commit
 idna==3.3
     # via
-    #   -c requirements.txt
+    #   -r requirements.txt
     #   requests
 imagesize==1.4.1
     # via sphinx
 importlib-metadata==4.12.0
     # via sphinx
+iniconfig==1.1.1
+    # via
+    #   -r requirements-tests.txt
+    #   pytest
 interrogate==1.5.0
     # via -r requirements-dev.in
+isort==5.10.1
+    # via -r requirements-tests.txt
 jinja2==3.1.2
     # via
-    #   -c requirements.txt
+    #   -r requirements.txt
+    #   branca
+    #   folium
     #   sphinx
+kiwisolver==1.4.3
+    # via
+    #   -r requirements.txt
+    #   matplotlib
 markupsafe==2.1.1
     # via
-    #   -c requirements.txt
+    #   -r requirements.txt
     #   jinja2
+matplotlib==3.5.2
+    # via
+    #   -r requirements.txt
+    #   osmnx
+mccabe==0.6.1
+    # via
+    #   -r requirements-tests.txt
+    #   flake8
+munch==2.5.0
+    # via
+    #   -r requirements.txt
+    #   fiona
+mypy==0.961
+    # via -r requirements-tests.txt
+mypy-extensions==0.4.3
+    # via
+    #   -r requirements-tests.txt
+    #   black
+    #   mypy
+networkx==2.8.4
+    # via
+    #   -r requirements.txt
+    #   osmnx
 nodeenv==1.7.0
     # via pre-commit
+numpy==1.23.0
+    # via
+    #   -r requirements.txt
+    #   folium
+    #   matplotlib
+    #   osmnx
+    #   pandas
+osmnx==1.2.1
+    # via -r requirements.txt
 packaging==21.3
     # via
-    #   -c requirements-tests.txt
-    #   -c requirements.txt
+    #   -r requirements-tests.txt
+    #   -r requirements.txt
     #   build
+    #   geopandas
+    #   matplotlib
+    #   pytest
     #   sphinx
+pandas==1.4.3
+    # via
+    #   -r requirements.txt
+    #   geopandas
+    #   osmnx
+pathspec==0.9.0
+    # via
+    #   -r requirements-tests.txt
+    #   black
 pep517==0.12.0
     # via build
+pillow==9.2.0
+    # via
+    #   -r requirements.txt
+    #   matplotlib
 pip-tools==6.8.0
     # via -r requirements-dev.in
 platformdirs==2.5.2
     # via
-    #   -c requirements-tests.txt
+    #   -r requirements-tests.txt
+    #   black
     #   virtualenv
+pluggy==1.0.0
+    # via
+    #   -r requirements-tests.txt
+    #   pytest
 pre-commit==2.19.0
     # via -r requirements-dev.in
 py==1.11.0
     # via
-    #   -c requirements-tests.txt
+    #   -r requirements-tests.txt
     #   interrogate
+    #   pytest
+pycodestyle==2.8.0
+    # via
+    #   -r requirements-tests.txt
+    #   flake8
+pyflakes==2.4.0
+    # via
+    #   -r requirements-tests.txt
+    #   flake8
 pygments==2.12.0
     # via sphinx
 pyparsing==3.0.9
     # via
-    #   -c requirements-tests.txt
-    #   -c requirements.txt
+    #   -r requirements-tests.txt
+    #   -r requirements.txt
+    #   matplotlib
     #   packaging
+pyproj==3.3.1
+    # via
+    #   -r requirements.txt
+    #   geopandas
+    #   osmnx
+pytest==7.1.2
+    # via -r requirements-tests.txt
+python-dateutil==2.8.2
+    # via
+    #   -r requirements.txt
+    #   matplotlib
+    #   pandas
 pytz==2022.1
     # via
-    #   -c requirements.txt
+    #   -r requirements.txt
     #   babel
+    #   pandas
 pyyaml==6.0
     # via pre-commit
 requests==2.28.1
     # via
-    #   -c requirements.txt
+    #   -r requirements.txt
+    #   folium
+    #   osmnx
     #   sphinx
+rtree==1.0.0
+    # via
+    #   -r requirements.txt
+    #   osmnx
+shapely==1.8.2
+    # via
+    #   -r requirements.txt
+    #   geopandas
+    #   osmnx
 six==1.16.0
     # via
-    #   -c requirements.txt
+    #   -r requirements.txt
+    #   fiona
+    #   munch
+    #   python-dateutil
     #   virtualenv
 snowballstemmer==2.2.0
     # via sphinx
@@ -137,12 +281,25 @@ toml==0.10.2
     #   pre-commit
 tomli==2.0.1
     # via
-    #   -c requirements-tests.txt
+    #   -r requirements-tests.txt
+    #   black
     #   build
-    #   pep517
+    #   mypy
+    #   pytest
+types-requests==2.28.0
+    # via -r requirements-tests.txt
+types-urllib3==1.26.16
+    # via
+    #   -r requirements-tests.txt
+    #   types-requests
+typing-extensions==4.3.0
+    # via
+    #   -r requirements-tests.txt
+    #   black
+    #   mypy
 urllib3==1.26.9
     # via
-    #   -c requirements.txt
+    #   -r requirements.txt
     #   requests
 virtualenv==20.15.1
     # via pre-commit
