@@ -134,7 +134,35 @@ Finish the PR
 
 Best practices
 ---------------------------------------------
-TBD 
+Asking questions 
+_____________________________________________
+Have a question? Rather than opening an issue, please ask questions
+or post comments in `Q&A Discussions <https://github.com/NREL/mappymatch/discussions/categories/q-a>`_ .
+Members of the community are happy to assist. 
+
+Providing feedback 
+______________________________________________
+Your comments and feedback are very welcome. Please post to
+`General Discussions <https://github.com/NREL/mappymatch/discussions/categories/general>`_ 
+with lots of detail.
+
+Reporting issues 
+______________________________________________
+We are happy to fix bugs. Please report buys using the issues template. 
+
+General issue reporting guidelines 
+______________________________________________
+
+   * One issue per problem. 
+
+   * Check through the closed issues before submitting a new one.  
+
+Requesting features 
+_______________________________________________
+If you are interested in coding or requesting a new feature, let us know in
+`Ideas Discussions <https://github.com/NREL/mappymatch/discussions/categories/ideas>`_ 
+Please wait for confirmation from a core maintainer before proceeding.
+
 
 Previewing documentation locally 
 --------------------------------------------
