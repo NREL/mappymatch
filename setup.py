@@ -7,6 +7,15 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
+test_dependencies = (
+    "black",
+    "isort",
+    "mypy",
+    "types-requests",
+    "flake8",
+    "pytest",
+)
+
 setup(
     name="mappymatch",
     version="0.2.2",
@@ -42,6 +51,17 @@ setup(
             "sphinx==4.5.0",
             "sphinx_rtd_theme==1.0.0",
             "sphinxemoji==0.2.0",
+        ],
+        "tests": [*test_dependencies],
+        "dev": [
+            "sphinx",
+            "sphinx_rtd_theme",
+            "sphinxemoji",
+            "pre-commit",
+            "interrogate",
+            "coverage",
+            "pip-tools",
+            *test_dependencies,
         ],
     },
     include_package_data=True,
