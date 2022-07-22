@@ -1,4 +1,4 @@
-name: Pytest (pinned requirements)
+name: Pytest (unpinned requirements)
 
 on: [push]
 
