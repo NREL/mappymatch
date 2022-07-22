@@ -87,7 +87,7 @@ cd path/to/mappymatch   # from here, your path to mappymatch is likely .\mappyma
 Install the dependencies and development dependencies
 
 ```
-pip install .[dev]
+pip install -e .[dev]
 ```
 
 #### 2a. Alternately, Clone the Repo Locally and Install Dependencies via conda
