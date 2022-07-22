@@ -1,8 +1,0 @@
-version: 2
-updates:
-  - package-ecosystem: pip
-    directory: "/"
-    schedule:
-      interval: weekly
-      time: "07:30"
-      timezone: "America/Los_Angeles"
