@@ -44,7 +44,7 @@ requires-python = ">=3.8"
 [project.optional-dependencies]
 # Used to run CI. 
 tests = [
-  black",
+  "black",
   "isort",
   "mypy",
   "types-requests",
