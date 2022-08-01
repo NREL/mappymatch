@@ -31,7 +31,6 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering",
     ],
-    packages=find_packages(),
     python_requires=">=3.8",
     install_requires=[
         "osmnx",
@@ -65,6 +64,7 @@ setup(
         ],
     },
     include_package_data=True,
+    packages=find_packages(),
     package_data={
         "mappymatch.resources": ["*"],
     },

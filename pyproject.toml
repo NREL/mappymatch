@@ -1,3 +1,64 @@
+[build-system]
+requires = ["setuptools>=63.0.0", "wheel"]
+build-backend = "setuptools.build_meta" 
+
+[project]
+name = "mappymatch"
+version = "0.2.2"
+description = "Package for mapmatching."
+readme = "README.md"
+authors = [{ name = "National Renewable Energy Laboratory" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Topic :: Scientific/Engineering",
+]
+keywords = ["GPS", "map", "match"]
+dependencies = [
+    "geopandas",
+    "shapely",
+    "rtree",
+    "pyproj",
+    "pandas",
+    "numpy",
+    "matplotlib",
+    "folium",
+    "requests",
+]
+requires-python = ">=3.8"
+
+[tools.setuptools.package_data]
+mappymatch.resources = ["*"]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "sphinx==4.5.0",
+  "sphinx_rtd_theme==1.0.0",
+  "sphinxemoji==0.2.0",
+  "pre-commit",
+  "black",
+  "isort",
+  "interrogate",
+  "coverage",
+  "mypy",
+  ]
+release = [
+  "build",
+  "twine"
+]
+
+[project.urls]
+Homepage = "https://github.com/NREL/mappymatch"
+
+[project.scripts]
+realpython = "reader.__main__:main"
+
 [tool.black]
 exclude = '''
 /(
