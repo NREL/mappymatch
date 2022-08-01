@@ -2,6 +2,17 @@
 requires = ["setuptools>=63.0.0", "wheel"]
 build-backend = "setuptools.build_meta" 
 
+
+#[tools.setuptools.packages.find]
+#where = [""]
+#include = ["", ]
+#exclude = [""]
+
+# Ref https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+[tools.setuptools.package_data]
+#include = false
+#mappymatch.resources = ["*"]
+
 [project]
 name = "mappymatch"
 version = "0.2.2"
@@ -32,9 +43,6 @@ dependencies = [
 ]
 requires-python = ">=3.8"
 
-[tools.setuptools.package_data]
-mappymatch.resources = ["*"]
-
 [project.optional-dependencies]
 dev = [
   "pytest",
@@ -55,9 +63,6 @@ release = [
 
 [project.urls]
 Homepage = "https://github.com/NREL/mappymatch"
-
-[project.scripts]
-realpython = "reader.__main__:main"
 
 [tool.black]
 exclude = '''
