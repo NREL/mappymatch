@@ -11,11 +11,14 @@ dependencies:
   - pandas
   - numpy
   - matplotlib
+  - osmnx 
+  - networkx
   - folium
   - requests
   - pip
   - pip:
     - -e .
+    - sphinxemoji==0.2.0
   - pytest
   - pip-tools
   - sphinx=4.5.0

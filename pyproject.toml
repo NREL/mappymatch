@@ -36,6 +36,8 @@ dependencies = [
     "pandas",
     "numpy",
     "matplotlib",
+    "osmnx", 
+    "networkx",
     "folium",
     "requests",
 ]
