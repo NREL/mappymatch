@@ -3,13 +3,11 @@ requires = ["setuptools>=63.0.0", "wheel"]
 build-backend = "setuptools.build_meta" 
 
 
-#[tools.setuptools.packages.find]
-#where = [""]
-#include = ["", ]
-#exclude = [""]
+[tool.setuptools.packages.find]
+where = ["mappymatch"]
 
 # Ref https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
-[tools.setuptools.package_data]
+#[tool.setuptools.package-data]
 #include = false
 #mappymatch.resources = ["*"]
 
