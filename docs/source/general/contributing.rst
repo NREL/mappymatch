@@ -41,8 +41,8 @@ Build from the source (First time only)
          :caption: Create the Conda environment, and activate it. You will need to run each command separately.
 
          cd mappymatch
-         conda env create -f contributor_environment.yml
-         conda activate mappymatch 
+         conda env create -f environment_dev.yml
+         conda activate mappymatch_dev
 
       .. code-block:: sh 
          :caption: Verify installation by running tests. 

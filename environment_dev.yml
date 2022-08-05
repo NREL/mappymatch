@@ -23,6 +23,7 @@ dependencies:
   - pip:
     - -e .
     - sphinxemoji==0.2.*
+    - sphinx-autobuild
     - tbump 
   - pip-tools
   - pre-commit
