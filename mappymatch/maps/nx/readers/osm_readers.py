@@ -55,27 +55,10 @@ def read_osm_nxmap(
             f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}"
         )
 
-    g = get_osm_networkx_graph(geofence, xy, network_type)
+    raw_graph = get_osmnx_graph(geofence, network_type)
+    cleaned_graph = parse_osmnx_graph(raw_graph, network_type, xy)
 
-    return NxMap(g)
-
-
-def parse_road_network_graph(g) -> nx.MultiDiGraph:
-    """
-    Parse the road network graph to add additional attributes
-
-    Args:
-        g: the road network graph
-
-    Returns:
-        the parsed road network graph
-    """
-    length_meters: dict
-    length_meters = nx.get_edge_attributes(g, "length")
-    kilometers = {k: v * METERS_TO_KM for k, v in length_meters.items()}
-    nx.set_edge_attributes(g, kilometers, "kilometers")
-
-    return g
+    return NxMap(cleaned_graph)
 
 
 def compress(g) -> nx.MultiDiGraph:
@@ -121,13 +104,32 @@ def compress(g) -> nx.MultiDiGraph:
     return g
 
 
-def get_osm_networkx_graph(
-    geofence: Geofence,
-    xy: bool = True,
-    network_type: NetworkType = NetworkType.drive,
+def get_osmnx_graph(
+    geofence: Geofence, network_type: NetworkType = NetworkType.drive
 ) -> nx.MultiDiGraph:
     """
-    Get an OSM network graph
+    Get an OSM network graph from osmnx
+
+    Args:
+        geofence: the geofence to clip the graph to
+        network_type: the network type to use for the graph
+
+    Returns:
+        the OSM networkx graph
+    """
+    g = ox.graph_from_polygon(
+        geofence.geometry, network_type=network_type.value
+    )
+    return g
+
+
+def parse_osmnx_graph(
+    graph: nx.MultiDiGraph,
+    network_type: NetworkType,
+    xy: bool = True,
+) -> nx.MultiDiGraph:
+    """
+    Parse the raw osmnx graph into a graph that we can use with our NxMap
 
     Args:
         geofence: the geofence to clip the graph to
@@ -135,11 +137,9 @@ def get_osm_networkx_graph(
         network_type: the network type to use for the graph
 
     Returns:
-        a networkx graph of the OSM network
+        a cleaned networkx graph of the OSM network
     """
-    g = ox.graph_from_polygon(
-        geofence.geometry, network_type=network_type.value
-    )
+    g = graph
 
     if xy:
         g = ox.project_graph(g, XY_CRS)
@@ -149,7 +149,10 @@ def get_osm_networkx_graph(
 
     g = ox.add_edge_speeds(g)
     g = ox.add_edge_travel_times(g)
-    g = parse_road_network_graph(g)
+
+    length_meters = nx.get_edge_attributes(g, "length")
+    kilometers = {k: v * METERS_TO_KM for k, v in length_meters.items()}
+    nx.set_edge_attributes(g, kilometers, "kilometers")
 
     # this makes sure there are no graph 'dead-ends'
     sg_components = nx.strongly_connected_components(g)
