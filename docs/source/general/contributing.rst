@@ -181,13 +181,20 @@ To preview the documentation locally:
 Maintainer Information 
 ---------------------------------------- 
 
-Version Location 
-________________________________________
+Updating Version Locations 
+________________________________________ 
+
+To update the version automatically using tbump: 
+
+.. code-block:: sh 
+
+   tbump <version_major.version_minor.version_patch> --only-patch
 
 To update the version manually update it in the following locations: 
 
    #. In the docs ``/docs/source/conf.py``
-   #. In the setup.py ``/setup.py``
+   #. In the setup.py ``/pyproject.toml``
+
 
 Tools in our toolbelt
 --------------------------------------- 
