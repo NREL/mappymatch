@@ -65,6 +65,7 @@ dev = [
   "coverage",
   "mypy",
   ]
+# Used to build the docs.
 docs = [
   "sphinx==4.5.0",
   "sphinx_rtd_theme==1.0.0",
