@@ -172,11 +172,22 @@ To preview the documentation locally:
 
       .. code-block:: sh 
 
-         sphinx-build -b html ./docs/source ./docs/_build 
+         sphinx-autobuild -b html ./docs/source ./docs/_build 
    
-   #. Open ``docs/_build/index.html`` with your browser.
+   #. Open ``http://127.0.0.1:8000`` with your browser.
 
 .. _toolbelt:
+
+Maintainer Information 
+---------------------------------------- 
+
+Version Location 
+________________________________________
+
+To update the version manually update it in the following locations: 
+
+   #. In the docs ``/docs/source/conf.py``
+   #. In the setup.py ``/setup.py``
 
 Tools in our toolbelt
 --------------------------------------- 
