@@ -1,0 +1,34 @@
+# Add dependencies in alphabetical order.
+name: mappymatch_dev
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - black
+  - build
+  - coverage
+  - folium
+  - geopandas
+  - interrogate
+  - isort
+  - pyproj
+  - matplotlib
+  - mypy
+  - networkx
+  - numpy
+  - osmnx
+  - pandas
+  - pip
+  - pip:
+    - -e .
+    - sphinxemoji==0.2.*
+    - tbump 
+  - pip-tools
+  - pre-commit
+  - pytest
+  - requests
+  - rtree
+  - shapely
+  - sphinx=4.5.*
+  - sphinx_rtd_theme=1.0.* 
