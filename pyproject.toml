@@ -1,3 +1,78 @@
+[build-system]
+requires = ["setuptools>=63.0.0", "wheel"]
+build-backend = "setuptools.build_meta" 
+
+
+[tools.setuptools]
+# Default value is true.
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["mappymatch"]
+
+[project]
+name = "mappymatch"
+version = "0.2.2"
+description = "Package for mapmatching."
+readme = "README.md"
+authors = [{ name = "National Renewable Energy Laboratory" }]
+license = { text = "BSD 3-Clause License Copyright (c) 2022, Alliance for Sustainable Energy, LLC" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Topic :: Scientific/Engineering",
+]
+keywords = ["GPS", "map", "match"]
+dependencies = [
+    "geopandas",
+    "shapely",
+    "rtree",
+    "pyproj",
+    "pandas",
+    "numpy",
+    "matplotlib",
+    "osmnx", 
+    "networkx",
+    "folium",
+    "requests",
+]
+requires-python = ">=3.8"
+
+[project.optional-dependencies]
+# Used to run CI. 
+tests = [
+  "black",
+  "isort",
+  "mypy",
+  "types-requests",
+  "flake8",
+  "pytest",
+]
+# Used to build the docs.
+docs = [
+  "sphinx==4.5.0",
+  "sphinx_rtd_theme==1.0.0",
+  "sphinxemoji==0.2.0",
+]
+# Tests + docs + other.
+dev = [
+  "mappymatch[tests]",
+  "mappymatch[docs]",
+  "coverage",
+  "interrogate",
+  "pre-commit",
+  "build",
+  "twine",
+]
+
+[project.urls]
+Homepage = "https://github.com/NREL/mappymatch"
+
+
 [tool.black]
 exclude = '''
 /(
@@ -18,11 +93,13 @@ include = '\.pyi?$'
 line-length = 79
 target-version = ['py38', ]
 
+
 [tool.isort]
 profile = "black"
 line_length = 79
 skip_gitignore = true
 filter_files = true
+
 
 [tool.interrogate]
 fail-under = 10 
@@ -30,6 +107,7 @@ exclude = ["tests", "docs", "examples", "resources"]
 paths = ["mappymatch"]
 # Ignore the docs configuration file.
 ignore-regex = ["conf.py"]
+
 
 [tool.coverage.run]
 # Ensures coverage for all if, elif, else branches. 
@@ -42,16 +120,15 @@ fail_under = 50.0
 skip_covered = false
 skip_empty = true
 
+
 [tool.tbump]
 # Uncomment this if your project is hosted on GitHub:
 # github_url = "https://github.com/<user or organization>/<project>/"
 
 [tool.tbump.version]
+# Make sure this matches current_version before using tbump
 current = "0.2.2"
-
 # Example of a semver regexp.
-# Make sure this matches current_version before
-# using tbump
 regex = '''
   (?P<major>\d+)
   \.
@@ -68,8 +145,8 @@ tag_template = "v{new_version}"
 # section containing the path of the file, relative to the
 # tbump.toml location.
 [[tool.tbump.file]]
-src = "./setup.py"
-search = 'version="{current_version}"'
+src = "./pyproject.toml"
+search = 'version = "{current_version}"'
 [[tool.tbump.file]]
 src = "./docs/source/conf.py"
 search = 'full_version = "{current_version}"'

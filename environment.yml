@@ -1,21 +1,22 @@
+# Add dependencies in alphabetical order.
 name: mappymatch
 channels:
   - conda-forge
   - defaults
 dependencies:
   - python=3.8
-  - osmnx
-  - geopandas
-  - shapely
-  - rtree
-  - pyproj
-  - pandas
-  - numpy
-  - matplotlib
   - folium
-  - requests
+  - geopandas
+  - matplotlib
+  - numpy
+  - osmnx
+  - pandas
   - pip
   - pip:
     - -e .
+  - pyproj 
+  - requests 
+  - rtree
+  - shapely
 
 

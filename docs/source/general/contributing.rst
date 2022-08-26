@@ -41,8 +41,8 @@ Build from the source (First time only)
          :caption: Create the Conda environment, and activate it. You will need to run each command separately.
 
          cd mappymatch
-         conda env create -f contributor_environment.yml
-         conda activate mappymatch 
+         conda env create -f environment_dev.yml
+         conda activate mappymatch_dev
 
       .. code-block:: sh 
          :caption: Verify installation by running tests. 
@@ -181,13 +181,46 @@ To preview the documentation locally:
 Maintainer Information 
 ---------------------------------------- 
 
-Version Location 
-________________________________________
+Updating Version Locations 
+________________________________________ 
+
+To update the version automatically using tbump: 
+
+.. code-block:: sh 
+
+   tbump <version_major.version_minor.version_patch> --only-patch
 
 To update the version manually update it in the following locations: 
 
    #. In the docs ``/docs/source/conf.py``
-   #. In the setup.py ``/setup.py``
+   #. In the setup.py ``/pyproject.toml`` (2 places)
+
+
+Releasing to PyPi manually
+__________________________________________
+
+   #. Build the wheel 
+   
+      .. code-block:: sh 
+
+         python -m build 
+   
+   #. Upload to Test PyPi.
+   
+      .. code-block:: sh 
+
+         twine upload -r testpypi dist/* --verbose 
+
+   #. Verify for typos and that the wheel installs. If you spot a mistake, correct it, commit the correction and change the version in the [project] table in ``/pyproject.toml`` to <major>.<minor>.<patch>.post<#>
+   #. Delete the old wheel, rebuild the wheel and reupload to Test PyPi. 
+   #. Remove post<#> from the version. 
+   #. If there are no mistakes, upload to PyPi. 
+   
+      .. code-block:: sh 
+
+         twine upload dist/*
+   
+
 
 Tools in our toolbelt
 --------------------------------------- 
