@@ -60,20 +60,13 @@ docs = [
 ]
 # Tests + docs + other.
 dev = [
-  "black",
+  "mappymatch[tests]",
+  "mappymatch[docs]",
   "coverage",
   "interrogate",
-  "isort",
-  "mypy",
   "pre-commit",
-  "pytest",
-  "sphinx==4.5.0",
-  "sphinx_rtd_theme==1.0.0",
-  "sphinxemoji==0.2.0",
-  ]
-release = [
   "build",
-  "twine"
+  "twine",
 ]
 
 [project.urls]
