@@ -193,7 +193,33 @@ To update the version automatically using tbump:
 To update the version manually update it in the following locations: 
 
    #. In the docs ``/docs/source/conf.py``
-   #. In the setup.py ``/pyproject.toml``
+   #. In the setup.py ``/pyproject.toml`` (2 places)
+
+
+Releasing to PyPi manually
+__________________________________________
+
+   #. Build the wheel 
+   
+      .. code-block:: sh 
+
+         python -m build 
+   
+   #. Upload to Test PyPi.
+   
+      .. code-block:: sh 
+
+         twine upload -r testpypi dist/* --verbose 
+
+   #. Verify for typos and that the wheel installs. If you spot a mistake, correct it, commit the correction and change the version in the [project] table in ``/pyproject.toml`` to <major>.<minor>.<patch>.post<#>
+   #. Delete the old wheel, rebuild the wheel and reupload to Test PyPi. 
+   #. Remove post<#> from the version. 
+   #. If there are no mistakes, upload to PyPi. 
+   
+      .. code-block:: sh 
+
+         twine upload dist/*
+   
 
 
 Tools in our toolbelt
