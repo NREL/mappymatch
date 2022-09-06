@@ -51,6 +51,8 @@ def geofence_from_trace(
     buffer_res: int = 2,
 ) -> Geofence:
     """
+    TODO: This function is deprecated and will be removed in ...
+
     Computes a bounding polygon surrounding a trace.
 
     This is done by computing a radial buffer around the entire trace (as a line).
