@@ -1,22 +1,49 @@
 from __future__ import annotations
 
+from enum import Enum
 from pathlib import Path
 from typing import List, Union
 
 import networkx as nx
 import numpy as np
+import osmnx as ox
 import rtree as rt
-from shapely.geometry import Point
+from shapely.geometry import LineString, Point
 
 from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.geofence import Geofence
 from mappymatch.constructs.road import Road
 from mappymatch.maps.map_interface import MapInterface, PathWeight
-from mappymatch.utils.crs import CRS
+from mappymatch.utils.crs import CRS, LATLON_CRS, XY_CRS
+from mappymatch.utils.exceptions import MapException
+
+# Geofence, parse_osmnx_graph, LATON_CRS
+
 
 DEFAULT_DISTANCE_WEIGHT = "kilometers"
 DEFAULT_TIME_WEIGHT = "minutes"
 DEFAULT_GEOMETRY_KEY = "geometry"
 DEFAULT_ROAD_ID_KEY = "road_id"
+METERS_TO_KM = 1 / 1000
+DEFAULT_MPH = 30
+
+_unit_conversion = {
+    "mph": 1,
+    "kmph": 0.621371,
+}
+
+
+class NetworkType(Enum):
+    """
+    Enumerator for Network Types supported by osmnx.
+    """
+
+    ALL_PRIVATE = "all_private"
+    ALL = "all"
+    BIKE = "bike"
+    DRIVE = "drive"
+    DRIVE_SERVICE = "drive_service"
+    WALK = "walk"
 
 
 class NxMap(MapInterface):
@@ -118,6 +145,36 @@ class NxMap(MapInterface):
         g = nx.read_gpickle(file)
 
         return NxMap(g)
+
+    @classmethod
+    def from_osm_network(
+        cls,
+        geofence: Geofence,
+        xy: bool = True,
+        network_type: NetworkType = NetworkType.DRIVE,
+    ) -> NxMap:
+        """
+        Read an OSM network graph into a NxMap
+
+        Args:
+            geofence: the geofence to clip the graph to
+            xy: whether to use xy coordinates or lat/lon
+            network_type: the network type to use for the graph
+
+        Returns:
+            a NxMap
+        """
+        if geofence.crs != LATLON_CRS:
+            raise TypeError(
+                f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}"
+            )
+
+        raw_graph = ox.graph_from_polygon(
+            geofence.geometry, network_type=network_type.value
+        )
+        cleaned_graph = parse_osmnx_graph(raw_graph, network_type, xy)
+
+        return NxMap(cleaned_graph)
 
     def to_file(self, outfile: Union[str, Path]):
         """
@@ -251,3 +308,119 @@ class NxMap(MapInterface):
             )
 
         return path
+
+
+def parse_osmnx_graph(
+    graph: nx.MultiDiGraph,
+    network_type: NetworkType,
+    xy: bool = True,
+) -> nx.MultiDiGraph:
+    """
+    Parse the raw osmnx graph into a graph that we can use with our NxMap
+
+    Args:
+        geofence: the geofence to clip the graph to
+        xy: whether to use xy coordinates or lat/lon
+        network_type: the network type to use for the graph
+
+    Returns:
+        a cleaned networkx graph of the OSM network
+    """
+    g = graph
+
+    if xy:
+        g = ox.project_graph(g, XY_CRS)
+        crs = XY_CRS
+    else:
+        crs = LATLON_CRS
+
+    g = ox.add_edge_speeds(g)
+    g = ox.add_edge_travel_times(g)
+
+    length_meters = nx.get_edge_attributes(g, "length")
+    kilometers = {k: v * METERS_TO_KM for k, v in length_meters.items()}
+    nx.set_edge_attributes(g, kilometers, "kilometers")
+
+    # this makes sure there are no graph 'dead-ends'
+    sg_components = nx.strongly_connected_components(g)
+
+    if not sg_components:
+        raise MapException(
+            "road network has no strongly connected components and is not routable; "
+            "check polygon boundaries."
+        )
+
+    g = nx.MultiDiGraph(g.subgraph(max(sg_components, key=len)))
+
+    no_geom = 0
+    for u, v, d in g.edges(data=True):
+        d["road_id"] = f"{u}-{v}"
+        if "geometry" not in d:
+            # we'll build a pseudo-geometry using the x, y data from the nodes
+            unode = g.nodes[u]
+            vnode = g.nodes[v]
+            line = LineString(
+                [(unode["x"], unode["y"]), (vnode["x"], vnode["y"])]
+            )
+            d["geometry"] = line
+            no_geom += 1
+    if no_geom:
+        print(
+            f"Warning: found {no_geom} links with no geometry; creating geometries from the node lat/lon"
+        )
+
+    g = compress(g)
+
+    g.graph["crs"] = crs
+
+    # TODO: these should all be sourced from the same location
+    g.graph["distance_weight"] = "kilometers"
+    g.graph["time_weight"] = "travel_time"
+    g.graph["geometry_key"] = "geometry"
+    g.graph["road_id_key"] = "road_id"
+    g.graph["network_type"] = network_type.value
+
+    return g
+
+
+def compress(g) -> nx.MultiDiGraph:
+    """
+    a hacky way to delete unnecessary data on the networkx graph
+
+    Args:
+        g: the networkx graph to compress
+
+    Returns:
+        the compressed networkx graph
+    """
+    keys_to_delete = [
+        "oneway",
+        "ref",
+        "access",
+        "lanes",
+        "name",
+        "maxspeed",
+        "highway",
+        "length",
+        "speed_kph",
+        "osmid",
+        "street_count",
+        "y",
+        "x",
+    ]
+
+    for _, _, d in g.edges(data=True):
+        for k in keys_to_delete:
+            try:
+                del d[k]
+            except KeyError:
+                continue
+
+    for _, d in g.nodes(data=True):
+        for k in keys_to_delete:
+            try:
+                del d[k]
+            except KeyError:
+                continue
+
+    return g
