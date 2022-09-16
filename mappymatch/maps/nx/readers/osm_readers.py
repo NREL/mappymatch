@@ -23,7 +23,7 @@ METERS_TO_KM = 1 / 1000
 
 class NetworkType(Enum):
     """
-    Network Types suuported by osmnx
+    Network Types suported by osmnx
     """
 
     all_private = "all_private"

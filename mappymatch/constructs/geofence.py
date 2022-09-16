@@ -9,10 +9,10 @@ from shapely.geometry import LineString, Polygon
 from shapely.ops import transform
 
 from mappymatch.constructs.trace import Trace
-from mappymatch.utils.crs import LATLON_CRS, XY_CRS
+from mappymatch.utils.crs import LATLON_CRS
 
 
-class Geofence(NamedTuple):
+class Geofence:
     """
     A geofence is basically a shapely polygon with a CRS
 
@@ -21,8 +21,9 @@ class Geofence(NamedTuple):
         crs: The CRS of the geofence
     """
 
-    crs: CRS
-    geometry: Polygon
+    def __init__(self, crs: CRS, geometry: Polygon):
+        self.crs = crs
+        self.geometry = geometry
 
     @classmethod
     def from_geojson(cls, file: Union[Path, str]) -> Geofence:
@@ -53,6 +54,7 @@ class Geofence(NamedTuple):
 
     @classmethod
     def from_trace(
+        cls,
         trace: Trace,
         padding: float = 15,
         crs: CRS = LATLON_CRS,
