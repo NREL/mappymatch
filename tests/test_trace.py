@@ -1,12 +1,12 @@
 from unittest import TestCase
 
 import pandas as pd
-from tests import get_test_dir
 
 from mappymatch import root
 from mappymatch.constructs.trace import Trace
 from mappymatch.utils.crs import XY_CRS
 from mappymatch.utils.geo import xy_to_latlon
+from tests import get_test_dir
 
 
 class TestTrace(TestCase):
