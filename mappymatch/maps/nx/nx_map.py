@@ -246,6 +246,7 @@ class NxMap(MapInterface):
 
             geom = edge_data[road_key][self._geom_key]
             road_id = edge_data[road_key][self._road_id_key]
+            metadata = edge_data[road_key].get(self._metadata_key)
 
             path.append(
                 Road(
@@ -253,6 +254,7 @@ class NxMap(MapInterface):
                     geom,
                     origin_junction_id=road_start_node,
                     dest_junction_id=road_end_node,
+                    metadata=metadata,
                 )
             )
 
