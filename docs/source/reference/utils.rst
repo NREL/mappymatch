@@ -1,39 +1,43 @@
 Utils
 =====
 
-Helper functions and classes.
+Helper functions and classes. 
 
-mappymatch.utils.crs module
+Modules 
 ---------------------------
+For readability, the full path is listed below and not used in other parts of the documentation.
 
-.. automodule:: mappymatch.utils.crs
-   :members:
+* ``mappymatch.utils.exceptions``
+* ``mappymatch.utils.geo``
+* ``mappymatch.utils.plot``
+* ``mappymatch.utils.trace``
+* ``mappymatch.utils.url``
 
-mappymatch.utils.exceptions module
+exceptions module
 ----------------------------------
 
 .. automodule:: mappymatch.utils.exceptions
    :members:
 
-mappymatch.utils.geo module
+geo module
 ---------------------------
 
 .. automodule:: mappymatch.utils.geo
    :members:
 
-mappymatch.utils.plot module
+plot module
 ----------------------------
 
 .. automodule:: mappymatch.utils.plot
    :members:
 
-mappymatch.utils.process\_trace module
+trace module
 --------------------------------------
 
 .. automodule:: mappymatch.utils.process_trace
    :members:
 
-mappymatch.utils.url module
+url module
 ---------------------------
 
 .. automodule:: mappymatch.utils.url

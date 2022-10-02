@@ -17,9 +17,6 @@ from mappymatch.maps.map_interface import MapInterface, PathWeight
 from mappymatch.utils.crs import CRS, LATLON_CRS, XY_CRS
 from mappymatch.utils.exceptions import MapException
 
-# Geofence, parse_osmnx_graph, LATON_CRS
-
-
 DEFAULT_DISTANCE_WEIGHT = "kilometers"
 DEFAULT_TIME_WEIGHT = "minutes"
 DEFAULT_GEOMETRY_KEY = "geometry"
