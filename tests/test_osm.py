@@ -2,10 +2,7 @@ from unittest import TestCase
 
 import networkx as nx
 
-from mappymatch.maps.nx.readers.osm_readers import (
-    NetworkType,
-    parse_osmnx_graph,
-)
+from mappymatch.maps.nx.nx_map import NetworkType, parse_osmnx_graph
 from tests import get_test_dir
 
 
@@ -15,10 +12,10 @@ class TestOSMap(TestCase):
 
         osmnx_graph = nx.read_gpickle(gfile)
 
-        cleaned_graph = parse_osmnx_graph(osmnx_graph, NetworkType.drive)
+        cleaned_graph = parse_osmnx_graph(osmnx_graph, NetworkType.DRIVE)
 
         self.assertEqual(
-            cleaned_graph.graph["network_type"], NetworkType.drive.value
+            cleaned_graph.graph["network_type"], NetworkType.DRIVE.value
         )
 
         self.assertTrue(
