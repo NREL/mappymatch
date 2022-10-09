@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from pyproj import Transformer
 
 from mappymatch.constructs.coordinate import Coordinate
