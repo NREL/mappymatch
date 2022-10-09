@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import NamedTuple, Union
+from typing import Union
 
 from geopandas import read_file
 from pyproj import CRS, Transformer
