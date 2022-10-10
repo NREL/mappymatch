@@ -1,14 +1,18 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import NamedTuple, Union
+from typing import Union
 
 from geopandas import read_file
-from pyproj import CRS
-from shapely.geometry import Polygon
+from pyproj import CRS, Transformer
+from shapely.geometry import LineString, Polygon
+from shapely.ops import transform
+
+from mappymatch.constructs.trace import Trace
+from mappymatch.utils.crs import LATLON_CRS
 
 
-class Geofence(NamedTuple):
+class Geofence:
     """
     A geofence is basically a shapely polygon with a CRS
 
@@ -17,8 +21,9 @@ class Geofence(NamedTuple):
         crs: The CRS of the geofence
     """
 
-    crs: CRS
-    geometry: Polygon
+    def __init__(self, crs: CRS, geometry: Polygon):
+        self.crs = crs
+        self.geometry = geometry
 
     @classmethod
     def from_geojson(cls, file: Union[Path, str]) -> Geofence:
@@ -46,3 +51,41 @@ class Geofence(NamedTuple):
         polygon = frame.iloc[0].geometry
 
         return Geofence(crs=frame.crs, geometry=polygon)
+
+    @classmethod
+    def from_trace(
+        cls,
+        trace: Trace,
+        padding: float = 15,
+        crs: CRS = LATLON_CRS,
+        buffer_res: int = 2,
+    ) -> Geofence:
+        """
+        Create a new geofence from a trace.
+
+        This is done by computing a radial buffer around the
+        entire trace (as a line).
+
+        Args:
+            trace: The trace to compute the bounding polygon for.
+            padding: The padding (in meters) around the trace line.
+            crs: The coordinate reference system to use.
+            buffer_res: The resolution of the surrounding buffer.
+
+        Returns:
+            The computed bounding polygon.
+        """
+
+        trace_line_string = LineString([c.geom for c in trace.coords])
+
+        # Add buffer to LineString.
+        polygon = trace_line_string.buffer(padding, buffer_res)
+
+        if trace.crs != crs:
+            project = Transformer.from_crs(
+                trace.crs, crs, always_xy=True
+            ).transform
+            polygon = transform(project, polygon)
+            return Geofence(crs=crs, geometry=polygon)
+
+        return Geofence(crs=trace.crs, geometry=polygon)

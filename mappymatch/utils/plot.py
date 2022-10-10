@@ -16,8 +16,6 @@ def plot_geofence(geofence, m=None):
     """
     Plot geofence.
 
-    TODO: E: Determine if this is a good use of a single letter variable name
-
     Args:
         geofence: The geofence to plot
         m: the folium map to plot on

@@ -44,6 +44,7 @@ class Trace:
         return Trace(new_frame)
 
     def __len__(self):
+        """Number of coordinate pairs."""
         return len(self._frame)
 
     def __str__(self):
@@ -59,10 +60,14 @@ class Trace:
 
     @property
     def index(self) -> pd.Index:
+        """Get index to underlying GeoDataFrame."""
         return self._frame.index
 
     @cached_property
     def coords(self) -> List[Coordinate]:
+        """
+        Get coordinates as Coordinate objects.
+        """
         coords_list = [
             Coordinate(i, g, self.crs)
             for i, g in zip(self._frame.index, self._frame.geometry)
@@ -71,6 +76,7 @@ class Trace:
 
     @property
     def crs(self) -> CRS:
+        """Get Coordinate Reference System(CRS) to underlying GeoDataFrame."""
         return self._frame.crs
 
     @classmethod

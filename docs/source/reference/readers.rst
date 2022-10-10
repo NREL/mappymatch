@@ -1,9 +1,11 @@
 Readers
 =======
 
+(Reserved for future use)
+
 You can use these to generate a map for various sources.
 
-mappymatch.maps.nx.readers.osm\_readers module
+Readers Module
 ----------------------------------------------
 
 .. automodule:: mappymatch.maps.nx.readers.osm_readers

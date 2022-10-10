@@ -69,7 +69,7 @@ html_theme_options = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 # TODO Revised based on discussion #120.
-add_module_names = True
+add_module_names = False
 
 # -- Post process ------------------------------------------------------------
 import collections
