@@ -1,12 +1,11 @@
 from pathlib import Path
 
 from mappymatch import package_root
+from mappymatch.constructs.geofence import Geofence
 from mappymatch.constructs.trace import Trace
-from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap
+from mappymatch.maps.nx.nx_map import NxMap
 from mappymatch.matchers.lcss.lcss import LCSSMatcher
 from mappymatch.matchers.line_snap import LineSnapMatcher
-from mappymatch.utils.geo import geofence_from_trace
-
 
 PLOT = True
 

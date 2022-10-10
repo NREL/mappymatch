@@ -43,8 +43,8 @@ class NetworkType(Enum):
     DRIVE_SERVICE = "drive_service"
     WALK = "walk"
 
-DEFAULT_METADATA_KEY = "metadata"
 
+DEFAULT_METADATA_KEY = "metadata"
 
 
 class NxMap(MapInterface):
