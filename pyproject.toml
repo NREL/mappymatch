@@ -2,14 +2,6 @@
 requires = ["setuptools>=63.0.0", "wheel"]
 build-backend = "setuptools.build_meta" 
 
-
-[tools.setuptools]
-# Default value is true.
-include-package-data = true
-
-[tool.setuptools.packages.find]
-where = ["mappymatch"]
-
 [project]
 name = "mappymatch"
 version = "0.2.2"

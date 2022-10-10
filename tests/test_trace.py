@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import pandas as pd
 
-from mappymatch import root
+from mappymatch import package_root
 from mappymatch.constructs.trace import Trace
 from mappymatch.utils.crs import XY_CRS
 from mappymatch.utils.geo import xy_to_latlon
@@ -11,7 +11,7 @@ from tests import get_test_dir
 
 class TestTrace(TestCase):
     def test_trace_from_file(self):
-        file = root() / "resources" / "traces" / "sample_trace_1.csv"
+        file = package_root() / "resources" / "traces" / "sample_trace_1.csv"
 
         trace = Trace.from_csv(file)
 
@@ -19,7 +19,7 @@ class TestTrace(TestCase):
         self.assertEqual(len(trace), 1053)
 
     def test_trace_from_dataframe(self):
-        file = root() / "resources" / "traces" / "sample_trace_1.csv"
+        file = package_root() / "resources" / "traces" / "sample_trace_1.csv"
 
         df = pd.read_csv(file)
 

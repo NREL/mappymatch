@@ -1,25 +1,31 @@
 from pathlib import Path
+
+from mappymatch import package_root
 from mappymatch.constructs.trace import Trace
-from mappymatch.utils.geo import geofence_from_trace
 from mappymatch.maps.nx.readers.osm_readers import read_osm_nxmap
 from mappymatch.matchers.lcss.lcss import LCSSMatcher
-from mappymatch import root
+from mappymatch.utils.geo import geofence_from_trace
 
 PLOT = True
 
 if PLOT:
-    from mappymatch.utils.plot import plot_geofence, plot_trace, plot_matches
     import webbrowser
 
-trace = Trace.from_csv(root() / "resources/traces/sample_trace_1.csv")
+    from mappymatch.utils.plot import plot_geofence, plot_matches, plot_trace
+
+print("loading trace.")
+trace = Trace.from_csv(package_root() / "resources/traces/sample_trace_1.csv")
 
 # generate a geofence polygon that surrounds the trace; units are in meters;
 # this is used to query OSM for a small map that we can match to
+print("building geofence.")
 geofence = geofence_from_trace(trace, padding=1e3)
 
 # uses osmnx to pull a networkx map from the OSM database
+print("pull osm map.")
 nx_map = read_osm_nxmap(geofence)
 
+print("matching .")
 matcher = LCSSMatcher(nx_map)
 
 matches = matcher.match_trace(trace)
