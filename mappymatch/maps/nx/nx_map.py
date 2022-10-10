@@ -21,6 +21,7 @@ DEFAULT_DISTANCE_WEIGHT = "kilometers"
 DEFAULT_TIME_WEIGHT = "minutes"
 DEFAULT_GEOMETRY_KEY = "geometry"
 DEFAULT_ROAD_ID_KEY = "road_id"
+
 METERS_TO_KM = 1 / 1000
 DEFAULT_MPH = 30
 
@@ -41,6 +42,9 @@ class NetworkType(Enum):
     DRIVE = "drive"
     DRIVE_SERVICE = "drive_service"
     WALK = "walk"
+
+DEFAULT_METADATA_KEY = "metadata"
+
 
 
 class NxMap(MapInterface):
@@ -77,11 +81,13 @@ class NxMap(MapInterface):
         time_weight = graph.graph.get("time_weight", DEFAULT_TIME_WEIGHT)
         geom_key = graph.graph.get("geometry_key", DEFAULT_GEOMETRY_KEY)
         road_id_key = graph.graph.get("road_id", DEFAULT_ROAD_ID_KEY)
+        metadata_key = graph.graph.get("metadata", DEFAULT_METADATA_KEY)
 
         self._dist_weight = dist_weight
         self._time_weight = time_weight
         self._geom_key = geom_key
         self._road_id_key = road_id_key
+        self._metadata_key = metadata_key
 
         self._nodes = [nid for nid in self.g.nodes()]
         self._roads = self._build_rtree()
@@ -98,11 +104,14 @@ class NxMap(MapInterface):
             box = geom.bounds
             idx.insert(i, box)
 
+            metadata = d.get(self._metadata_key)
+
             road = Road(
                 d[self._road_id_key],
                 d[self._geom_key],
                 origin_junction_id=u,
                 dest_junction_id=v,
+                metadata=metadata,
             )
             road_lookup.append(road)
 
@@ -294,6 +303,7 @@ class NxMap(MapInterface):
 
             geom = edge_data[road_key][self._geom_key]
             road_id = edge_data[road_key][self._road_id_key]
+            metadata = edge_data[road_key].get(self._metadata_key)
 
             path.append(
                 Road(
@@ -301,6 +311,7 @@ class NxMap(MapInterface):
                     geom,
                     origin_junction_id=road_start_node,
                     dest_junction_id=road_end_node,
+                    metadata=metadata,
                 )
             )
 

@@ -4,6 +4,7 @@ import math
 from typing import Any, NamedTuple
 
 from pyproj import CRS, Transformer
+from pyproj.exceptions import ProjError
 from shapely.geometry import Point
 
 from mappymatch.utils.crs import LATLON_CRS
@@ -53,7 +54,7 @@ class Coordinate(NamedTuple):
     def y(self) -> float:
         return self.geom.y
 
-    def to_crs(self, new_crs: CRS) -> Coordinate:
+    def to_crs(self, new_crs: Any) -> Coordinate:
         """
         Convert this coordinate to a new CRS
 
@@ -62,10 +63,21 @@ class Coordinate(NamedTuple):
 
         Returns:
             A new coordinate with the new CRS
+
+        Raises:
+            A ValueError if it fails to convert the coordinate
         """
-        new_x: float
-        new_y: float
-        transformer: Transformer
+        # convert the incoming crs to an pyproj.crs.CRS object; this could fail
+        try:
+            new_crs = CRS(new_crs)
+        except ProjError as e:
+            raise ValueError(
+                f"Could not parse incoming `new_crs` parameter: {new_crs}"
+            ) from e
+
+        if new_crs == self.crs:
+            return self
+
         transformer = Transformer.from_crs(self.crs, new_crs)
         new_x, new_y = transformer.transform(self.geom.y, self.geom.x)
 
