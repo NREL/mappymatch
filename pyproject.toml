@@ -112,6 +112,14 @@ fail_under = 50.0
 skip_covered = false
 skip_empty = true
 
+[tool.mypy]
+ignore_missing_imports = true
+files = ['mappymatch' ]
+exclude = '''(?x)(
+    docs/    
+    | build/  
+    | dist/   
+)'''
 
 [tool.tbump]
 # Uncomment this if your project is hosted on GitHub:
