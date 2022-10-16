@@ -122,7 +122,7 @@ exclude = '''(?x)(
 )'''
 
 [tool.tbump]
-# Uncomment this if your project is hosted on GitHub:
+# Uncomment  this if your project is hosted on GitHub:
 # github_url = "https://github.com/<user or organization>/<project>/"
 
 [tool.tbump.version]
