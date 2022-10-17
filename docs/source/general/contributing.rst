@@ -85,6 +85,12 @@ Execute Changes and Git workflow
 
    #. Make your changes and add commits 
 
+   #. Run flake8 locally. This will save you a lot of pushes to remote because flake8 is implemented in CI but not as a Pre-Commit hook. 
+
+      .. code-block:: 
+         
+         flake8 --config tox.ini
+
    #. Pull in changes from upstream. This is best done periodically, if you have the branch checked out for a long time.
 
       .. code-block:: 
@@ -260,6 +266,19 @@ Command line use:
 
    coverage report -m 
 
+Flake8 
+________________________________________
+
+Implemented as CI, but not as Pre-Commit hook. 
+
+`Flake8 <url>`_ TODO: Fill this in.
+
+Command Line use: 
+
+.. code-block:: sh 
+   
+   flake8 --config tox.ini
+
 Interrogate 
 __________________________________
 Implemented as Pre-Commit hook. 
@@ -285,6 +304,25 @@ Command line use:
 .. code-block:: sh 
 
    isort 
+
+Mypy 
+________________________________________
+
+Implemented as Pre-Commit hook and CI. 
+
+`Mypy <url>`_ TODO: Fill this in.
+
+Command Line use: 
+
+.. code-block:: sh 
+   :caption: Run normally.
+   
+   mypy --config-file pyproject.toml
+
+.. code-block:: sh
+   :caption: Run in verbose mode. Used to see location of specific failures.
+
+   mypy --config-file pyproject.toml -v 
 
 Pre-Commit
 __________________________________
