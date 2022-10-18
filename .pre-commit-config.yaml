@@ -15,8 +15,10 @@ repos:
     -   id: interrogate
         args: [-c, pyproject.toml]
         pass_filenames: false
+# This hook does not work with args.
 # -   repo: https://github.com/pre-commit/mirrors-mypy
 #     rev: v0.982
 #     hooks: 
-#     -   id: mypy
+#     -   id: mypy 
+#         args: [--config-file, pyproject.toml, mappymatch/constructs]
         

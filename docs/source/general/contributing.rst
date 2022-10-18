@@ -271,7 +271,7 @@ ________________________________________
 
 Implemented as CI, but not as Pre-Commit hook. 
 
-`Flake8 <url>`_ TODO: Fill this in.
+`Flake8 <https://flake8.pycqa.org/en/latest/>`_ is a linting tool that wraps PyFlakes, pycodestyle, and Ned Batchelder's McCabe script into a single package.
 
 Command Line use: 
 
@@ -310,7 +310,7 @@ ________________________________________
 
 Implemented as Pre-Commit hook and CI. 
 
-`Mypy <url>`_ TODO: Fill this in.
+`Mypy <http://mypy-lang.org/>`_ is an optional static type checker for Python that aims to combine the benefits of dynamic (or "duck") typing and static typing. 
 
 Command Line use: 
 
