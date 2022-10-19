@@ -153,7 +153,7 @@ class NxMap(MapInterface):
         return NxMap(g)
 
     @classmethod
-    def from_osm_network(
+    def from_geofence(
         cls,
         geofence: Geofence,
         xy: bool = True,

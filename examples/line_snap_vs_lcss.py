@@ -21,7 +21,7 @@ trace = Trace.from_csv(package_root() / "resources/traces/sample_trace_3.csv")
 geofence = Geofence.from_trace(trace, padding=1e3)
 
 # uses osmnx to pull a networkx map from the OSM database
-nx_map = NxMap.from_osm_network(geofence)
+nx_map = NxMap.from_geofence(geofence)
 
 lcss_matcher = LCSSMatcher(nx_map)
 snap_matcher = LineSnapMatcher(nx_map)

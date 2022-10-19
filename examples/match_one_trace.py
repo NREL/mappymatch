@@ -23,7 +23,7 @@ geofence = Geofence.from_trace(trace, padding=1e3)
 
 # uses osmnx to pull a networkx map from the OSM database
 print("pull osm map.")
-nx_map = NxMap.from_osm_network(geofence)
+nx_map = NxMap.from_geofence(geofence)
 
 print("matching .")
 matcher = LCSSMatcher(nx_map)
