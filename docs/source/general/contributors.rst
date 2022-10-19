@@ -20,7 +20,7 @@ Special thanks
 --------------------
 
     * The many contributors from Pycon US 2022! You really got the project off the ground. 
-    * The `National Renewal Energy Laboratory <https://www.nrel.gov/>`_ for open sourcing the initial groundwork. 
+    * The `National Renewable Energy Laboratory <https://www.nrel.gov/>`_ for open sourcing the initial groundwork. 
     * Open source maintainers even if you only contributed one commit.
 
 Previous work:
