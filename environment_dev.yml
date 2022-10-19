@@ -22,9 +22,11 @@ dependencies:
   - pip
   - pip:
     - -e .
+    - flake8
     - sphinxemoji==0.2.*
     - sphinx-autobuild
     - tbump 
+    - types-requests
   - pip-tools
   - pre-commit
   - pytest
