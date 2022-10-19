@@ -112,17 +112,6 @@ fail_under = 50.0
 skip_covered = false
 skip_empty = true
 
-[tool.mypy]
-ignore_missing_imports = true
-# Or this.
-#files = ['./mappymatch/mappymatch', ]
-# This is not working.
-#exclude = ['''/build/''', '''/docs/''', '''/dist/''', '''/conf.py''']
-    # docs/    
-#     | build/  
-#     | dist/   
-#)'''
-
 [tool.tbump]
 # Uncomment  this if your project is hosted on GitHub:
 # github_url = "https://github.com/<user or organization>/<project>/"

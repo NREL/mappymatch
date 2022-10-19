@@ -311,12 +311,12 @@ Command Line use:
 .. code-block:: sh 
    :caption: Run normally.
    
-   mypy --config-file pyproject.toml
+   mypy --config-file mypy.ini
 
 .. code-block:: sh
    :caption: Run in verbose mode. Used to see location of specific failures.
 
-   mypy --config-file pyproject.toml -v 
+   mypy --config-file mypy.ini -v 
 
 Pre-Commit
 __________________________________
