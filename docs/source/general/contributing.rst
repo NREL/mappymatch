@@ -85,12 +85,6 @@ Execute Changes and Git workflow
 
    #. Make your changes and add commits 
 
-   #. Run flake8 locally. This will save you a lot of pushes to remote because flake8 is implemented in CI but not as a Pre-Commit hook. 
-
-      .. code-block:: 
-         
-         flake8 --config tox.ini
-
    #. Pull in changes from upstream. This is best done periodically, if you have the branch checked out for a long time.
 
       .. code-block:: 
@@ -269,7 +263,7 @@ Command line use:
 Flake8 
 ________________________________________
 
-Implemented as CI, but not as Pre-Commit hook. 
+Implemented as CI and Pre-Commit hook. 
 
 `Flake8 <https://flake8.pycqa.org/en/latest/>`_ is a linting tool that wraps PyFlakes, pycodestyle, and Ned Batchelder's McCabe script into a single package.
 
@@ -308,7 +302,7 @@ Command line use:
 Mypy 
 ________________________________________
 
-Implemented as Pre-Commit hook and CI. 
+Implemented in CI. 
 
 `Mypy <http://mypy-lang.org/>`_ is an optional static type checker for Python that aims to combine the benefits of dynamic (or "duck") typing and static typing. 
 

@@ -1,6 +1,6 @@
 repos: 
 -   repo: https://github.com/psf/black
-    rev: 22.3.0
+    rev: 22.10.0
     hooks:
     -   id: black 
         args: [--config, pyproject.toml]
@@ -16,7 +16,7 @@ repos:
         args: [-c, pyproject.toml]
         pass_filenames: false
 -   repo: https://github.com/pycqa/flake8
-    rev: 5.0.3
+    rev: 5.0.4
     hooks: 
     -   id: flake8 
         args: [--config, tox.ini]
