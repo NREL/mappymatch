@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mappymatch"
-version = "0.2.2"
+version = "0.2.3"
 description = "Package for mapmatching."
 readme = "README.md"
 authors = [{ name = "National Renewable Energy Laboratory" }]
@@ -118,7 +118,7 @@ skip_empty = true
 
 [tool.tbump.version]
 # Make sure this matches current_version before using tbump
-current = "0.2.2"
+current = "0.2.3"
 # Example of a semver regexp.
 regex = '''
   (?P<major>\d+)
