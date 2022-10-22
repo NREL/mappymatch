@@ -214,7 +214,15 @@ __________________________________________
    #. Verify for typos and that the wheel installs. If you spot a mistake, correct it, commit the correction and change the version in the [project] table in ``/pyproject.toml`` to <major>.<minor>.<patch>.post<#>
    #. Delete the old wheel, rebuild the wheel and reupload to Test PyPi. 
    #. Remove post<#> from the version. 
-   #. If there are no mistakes, upload to PyPi. 
+   #. If there are no mistakes, add add tag v<major>.<minor>.<patch> to master branch on github. 
+   
+      .. code-block:: sh 
+         :caption: Tags have to pushed like a separate branch.
+         
+         git tag -a v<major>.<minor>.<patch> -m "version <major>.<minor>.<patch>"
+         git push origin <tagname>
+
+   #. Upload to PyPi. 
    
       .. code-block:: sh 
 
