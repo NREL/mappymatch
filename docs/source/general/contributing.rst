@@ -176,7 +176,7 @@ To preview the documentation locally:
    
    #. Open ``http://127.0.0.1:8000`` with your browser.
 
-.. _toolbelt:
+
 
 Maintainer Information 
 ---------------------------------------- 
@@ -229,6 +229,7 @@ __________________________________________
          twine upload dist/*
    
 
+.. _toolbelt:
 
 Tools in our toolbelt
 --------------------------------------- 
