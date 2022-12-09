@@ -1,10 +1,8 @@
 from abc import ABCMeta, abstractmethod
 from typing import List
 
-from mappymatch.constructs.match import Match
 from mappymatch.constructs.trace import Trace
-
-MatchResult = List[Match]
+from mappymatch.matchers.match_result import MatchResult
 
 
 class MatcherInterface(metaclass=ABCMeta):

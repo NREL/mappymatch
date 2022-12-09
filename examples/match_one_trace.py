@@ -28,7 +28,7 @@ nx_map = NxMap.from_geofence(geofence)
 print("matching .")
 matcher = LCSSMatcher(nx_map)
 
-matches = matcher.match_trace(trace)
+match_result = matcher.match_trace(trace)
 
 if PLOT:
     tmap_file = Path("trace_map.html")
@@ -37,6 +37,6 @@ if PLOT:
     webbrowser.open(tmap_file.absolute().as_uri())
 
     mmap_file = Path("matches_map.html")
-    mmap = plot_matches(matches, road_map=nx_map)
+    mmap = plot_matches(match_result.matches, road_map=nx_map)
     mmap.save(str(mmap_file))
     webbrowser.open(mmap_file.absolute().as_uri())

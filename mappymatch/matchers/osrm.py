@@ -111,7 +111,7 @@ class OsrmMatcher(MatcherInterface):
 
         result = parse_osrm_json(r.json(), trace)
 
-        return result
+        return MatchResult(result)
 
     def match_trace_batch(self, trace_batch: list[Trace]) -> list[MatchResult]:
         return [self.match_trace(t) for t in trace_batch]

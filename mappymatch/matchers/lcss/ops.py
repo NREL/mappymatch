@@ -6,6 +6,7 @@ from typing import Any, List, NamedTuple
 import numpy as np
 
 from mappymatch.constructs.coordinate import Coordinate
+from mappymatch.constructs.match import Match
 from mappymatch.constructs.road import Road
 from mappymatch.constructs.trace import Trace
 from mappymatch.maps.map_interface import MapInterface, PathWeight
@@ -14,7 +15,6 @@ from mappymatch.matchers.lcss.constructs import (
     TrajectorySegment,
 )
 from mappymatch.matchers.lcss.utils import merge
-from mappymatch.matchers.matcher_interface import MatchResult
 
 log = logging.getLogger(__name__)
 
@@ -261,9 +261,9 @@ def drop_stationary_points(
 
 
 def add_matches_for_stationary_points(
-    matches: MatchResult,
+    matches: List[Match],
     stationary_index: List[StationaryIndex],
-) -> MatchResult:
+) -> List[Match]:
     """
     Takes a set of matches and adds duplicate match entries for stationary
 

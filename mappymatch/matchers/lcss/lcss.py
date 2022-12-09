@@ -145,7 +145,7 @@ class LCSSMatcher(MatcherInterface):
             matches, stationary_index
         )
 
-        return matches_w_stationary_points
+        return MatchResult(matches_w_stationary_points, joined_segment.path)
 
     def match_trace_batch(
         self,
