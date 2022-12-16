@@ -1,13 +1,10 @@
 import logging
 from typing import List
 
+from mappymatch.constructs.match import Match
 from mappymatch.constructs.trace import Trace
 from mappymatch.maps.map_interface import MapInterface
-from mappymatch.matchers.matcher_interface import (
-    Match,
-    MatcherInterface,
-    MatchResult,
-)
+from mappymatch.matchers.matcher_interface import MatcherInterface, MatchResult
 
 log = logging.getLogger(__name__)
 
@@ -35,7 +32,7 @@ class LineSnapMatcher(MatcherInterface):
             match = Match(nearest_road, coord, dist)
             matches.append(match)
 
-        return matches
+        return MatchResult(matches)
 
     def match_trace_batch(self, trace_batch: List[Trace]) -> List[MatchResult]:
         return [self.match_trace(t) for t in trace_batch]

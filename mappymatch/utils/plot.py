@@ -190,7 +190,7 @@ def plot_match_distances(matches: MatchResult):
     """
 
     y = [
-        m.distance for m in matches
+        m.distance for m in matches.matches
     ]  # y contains distances to the expected line for all of the matches which will be plotted on the y-axis.
     x = [
         i for i in range(0, len(y))
