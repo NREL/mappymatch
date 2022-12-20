@@ -1,11 +1,15 @@
 name: Lint & Type Check 
 
-on: [push]
+on:
+  push:
+      branches: [ main ]
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.8", "3.9", "3.10"]
     steps:
@@ -19,8 +23,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-tests.txt
     - name: Run black
-      run: black mappymatch tests --check
+      if: always()
+      run: black . --check
     - name: Run ruff 
-      run: ruff mappymatch tests
+      if: always()
+      run: ruff . 
     - name: Run mypy
-      run: mypy mappymatch tests --ignore-missing-imports
+      if: always()
+      run: mypy . 
