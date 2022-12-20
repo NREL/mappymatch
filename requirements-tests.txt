@@ -89,7 +89,7 @@ munch==2.5.0
     # via
     #   -c requirements.txt
     #   fiona
-mypy==0.961
+mypy==0.991
     # via mappymatch
 mypy-extensions==0.4.3
     # via

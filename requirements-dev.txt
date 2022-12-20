@@ -154,7 +154,7 @@ munch==2.5.0
     #   -c requirements-tests.txt
     #   -c requirements.txt
     #   fiona
-mypy==0.961
+mypy==0.991
     # via
     #   -c requirements-tests.txt
     #   mappymatch
@@ -289,7 +289,9 @@ rtree==1.0.0
     #   mappymatch
     #   osmnx
 ruff==0.0.188
-    # via mappymatch
+    # via
+    #   -c requirements-tests.txt
+    #   mappymatch
 shapely==1.8.2
     # via
     #   -c requirements-tests.txt
