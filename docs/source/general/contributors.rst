@@ -13,8 +13,12 @@ Owners
 Core maintainers 
 ----------------------- 
 
+* `machallboyd <https://github.com/machallboyd>`_ 
+
+Previous maintainers or Owners
+-------------------------------- 
+
 * `Rowlando13 <https://github.com/Rowlando13>`_
-* `machallboyd <https://github.com/machallboyd>`_
 
 Special thanks 
 --------------------
