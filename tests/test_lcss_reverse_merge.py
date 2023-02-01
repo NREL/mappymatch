@@ -16,7 +16,10 @@ class TestLCSSMatcherReverseMerge(TestCase):
         with no other merges in the list
         """
         starting_list = [1, 2, 3, 4, 5]
-        condition = lambda x: x < 3
+
+        def condition(x):
+            return x < 3
+
         expected_list = [3, 3, 4, 5]
 
         resulting_list = reverse_merge(starting_list, condition=condition)
@@ -28,7 +31,10 @@ class TestLCSSMatcherReverseMerge(TestCase):
         This will test that reverse_merge can merge items at the end of the list
         """
         starting_list = [1, 2, 3, 4, 5]
-        condition = lambda x: x > 3
+
+        def condition(x):
+            return x > 3
+
         expected_list = [1, 2, 12]
 
         resulting_list = reverse_merge(starting_list, condition=condition)
@@ -40,7 +46,10 @@ class TestLCSSMatcherReverseMerge(TestCase):
         This will test that reverse_merge can merge items in the middle of the list
         """
         starting_list = [1, 2, 4, 4, 2, 2]
-        condition = lambda x: x > 3
+
+        def condition(x):
+            return x > 3
+
         expected_list = [1, 10, 2, 2]
 
         resulting_list = reverse_merge(starting_list, condition=condition)
@@ -53,7 +62,10 @@ class TestLCSSMatcherReverseMerge(TestCase):
         segment in the beginning
         """
         starting_list = [1, 2, 3, 6, 4, 2, 3, 1, 6, 7, 3, 4]
-        condition = lambda x: x < 4
+
+        def condition(x):
+            return x < 4
+
         expected_list = [6, 6, 10, 6, 10, 4]
 
         resulting_list = reverse_merge(starting_list, condition=condition)
