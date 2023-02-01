@@ -11,7 +11,6 @@ dependencies:
   - folium
   - geopandas
   - interrogate
-  - isort
   - pyproj
   - matplotlib
   - mypy
@@ -22,7 +21,7 @@ dependencies:
   - pip
   - pip:
     - -e .
-    - flake8
+    - ruff 
     - sphinxemoji==0.2.*
     - sphinx-autobuild
     - tbump 

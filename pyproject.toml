@@ -38,10 +38,9 @@ requires-python = ">=3.8"
 # Used to run CI. 
 tests = [
   "black",
-  "isort",
-  "mypy",
+  "ruff",
+  "mypy>=0.981",
   "types-requests",
-  "flake8",
   "pytest",
 ]
 # Used to build the docs.
@@ -59,6 +58,7 @@ dev = [
   "pre-commit",
   "build",
   "twine",
+  "pip-tools"
 ]
 
 [project.urls]
@@ -85,13 +85,11 @@ include = '\.pyi?$'
 line-length = 79
 target-version = ['py38', ]
 
-
-[tool.isort]
-profile = "black"
-line_length = 79
-skip_gitignore = true
-filter_files = true
-
+[tool.ruff]
+line-length = 79
+ignore = ["E501"]
+exclude = ["docs/"]
+select = ["F", "E", "W", "I001"]
 
 [tool.interrogate]
 fail-under = 10 

@@ -1,13 +1,17 @@
-name: Lint Test
+name: Lint & Type Check 
 
-on: [push]
+on:
+  push:
+      branches: [ main ]
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ["3.8"]
+        python-version: ["3.8", "3.9", "3.10"]
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -20,13 +24,10 @@ jobs:
         pip install -r requirements-tests.txt
     - name: Run black
       if: always()
-      run: black mappymatch tests --check
-    - name: Run flake8
+      run: black . --check
+    - name: Run ruff 
       if: always()
-      run: flake8 --ignore E501,E203 mappymatch tests
+      run: ruff . 
     - name: Run mypy
       if: always()
-      run: mypy mappymatch tests --ignore-missing-imports
-    - name: Run isort
-      if: always()
-      run: isort check mappymatch tests
+      run: mypy . 

@@ -15,7 +15,10 @@ class TestLCSSMatcherMerge(TestCase):
         This will test that merge can merge items at the beginning of the list
         """
         starting_list = [1, 2, 3, 4, 5]
-        condition = lambda x: x < 3
+
+        def condition(x):
+            return x < 3
+
         expected_list = [6, 4, 5]
 
         resulting_list = merge(starting_list, condition=condition)
@@ -27,7 +30,10 @@ class TestLCSSMatcherMerge(TestCase):
         This will test that merge can merge items at the end of the list
         """
         starting_list = [1, 2, 3, 4, 5]
-        condition = lambda x: x > 3
+
+        def condition(x):
+            return x > 3
+
         expected_list = [1, 2, 12]
 
         resulting_list = merge(starting_list, condition=condition)
@@ -39,7 +45,10 @@ class TestLCSSMatcherMerge(TestCase):
         This will test that merge can merge items in the middle of the list
         """
         starting_list = [1, 2, 4, 4, 2, 2]
-        condition = lambda x: x > 3
+
+        def condition(x):
+            return x > 3
+
         expected_list = [1, 12, 2]
 
         resulting_list = merge(starting_list, condition=condition)
@@ -51,7 +60,10 @@ class TestLCSSMatcherMerge(TestCase):
         This will test that merge works for multiple segments
         """
         starting_list = [1, 2, 3, 6, 4, 2, 3, 1, 6, 7, 3, 4]
-        condition = lambda x: x < 4
+
+        def condition(x):
+            return x < 4
+
         expected_list = [12, 4, 12, 7, 7]
 
         resulting_list = merge(starting_list, condition=condition)
@@ -64,7 +76,10 @@ class TestLCSSMatcherMerge(TestCase):
         candidate from forward merge
         """
         starting_list = [1, 2, 3, 4, 5, 2]
-        condition = lambda x: x < 3
+
+        def condition(x):
+            return x < 3
+
         expected_list = [6, 4, 7]
 
         resulting_list = merge(starting_list, condition=condition)
