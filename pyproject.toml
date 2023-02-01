@@ -28,7 +28,7 @@ dependencies = [
     "numpy",
     "matplotlib",
     "osmnx", 
-    "networkx",
+    "networkx<3",
     "folium",
     "requests",
 ]

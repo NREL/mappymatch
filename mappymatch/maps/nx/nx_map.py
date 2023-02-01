@@ -148,7 +148,7 @@ class NxMap(MapInterface):
         if not p.suffix == ".pickle":
             raise TypeError("NxMap only supports pickle files")
 
-        g = nx.read_gpickle(file)
+        g = nx.readwrite.read_gpickle(file)
 
         return NxMap(g)
 
