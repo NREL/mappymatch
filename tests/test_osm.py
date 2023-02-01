@@ -10,7 +10,7 @@ class TestOSMap(TestCase):
     def test_osm_networkx_graph_drive(self):
         gfile = get_test_dir() / "test_assets" / "osmnx_drive_graph.pickle"
 
-        osmnx_graph = nx.read_gpickle(gfile)
+        osmnx_graph = nx.readwrite.read_gpickle(gfile)
 
         cleaned_graph = parse_osmnx_graph(osmnx_graph, NetworkType.DRIVE)
 
