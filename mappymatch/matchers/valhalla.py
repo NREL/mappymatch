@@ -32,7 +32,6 @@ DEFAULT_ATTRIBUTES = set(
     [
         "edge.length",
         "edge.speed",
-        "edge.weighted_grade",
     ]
 )
 
@@ -54,12 +53,10 @@ def build_path_from_result(
 
         speed = edge["speed"]
         length = edge["length"]
-        grade = edge["weighted_grade"]
 
         metadata = {
-            "speed_kmph": speed,
-            "length_km": length,
-            "grade": grade,
+            "speed_mph": speed,
+            "length_miles": length,
         }
 
         road = Road(road_id=way_id, geom=geom, metadata=metadata)
@@ -132,6 +129,7 @@ class ValhallaMatcher(MatcherInterface):
                     "attributes": self.attributes,
                     "action": "include",
                 },
+                "units": "miles",
             }
         )
 
