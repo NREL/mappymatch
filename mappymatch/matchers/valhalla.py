@@ -17,7 +17,7 @@ from mappymatch.utils.crs import LATLON_CRS
 
 log = logging.getLogger(__name__)
 
-DEMO_VALHALLA_ADDRESS = "http://arnaud.nrel.gov:8002/trace_attributes"
+DEMO_VALHALLA_ADDRESS = "https://valhalla1.openstreetmap.de/trace_attributes"
 REQUIRED_ATTRIBUTES = set(
     [
         "edge.way_id",

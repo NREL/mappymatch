@@ -4,9 +4,11 @@ import folium
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
+from pyproj import CRS
 from shapely.geometry import Point
 
 from mappymatch.constructs.match import Match
+from mappymatch.constructs.road import Road
 from mappymatch.maps.nx.nx_map import NxMap
 from mappymatch.matchers.matcher_interface import MatchResult
 from mappymatch.utils.crs import LATLON_CRS, XY_CRS
@@ -189,3 +191,30 @@ def plot_match_distances(matches: MatchResult):
     plt.ylabel("Meters")
     plt.xlabel("Point Along The Path")
     plt.show()
+
+
+def plot_path(path: List[Road], crs: CRS):
+    """
+    Plot a list of roads.
+
+    Args:
+        path: The path to plot.
+        crs: The crs of the path.
+    """
+    road_df = pd.DataFrame([{"geom": r.geom} for r in path])
+    road_gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=crs)
+    road_gdf = road_gdf.to_crs(LATLON_CRS)
+
+    mid_i = int(len(road_gdf) / 2)
+    mid_coord = road_gdf.iloc[mid_i].geometry.coords[0]
+
+    fmap = folium.Map(location=[mid_coord[1], mid_coord[0]], zoom_start=11)
+
+    for i, road in enumerate(road_gdf.itertuples()):
+        folium.PolyLine(
+            [(lat, lon) for lon, lat in road.geometry.coords],
+            color="red",
+            tooltip=i,
+        ).add_to(fmap)
+
+    return fmap
