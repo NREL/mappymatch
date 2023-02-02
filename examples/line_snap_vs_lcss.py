@@ -31,11 +31,11 @@ snap_matches = snap_matcher.match_trace(trace)
 
 if PLOT:
     lcss_file = Path("lcss_matches.html")
-    lmap = plot_matches(lcss_matches.matches, road_map=nx_map)
+    lmap = plot_matches(lcss_matches.matches)
     lmap.save(str(lcss_file))
     webbrowser.open(lcss_file.absolute().as_uri())
 
     smap_file = Path("snap_matches.html")
-    smap = plot_matches(snap_matches.matches, road_map=nx_map)
+    smap = plot_matches(snap_matches.matches)
     smap.save(str(smap_file))
     webbrowser.open(smap_file.absolute().as_uri())

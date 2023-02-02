@@ -70,7 +70,7 @@ def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
     return m
 
 
-def plot_matches(matches: List[Match], road_map: NxMap):
+def plot_matches(matches: List[Match], crs=XY_CRS):
     """
     Plots a trace and the relevant matches on a folium map.
 
@@ -84,21 +84,7 @@ def plot_matches(matches: List[Match], road_map: NxMap):
 
     def _match_to_road(m):
         """Private function."""
-        d = {"road_id": m.road.road_id}
-
-        edge_data = road_map.g.get_edge_data(
-            m.road.origin_junction_id, m.road.dest_junction_id
-        )
-
-        road_key = list(edge_data.keys())[0]
-
-        # TODO: this should be generic over all road maps
-        geom_key = road_map._geom_key  # type: ignore
-
-        road_geom = edge_data[road_key][geom_key]
-
-        d["geom"] = road_geom
-
+        d = {"road_id": m.road.road_id, "geom": m.road.geom}
         return d
 
     def _match_to_coord(m):
@@ -113,15 +99,15 @@ def plot_matches(matches: List[Match], road_map: NxMap):
 
     road_df = pd.DataFrame([_match_to_road(m) for m in matches if m.road])
     road_df = road_df.loc[road_df.road_id.shift() != road_df.road_id]
-    road_gdf = gpd.GeoDataFrame(
-        road_df, geometry=road_df.geom, crs=XY_CRS
-    ).drop(columns=["geom"])
+    road_gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=crs).drop(
+        columns=["geom"]
+    )
     road_gdf = road_gdf.to_crs(LATLON_CRS)
 
     coord_df = pd.DataFrame([_match_to_coord(m) for m in matches if m.road])
 
     coord_gdf = gpd.GeoDataFrame(
-        coord_df, geometry=coord_df.geom, crs=XY_CRS
+        coord_df, geometry=coord_df.geom, crs=crs
     ).drop(columns=["geom"])
     coord_gdf = coord_gdf.to_crs(LATLON_CRS)
 
