@@ -106,6 +106,9 @@ class NxMap(MapInterface):
 
             metadata = d.get(self._metadata_key)
 
+            metadata[self._dist_weight] = d.get(self._dist_weight)
+            metadata[self._time_weight] = d.get(self._time_weight)
+
             road = Road(
                 d[self._road_id_key],
                 d[self._geom_key],
