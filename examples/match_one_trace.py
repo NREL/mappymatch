@@ -37,6 +37,6 @@ if PLOT:
     webbrowser.open(tmap_file.absolute().as_uri())
 
     mmap_file = Path("matches_map.html")
-    mmap = plot_matches(match_result.matches, road_map=nx_map)
+    mmap = plot_matches(match_result.matches)
     mmap.save(str(mmap_file))
     webbrowser.open(mmap_file.absolute().as_uri())

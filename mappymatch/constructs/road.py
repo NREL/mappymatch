@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional, Union
+from typing import Any, Dict, NamedTuple, Optional, Union
 
 from shapely.geometry import LineString
 
@@ -20,6 +20,17 @@ class Road(NamedTuple):
     road_id: Union[int, str]
 
     geom: LineString
-    origin_junction_id: Union[int, str]
-    dest_junction_id: Union[int, str]
+    origin_junction_id: Optional[Union[int, str]] = None
+    dest_junction_id: Optional[Union[int, str]] = None
     metadata: Optional[dict] = None
+
+    def to_flat_dict(self) -> Dict[str, Any]:
+        """
+        Convert the road to a flat dictionary
+        """
+        if self.metadata is None:
+            return self._asdict()
+        else:
+            d = {**self._asdict(), **self.metadata}
+            del d["metadata"]
+            return d
