@@ -1,14 +1,15 @@
 # mappymatch
 
-Mappymatch is a pure-python package developed and open sourced by the National Renewable Energy Laboratory. It contains a collection of "Matchers" that enable matching a GPS trace (series of GPS coordinates) to a map. 
+Mappymatch is a pure-python package developed and open sourced by the National Renewable Energy Laboratory. It contains a collection of "Matchers" that enable matching a GPS trace (series of GPS coordinates) to a map.
 
-The current and planned Matchers are: 
+The current and planned Matchers are:
 
 - `LCSSMatcher`: A matcher that implements the LCSS algorithm described in this [paper](https://doi.org/10.3141%2F2645-08). Works best with high resolution GPS traces.  
--  `OsrmMatcher`: A light matcher that pings an OSRM server to request map matching results. See the [official documentation](http://project-osrm.org/) for more info.
-- `ValhallaMatcher` (planned): A matcher to ping a [Valhalla](https://www.interline.io/valhalla/) server for map matching results. 
+- `OsrmMatcher`: A light matcher that pings an OSRM server to request map matching results. See the [official documentation](http://project-osrm.org/) for more info.
+- `ValhallaMatcher`: A matcher to ping a [Valhalla](https://www.interline.io/valhalla/) server for map matching results.
 
-Currently supported map formats are: 
+Currently supported map formats are:
+
 - Open Street Maps
 
 ## Installation
