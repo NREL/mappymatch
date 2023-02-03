@@ -4,10 +4,10 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import collections
 import os
 import sys
 from datetime import date
-from platform import release
 
 sys.path.insert(0, os.path.abspath("../.."))
 print(os.path.abspath("../.."))
@@ -21,7 +21,7 @@ copyright = f"{year}, National Renewable Energy Laboratory"
 author = "National Renewable Energy Laboratory"
 # Initial releases at 0.x.x
 # First stable release at 1.x.x
-full_version = "0.2.3"
+full_version = "0.3.0"
 version = full_version
 # Full version for display in various places.
 release = full_version
@@ -72,7 +72,6 @@ html_static_path = ["./_static"]
 add_module_names = False
 
 # -- Post process ------------------------------------------------------------
-import collections
 
 
 def remove_namedtuple_attrib_docstring(app, what, name, obj, skip, options):
