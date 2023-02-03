@@ -10,6 +10,7 @@ For readability, the full path is listed below and not used in other parts of th
 
 - :class:`mappymatch.matchers.lcss.lcss.LCSSMatcher`
 - :class:`mappymatch.matchers.line_snap.LineSnapMatcher`
+- :class:`mappymatch.matchers.valhalla.ValhallaMatcher`
 - :class:`mappymatch.matchers.osrm.OsrmMatcher`
 
 LCSS 
@@ -21,6 +22,11 @@ Line Snap
 -------------
 .. autoclass:: mappymatch.matchers.line_snap.LineSnapMatcher
     :members:
+
+Valhalla
+--------------
+.. autoclass:: mappymatch.matchers.valhalla.ValhallaMatcher
+    :members: 
 
 Osrm
 --------------
