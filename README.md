@@ -14,7 +14,11 @@ Currently supported map formats are:
 
 ## Installation
 
-Check out [the docs](https://mappymatch.readthedocs.io/en/latest/general/install.html) for install instructions.
+```
+pip install mappymatch
+```
+
+If you have trouble with that, check out [the docs](https://mappymatch.readthedocs.io/en/latest/general/install.html) for more detailed install instructions.
 
 ## Example Usage
 
