@@ -30,16 +30,20 @@ class Match(NamedTuple):
         """
         return self._replace(coordinate=c)
 
-    def to_json(self) -> dict:
+    def to_flat_dict(self) -> dict:
         """
-        Convert this match to a json object
+        Convert this match to a flat dictionary
 
         Returns:
-            A json object representing this match
+            A flat dictionary with all match information
         """
-        out = {
-            "road_id": self.road.road_id if self.road else None,
-            "coordinate_id": self.coordinate.coordinate_id,
-            "distance_to_road": self.distance,
-        }
-        return out
+        out = {"coordinate_id": self.coordinate.coordinate_id}
+
+        if self.road is None:
+            out["road_id"] = None
+            return out
+        else:
+            out["distance_to_road"] = self.distance
+            road_dict = self.road.to_flat_dict()
+            out.update(road_dict)
+            return out
