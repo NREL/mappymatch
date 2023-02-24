@@ -21,8 +21,6 @@ class MatchResult:
             A pandas dataframe
         """
         df = pd.DataFrame([m.to_flat_dict() for m in self.matches])
-        df = df.fillna(pd.NA)
-        df = df.replace([None], [pd.NA])
-        df = df.replace([np.nan], [pd.NA])
+        df = df.fillna(np.NAN)
 
         return df
