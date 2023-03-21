@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 from pathlib import Path
-from typing import List, Union
+from typing import Any, Dict, List, Union
 
 import networkx as nx
 import numpy as np
@@ -92,6 +92,30 @@ class NxMap(MapInterface):
         self._nodes = [nid for nid in self.g.nodes()]
         self._roads = self._build_rtree()
 
+    def _build_road(
+        self, origin_id: Any, destination_id: Any, edge_data: Dict[str, Any]
+    ) -> Road:
+        """
+        Build a road from an origin, destination and networkx edge data
+        """
+        metadata = edge_data.get(self._metadata_key)
+
+        if metadata is None:
+            metadata = {}
+
+        metadata[self._dist_weight] = edge_data.get(self._dist_weight)
+        metadata[self._time_weight] = edge_data.get(self._time_weight)
+
+        road = Road(
+            edge_data[self._road_id_key],
+            edge_data[self._geom_key],
+            origin_junction_id=origin_id,
+            dest_junction_id=destination_id,
+            metadata=metadata,
+        )
+
+        return road
+
     def _build_rtree(self) -> List[Road]:
         road_lookup = []
 
@@ -104,18 +128,8 @@ class NxMap(MapInterface):
             box = geom.bounds
             idx.insert(i, box)
 
-            metadata = d.get(self._metadata_key)
+            road = self._build_road(u, v, d)
 
-            metadata[self._dist_weight] = d.get(self._dist_weight)
-            metadata[self._time_weight] = d.get(self._time_weight)
-
-            road = Road(
-                d[self._road_id_key],
-                d[self._geom_key],
-                origin_junction_id=u,
-                dest_junction_id=v,
-                metadata=metadata,
-            )
             road_lookup.append(road)
 
         self.rtree = idx
@@ -304,19 +318,11 @@ class NxMap(MapInterface):
 
             road_key = list(edge_data.keys())[0]
 
-            geom = edge_data[road_key][self._geom_key]
-            road_id = edge_data[road_key][self._road_id_key]
-            metadata = edge_data[road_key].get(self._metadata_key)
-
-            path.append(
-                Road(
-                    road_id,
-                    geom,
-                    origin_junction_id=road_start_node,
-                    dest_junction_id=road_end_node,
-                    metadata=metadata,
-                )
+            road = self._build_road(
+                road_start_node, road_end_node, edge_data[road_key]
             )
+
+            path.append(road)
 
         return path
 
