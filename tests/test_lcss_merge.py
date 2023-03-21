@@ -93,7 +93,8 @@ class TestLCSSMatcherMerge(TestCase):
         # setup inputted trajectory segments
         trace_1 = Trace.from_dataframe(
             pd.DataFrame(
-                data={"latitude": [39.655193], "longitude": [-104.919294]}
+                data={"latitude": [39.655193], "longitude": [-104.919294]},
+                index=[0],
             )
         )
         trace_2 = Trace.from_dataframe(
@@ -101,12 +102,14 @@ class TestLCSSMatcherMerge(TestCase):
                 data={
                     "latitude": [39.655494, 39.655801],
                     "longitude": [-104.91943, -104.919567],
-                }
+                },
+                index=[1, 2],
             )
         )
         trace_3 = Trace.from_dataframe(
             pd.DataFrame(
-                data={"latitude": [39.656103], "longitude": [-104.919698]}
+                data={"latitude": [39.656103], "longitude": [-104.919698]},
+                index=[3],
             )
         )
         trace_4 = Trace.from_dataframe(
@@ -119,7 +122,8 @@ class TestLCSSMatcherMerge(TestCase):
                         -104.920099,
                         -104.920229,
                     ],
-                }
+                },
+                index=[4, 5, 6, 7],
             )
         )
         trace_5 = Trace.from_dataframe(
@@ -127,7 +131,8 @@ class TestLCSSMatcherMerge(TestCase):
                 data={
                     "latitude": [39.657601],
                     "longitude": [-104.92036],
-                }
+                },
+                index=[8],
             )
         )
 

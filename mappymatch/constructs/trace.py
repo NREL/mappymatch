@@ -27,6 +27,11 @@ class Trace:
     _frame: GeoDataFrame
 
     def __init__(self, frame: GeoDataFrame):
+        if frame.index.has_duplicates:
+            duplicates = frame.index[frame.index.duplicated()].values
+            raise IndexError(
+                f"Trace cannot have duplicates in the index but found {duplicates}"
+            )
         self._frame = frame
 
     def __getitem__(self, i) -> Trace:
