@@ -2,7 +2,10 @@ from unittest import TestCase
 
 import networkx as nx
 
-from mappymatch.maps.nx.nx_map import NetworkType, parse_osmnx_graph
+from mappymatch.maps.nx.readers.osm_readers import (
+    NetworkType,
+    parse_osmnx_graph,
+)
 from tests import get_test_dir
 
 
