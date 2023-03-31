@@ -121,48 +121,34 @@ class TestLCSSMatcherReverseMerge(TestCase):
             Road(
                 "first st",
                 LineString(),
-                origin_junction_id=0,
-                dest_junction_id=1,
             )
         ]
         road_2 = [
             Road(
                 "second st",
                 LineString(),
-                origin_junction_id=1,
-                dest_junction_id=2,
             )
         ]
-        road_3 = [
-            Road(234, LineString(), origin_junction_id=2, dest_junction_id=3)
-        ]
+        road_3 = [Road(234, LineString())]
         road_4 = [
             Road(
                 "first st",
                 LineString(),
-                origin_junction_id=0,
-                dest_junction_id=1,
             ),
             Road(
                 "second st",
                 LineString(),
-                origin_junction_id=1,
-                dest_junction_id=2,
             ),
-            Road(123, LineString(), origin_junction_id=2, dest_junction_id=5),
+            Road(123, LineString()),
         ]
         road_5 = [
             Road(
                 "main st",
                 LineString(),
-                origin_junction_id=6,
-                dest_junction_id=7,
             ),
             Road(
                 "second str",
                 LineString(),
-                origin_junction_id=7,
-                dest_junction_id=8,
             ),
         ]
 
@@ -220,46 +206,37 @@ class TestLCSSMatcherReverseMerge(TestCase):
             Road(
                 "first st",
                 LineString(),
-                origin_junction_id=0,
-                dest_junction_id=1,
             )
         ]
         expected_road_2 = [
             Road(
                 "second st",
                 LineString(),
-                origin_junction_id=1,
-                dest_junction_id=2,
             ),
-            Road(234, LineString(), origin_junction_id=2, dest_junction_id=3),
+            Road(234, LineString()),
         ]
         expected_road_3 = [
             Road(
                 "first st",
                 LineString(),
-                origin_junction_id=0,
-                dest_junction_id=1,
             ),
             Road(
                 "second st",
                 LineString(),
-                origin_junction_id=1,
-                dest_junction_id=2,
             ),
-            Road(123, LineString(), origin_junction_id=2, dest_junction_id=5),
+            Road(
+                123,
+                LineString(),
+            ),
         ]
         expected_road_4 = [
             Road(
                 "main st",
                 LineString(),
-                origin_junction_id=6,
-                dest_junction_id=7,
             ),
             Road(
                 "second str",
                 LineString(),
-                origin_junction_id=7,
-                dest_junction_id=8,
             ),
         ]
 

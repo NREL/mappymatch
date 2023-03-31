@@ -69,7 +69,11 @@ class NxMap(MapInterface):
         self._build_rtree()
 
     def _build_road(
-        self, origin_id: Any, destination_id: Any, edge_data: Dict[str, Any]
+        self,
+        origin_id: Union[str, int],
+        destination_id: Union[str, int],
+        key: Union[str, int],
+        edge_data: Dict[str, Any],
     ) -> Road:
         """
         Build a road from an origin, destination and networkx edge data
@@ -84,11 +88,11 @@ class NxMap(MapInterface):
         metadata[self._dist_weight] = edge_data.get(self._dist_weight)
         metadata[self._time_weight] = edge_data.get(self._time_weight)
 
+        road_id = RoadId(origin_id, destination_id, key)
+
         road = Road(
-            network_x_road_id(origin_id, destination_id),
+            road_id,
             edge_data[self._geom_key],
-            origin_junction_id=origin_id,
-            dest_junction_id=destination_id,
             metadata=metadata,
         )
 
@@ -100,7 +104,7 @@ class NxMap(MapInterface):
         idx = rt.index.Index()
         for i, gtuple in enumerate(self.g.edges(data=True, keys=True)):
             u, v, k, d = gtuple
-            road = self._build_road(u, v, d)
+            road = self._build_road(u, v, k, d)
             geom = d[self._geom_key]
             box = geom.bounds
 
@@ -287,17 +291,17 @@ class NxMap(MapInterface):
         v_dist = oend.distance(origin.geom)
 
         if u_dist <= v_dist:
-            origin_id = origin_road.origin_junction_id
+            origin_id = origin_road.road_id.start
         else:
-            origin_id = origin_road.dest_junction_id
+            origin_id = origin_road.road_id.end
 
         u_dist = dstart.distance(destination.geom)
         v_dist = dend.distance(destination.geom)
 
         if u_dist <= v_dist:
-            dest_id = dest_road.origin_junction_id
+            dest_id = dest_road.road_id.start
         else:
-            dest_id = dest_road.dest_junction_id
+            dest_id = dest_road.road_id.end
 
         if weight == PathWeight.DISTANCE:
             weight_string = self._dist_weight
@@ -320,17 +324,13 @@ class NxMap(MapInterface):
             road_start_node = nx_route[i - 1]
             road_end_node = nx_route[i]
 
-            road_id = network_x_road_id(road_start_node, road_end_node)
+            edge_data = self.g.get_edge_data(road_start_node, road_end_node)
+            road_key = list(edge_data.keys())[0]
+
+            road_id = RoadId(road_start_node, road_end_node, road_key)
 
             road = self._road_lookup[road_id]
 
             path.append(road)
 
         return path
-
-
-def network_x_road_id(u: Union[str, int], v: Union[str, int]) -> RoadId:
-    """
-    Build a road id from the networkx node ids
-    """
-    return f"{u}-{v}"

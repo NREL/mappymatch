@@ -136,16 +136,16 @@ class TestLCSSMatcherMerge(TestCase):
             )
         )
 
-        road_1 = [Road("first st", LineString(), "a", "b")]
-        road_2 = [Road("second st", LineString(), "a", "b")]
-        road_3 = [Road(234, LineString(), "a", "b")]
+        road_1 = [Road("first st", LineString())]
+        road_2 = [Road("second st", LineString())]
+        road_3 = [Road(234, LineString())]
         road_4 = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
+            Road("first st", LineString()),
+            Road("second st", LineString()),
+            Road(123, LineString()),
+            Road("main st", LineString()),
         ]
-        road_5 = [Road("second str", LineString(), "a", "b")]
+        road_5 = [Road("second str", LineString())]
 
         segment_1 = TrajectorySegment(trace_1, road_1)
         segment_2 = TrajectorySegment(trace_2, road_2)
@@ -196,16 +196,16 @@ class TestLCSSMatcherMerge(TestCase):
         )
 
         expected_road_1 = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
+            Road("first st", LineString()),
+            Road("second st", LineString()),
         ]
         expected_road_2 = [
-            Road(234, LineString(), "a", "b"),
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
+            Road(234, LineString()),
+            Road("first st", LineString()),
+            Road("second st", LineString()),
+            Road(123, LineString()),
+            Road("main st", LineString()),
+            Road("second str", LineString()),
         ]
 
         expected_segment_1 = TrajectorySegment(
