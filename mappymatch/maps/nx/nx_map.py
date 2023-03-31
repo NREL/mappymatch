@@ -59,7 +59,7 @@ class NxMap(MapInterface):
         )
         time_weight = graph.graph.get("time_weight", DEFAULT_TIME_WEIGHT)
         geom_key = graph.graph.get("geometry_key", DEFAULT_GEOMETRY_KEY)
-        metadata_key = graph.graph.get("metadata", DEFAULT_METADATA_KEY)
+        metadata_key = graph.graph.get("metadata_key", DEFAULT_METADATA_KEY)
 
         self._dist_weight = dist_weight
         self._time_weight = time_weight
@@ -78,6 +78,8 @@ class NxMap(MapInterface):
 
         if metadata is None:
             metadata = {}
+        else:
+            metadata = metadata.copy()
 
         metadata[self._dist_weight] = edge_data.get(self._dist_weight)
         metadata[self._time_weight] = edge_data.get(self._time_weight)

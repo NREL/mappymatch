@@ -55,6 +55,8 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/NREL/mappymatch"
 
+[tool.setuptools.packages.find]
+include = ["mappymatch*"]  # package names should match these glob patterns (["*"] by default)
 
 [tool.black]
 exclude = '''
