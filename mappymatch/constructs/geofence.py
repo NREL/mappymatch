@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Union
 
 from geopandas import read_file
 from pyproj import CRS, Transformer
-from shapely.geometry import LineString, Polygon
+from shapely.geometry import LineString, Polygon, mapping
 from shapely.ops import transform
 
 from mappymatch.constructs.trace import Trace
@@ -89,3 +90,15 @@ class Geofence:
             return Geofence(crs=crs, geometry=polygon)
 
         return Geofence(crs=trace.crs, geometry=polygon)
+
+    def to_geojson(self) -> str:
+        """
+        Converts the geofence to a geojson string.
+        """
+        if self.crs != LATLON_CRS:
+            transformer = Transformer.from_crs(self.crs, LATLON_CRS)
+            geometry: Polygon = transformer.transform(self.geometry)  # type: ignore
+        else:
+            geometry = self.geometry
+
+        return json.dumps(mapping(geometry))
