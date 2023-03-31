@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional, Union
 import networkx as nx
 import numpy as np
 import rtree as rt
+import shapely.wkt as wkt
 from shapely.geometry import Point
 
 from mappymatch.constructs.coordinate import Coordinate
@@ -21,9 +22,8 @@ from mappymatch.utils.crs import CRS, LATLON_CRS
 DEFAULT_DISTANCE_WEIGHT = "kilometers"
 DEFAULT_TIME_WEIGHT = "minutes"
 DEFAULT_GEOMETRY_KEY = "geometry"
-
-
 DEFAULT_METADATA_KEY = "metadata"
+DEFAULT_CRS_KEY = "crs"
 
 
 class NxMap(MapInterface):
@@ -38,13 +38,15 @@ class NxMap(MapInterface):
     def __init__(self, graph: nx.MultiDiGraph):
         self.g = graph
 
-        if "crs" not in graph.graph:
+        crs_key = graph.graph.get("crs_key", DEFAULT_CRS_KEY)
+
+        if crs_key not in graph.graph:
             raise ValueError(
                 "Input graph must have pyproj crs;"
                 "You can set it like: `graph.graph['crs'] = pyproj.CRS('EPSG:4326')`"
             )
 
-        crs = graph.graph["crs"]
+        crs = graph.graph[crs_key]
 
         if not isinstance(crs, CRS):
             raise TypeError(
@@ -65,6 +67,7 @@ class NxMap(MapInterface):
         self._time_weight = time_weight
         self._geom_key = geom_key
         self._metadata_key = metadata_key
+        self._crs_key = crs_key
 
         self._build_rtree()
 
@@ -148,7 +151,8 @@ class NxMap(MapInterface):
         Returns:
             None
         """
-        return None
+        nx.set_edge_attributes(self.g, attributes)
+        self._build_rtree()
 
     @property
     def roads(self) -> List[Road]:
@@ -202,6 +206,19 @@ class NxMap(MapInterface):
 
         return NxMap(nx_graph)
 
+    @classmethod
+    def from_dict(cls, d: Dict[str, Any]) -> NxMap:
+        """
+        Build a NxMap instance from a dictionary
+        """
+        for link in d["links"]:
+            geom_wkt = link["geom"]
+            link["geom"] = wkt.loads(geom_wkt)
+
+        g = nx.readwrite.json_graph.node_link_graph(d)
+
+        return NxMap(g)
+
     def to_file(self, outfile: Union[str, Path]):
         """
         Save the graph to a pickle file
@@ -210,6 +227,19 @@ class NxMap(MapInterface):
             outfile: The file to save the graph to
         """
         nx.write_gpickle(self.g, str(outfile))
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Convert the map to a dictionary
+        """
+        graph_dict = nx.readwrite.json_graph.node_link_data(self.g)
+
+        # convert geometries to well know text
+        for link in graph_dict["links"]:
+            geom = link["geom"]
+            link["geom"] = geom.wkt
+
+        return graph_dict
 
     def nearest_road(self, coord: Coordinate, buffer: float = 10.0) -> Road:
         """
