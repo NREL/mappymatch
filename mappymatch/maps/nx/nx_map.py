@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import networkx as nx
 import numpy as np
@@ -12,7 +12,7 @@ from shapely.geometry import LineString, Point
 
 from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.geofence import Geofence
-from mappymatch.constructs.road import Road
+from mappymatch.constructs.road import Road, RoadId
 from mappymatch.maps.map_interface import MapInterface, PathWeight
 from mappymatch.utils.crs import CRS, LATLON_CRS, XY_CRS
 from mappymatch.utils.exceptions import MapException
@@ -20,7 +20,6 @@ from mappymatch.utils.exceptions import MapException
 DEFAULT_DISTANCE_WEIGHT = "kilometers"
 DEFAULT_TIME_WEIGHT = "minutes"
 DEFAULT_GEOMETRY_KEY = "geometry"
-DEFAULT_ROAD_ID_KEY = "road_id"
 
 METERS_TO_KM = 1 / 1000
 DEFAULT_MPH = 30
@@ -80,17 +79,14 @@ class NxMap(MapInterface):
         )
         time_weight = graph.graph.get("time_weight", DEFAULT_TIME_WEIGHT)
         geom_key = graph.graph.get("geometry_key", DEFAULT_GEOMETRY_KEY)
-        road_id_key = graph.graph.get("road_id", DEFAULT_ROAD_ID_KEY)
         metadata_key = graph.graph.get("metadata", DEFAULT_METADATA_KEY)
 
         self._dist_weight = dist_weight
         self._time_weight = time_weight
         self._geom_key = geom_key
-        self._road_id_key = road_id_key
         self._metadata_key = metadata_key
 
-        self._nodes = [nid for nid in self.g.nodes()]
-        self._roads = self._build_rtree()
+        self._build_rtree()
 
     def _build_road(
         self, origin_id: Any, destination_id: Any, edge_data: Dict[str, Any]
@@ -107,7 +103,7 @@ class NxMap(MapInterface):
         metadata[self._time_weight] = edge_data.get(self._time_weight)
 
         road = Road(
-            edge_data[self._road_id_key],
+            network_x_road_id(origin_id, destination_id),
             edge_data[self._geom_key],
             origin_junction_id=origin_id,
             dest_junction_id=destination_id,
@@ -116,29 +112,27 @@ class NxMap(MapInterface):
 
         return road
 
-    def _build_rtree(self) -> List[Road]:
-        road_lookup = []
+    def _build_rtree(self):
+        road_lookup = {}
 
         idx = rt.index.Index()
         for i, gtuple in enumerate(self.g.edges(data=True, keys=True)):
             u, v, k, d = gtuple
-            # rid = (u, v, k)
-            geom = d[self._geom_key]
-            # segment = list(geom.coords)
-            box = geom.bounds
-            idx.insert(i, box)
-
             road = self._build_road(u, v, d)
+            geom = d[self._geom_key]
+            box = geom.bounds
 
-            road_lookup.append(road)
+            idx.insert(i, box, obj=road.road_id)
+
+            road_lookup[road.road_id] = road
 
         self.rtree = idx
-        return road_lookup
+        self._road_lookup: Dict[RoadId, Road] = road_lookup
 
     def __str__(self):
         output_lines = [
             "Mappymatch NxMap object",
-            f"roads: {len(self._roads)} Road objects",
+            f"roads: {len(self._road_lookup)} Road objects",
             f"graph: {self.g}",
         ]
         return "\n".join(output_lines)
@@ -146,9 +140,33 @@ class NxMap(MapInterface):
     def __repr__(self):
         return self.__str__()
 
+    def road_by_id(self, road_id: RoadId) -> Optional[Road]:
+        """
+        Get a road by its id
+
+        Args:
+            road_id: The id of the road to get
+
+        Returns:
+            The road with the given id, or None if it does not exist
+        """
+        return self._road_lookup.get(road_id)
+
+    def set_road_attributes(self, attributes: Dict[RoadId, Dict[str, Any]]):
+        """
+        Set the attributes of the roads in the map
+
+        Args:
+            attributes: A dictionary mapping road ids to dictionaries of attributes
+
+        Returns:
+            None
+        """
+        return None
+
     @property
     def roads(self) -> List[Road]:
-        return self._roads
+        return list(self._road_lookup.values())
 
     @classmethod
     def from_file(cls, file: Union[str, Path]) -> NxMap:
@@ -224,21 +242,28 @@ class NxMap(MapInterface):
                 f"crs of origin {coord.crs} must match crs of map {self.crs}"
             )
         nearest_candidates = list(
-            self.rtree.nearest(coord.geom.buffer(buffer).bounds, 1)
+            map(
+                lambda c: c.object,
+                (
+                    self.rtree.nearest(
+                        coord.geom.buffer(buffer).bounds, 1, objects=True
+                    )
+                ),
+            )
         )
 
         if len(nearest_candidates) == 0:
             raise ValueError(f"No roads found for {coord}")
         elif len(nearest_candidates) == 1:
-            nearest_index = nearest_candidates[0]
+            nearest_id = nearest_candidates[0]
         else:
             distances = [
-                self.roads[i].geom.distance(coord.geom)
+                self._road_lookup[i].geom.distance(coord.geom)
                 for i in nearest_candidates
             ]
-            nearest_index = nearest_candidates[np.argmin(distances)]
+            nearest_id = nearest_candidates[np.argmin(distances)]
 
-        road = self.roads[nearest_index]
+        road = self._road_lookup[nearest_id]
 
         return road
 
@@ -314,17 +339,20 @@ class NxMap(MapInterface):
             road_start_node = nx_route[i - 1]
             road_end_node = nx_route[i]
 
-            edge_data = self.g.get_edge_data(road_start_node, road_end_node)
+            road_id = network_x_road_id(road_start_node, road_end_node)
 
-            road_key = list(edge_data.keys())[0]
-
-            road = self._build_road(
-                road_start_node, road_end_node, edge_data[road_key]
-            )
+            road = self._road_lookup[road_id]
 
             path.append(road)
 
         return path
+
+
+def network_x_road_id(u: Union[str, int], v: Union[str, int]) -> RoadId:
+    """
+    Build a road id from the networkx node ids
+    """
+    return f"{u}-{v}"
 
 
 def parse_osmnx_graph(
@@ -371,7 +399,6 @@ def parse_osmnx_graph(
 
     no_geom = 0
     for u, v, d in g.edges(data=True):
-        d["road_id"] = f"{u}-{v}"
         if "geometry" not in d:
             # we'll build a pseudo-geometry using the x, y data from the nodes
             unode = g.nodes[u]
@@ -394,7 +421,6 @@ def parse_osmnx_graph(
     g.graph["distance_weight"] = "kilometers"
     g.graph["time_weight"] = "travel_time"
     g.graph["geometry_key"] = "geometry"
-    g.graph["road_id_key"] = "road_id"
     g.graph["network_type"] = network_type.value
 
     return g

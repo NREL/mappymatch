@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from abc import ABCMeta, abstractmethod
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 from mappymatch.constructs.coordinate import Coordinate
-from mappymatch.constructs.road import Road
+from mappymatch.constructs.road import Road, RoadId
 
 
 class PathWeight(Enum):
@@ -30,6 +30,18 @@ class MapInterface(metaclass=ABCMeta):
 
         Returns:
             A list of all the roads in the map
+        """
+
+    @abstractmethod
+    def road_by_id(self, road_id: RoadId) -> Optional[Road]:
+        """
+        Get a road by its id
+
+        Args:
+            road_id: The id of the road to get
+
+        Returns:
+            The road with the given id or None if it does not exist
         """
 
     @abstractmethod

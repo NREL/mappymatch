@@ -4,6 +4,8 @@ from typing import Any, Dict, NamedTuple, Optional, Union
 
 from shapely.geometry import LineString
 
+RoadId = Union[int, str]
+
 
 class Road(NamedTuple):
     """
@@ -17,7 +19,7 @@ class Road(NamedTuple):
         metadata: an optional dictionary for storing additional metadata
     """
 
-    road_id: Union[int, str]
+    road_id: RoadId
 
     geom: LineString
     origin_junction_id: Optional[Union[int, str]] = None
