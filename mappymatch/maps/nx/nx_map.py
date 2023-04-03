@@ -132,9 +132,11 @@ class NxMap(MapInterface):
     def __repr__(self):
         return self.__str__()
 
+    @property
     def distance_weight(self) -> str:
         return self._dist_weight
 
+    @property
     def time_weight(self) -> str:
         return self._time_weight
 
