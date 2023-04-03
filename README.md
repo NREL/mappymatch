@@ -51,6 +51,9 @@ nx_map = NxMap.from_geofence(geofence)
 matcher = LCSSMatcher(nx_map)
 
 matches = matcher.match_trace(trace)
+
+# convert the matches to a dataframe
+df = matches.matches_to_dataframe()
 ```
 
 ## Example Notebooks
