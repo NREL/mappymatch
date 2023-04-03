@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 
 import networkx as nx
 import numpy as np
@@ -12,15 +13,17 @@ from shapely.geometry import Point
 from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.geofence import Geofence
 from mappymatch.constructs.road import Road, RoadId
-from mappymatch.maps.map_interface import MapInterface, PathWeight
+from mappymatch.maps.map_interface import (
+    DEFAULT_DISTANCE_WEIGHT,
+    DEFAULT_TIME_WEIGHT,
+    MapInterface,
+)
 from mappymatch.maps.nx.readers.osm_readers import (
     NetworkType,
     nx_graph_from_osmnx,
 )
 from mappymatch.utils.crs import CRS, LATLON_CRS
 
-DEFAULT_DISTANCE_WEIGHT = "kilometers"
-DEFAULT_TIME_WEIGHT = "minutes"
 DEFAULT_GEOMETRY_KEY = "geometry"
 DEFAULT_METADATA_KEY = "metadata"
 DEFAULT_CRS_KEY = "crs"
@@ -129,6 +132,12 @@ class NxMap(MapInterface):
     def __repr__(self):
         return self.__str__()
 
+    def distance_weight(self) -> str:
+        return self._dist_weight
+
+    def time_weight(self) -> str:
+        return self._time_weight
+
     def road_by_id(self, road_id: RoadId) -> Optional[Road]:
         """
         Get a road by its id
@@ -170,12 +179,14 @@ class NxMap(MapInterface):
             A NxMap instance
         """
         p = Path(file)
-        if not p.suffix == ".pickle":
-            raise TypeError("NxMap only supports pickle files")
-
-        g = nx.readwrite.read_gpickle(file)
-
-        return NxMap(g)
+        if p.suffix == ".pickle":
+            g = nx.readwrite.read_gpickle(file)
+            return NxMap(g)
+        elif p.suffix == ".json":
+            with p.open("r") as f:
+                return NxMap.from_dict(json.load(f))
+        else:
+            raise TypeError("NxMap only supports pickle and json files")
 
     @classmethod
     def from_geofence(
@@ -206,6 +217,26 @@ class NxMap(MapInterface):
 
         return NxMap(nx_graph)
 
+    def to_file(self, outfile: Union[str, Path]):
+        """
+        Save the graph to a pickle file
+
+        Args:
+            outfile: The file to save the graph to
+        """
+        outfile = Path(outfile)
+
+        if outfile.suffix == ".pickle":
+            nx.write_gpickle(self.g, str(outfile))
+        elif outfile.suffix == ".json":
+            graph_dict = self.to_dict()
+            with open(outfile, "w") as f:
+                json.dump(graph_dict, f)
+        else:
+            raise TypeError(
+                "NxMap only supports writing to pickle and json files"
+            )
+
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> NxMap:
         """
@@ -215,18 +246,13 @@ class NxMap(MapInterface):
             geom_wkt = link["geom"]
             link["geom"] = wkt.loads(geom_wkt)
 
+        crs_key = d["graph"].get("crs_key", DEFAULT_CRS_KEY)
+        crs = CRS.from_wkt(d["graph"][crs_key])
+        d["graph"][crs_key] = crs
+
         g = nx.readwrite.json_graph.node_link_graph(d)
 
         return NxMap(g)
-
-    def to_file(self, outfile: Union[str, Path]):
-        """
-        Save the graph to a pickle file
-
-        Args:
-            outfile: The file to save the graph to
-        """
-        nx.write_gpickle(self.g, str(outfile))
 
     def to_dict(self) -> Dict[str, Any]:
         """
@@ -238,6 +264,10 @@ class NxMap(MapInterface):
         for link in graph_dict["links"]:
             geom = link["geom"]
             link["geom"] = geom.wkt
+
+        # convert crs to well known text
+        crs_key = graph_dict["graph"].get("crs_key", DEFAULT_CRS_KEY)
+        graph_dict["graph"][crs_key] = self.crs.to_wkt()
 
         return graph_dict
 
@@ -286,7 +316,7 @@ class NxMap(MapInterface):
         self,
         origin: Coordinate,
         destination: Coordinate,
-        weight: PathWeight = PathWeight.TIME,
+        weight: Union[str, Callable] = DEFAULT_TIME_WEIGHT,
     ) -> List[Road]:
         """
         Computes the shortest path between an origin and a destination
@@ -294,7 +324,7 @@ class NxMap(MapInterface):
         Args:
             origin: The origin coordinate
             destination: The destination coordinate
-            weight: The weight to use for the path
+            weight: The weight to use for the path, either a string or a function
 
         Returns:
             A list of roads that form the shortest path
@@ -333,20 +363,11 @@ class NxMap(MapInterface):
         else:
             dest_id = dest_road.road_id.end
 
-        if weight == PathWeight.DISTANCE:
-            weight_string = self._dist_weight
-        elif weight == PathWeight.TIME:
-            weight_string = self._time_weight
-        else:
-            raise TypeError(
-                f"path weight {weight.name} is not supported by the NxMap"
-            )
-
         nx_route = nx.shortest_path(
             self.g,
             origin_id,
             dest_id,
-            weight=weight_string,
+            weight=weight,
         )
 
         path = []
