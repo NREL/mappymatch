@@ -21,7 +21,7 @@ copyright = f"{year}, National Renewable Energy Laboratory"
 author = "National Renewable Energy Laboratory"
 # Initial releases at 0.x.x
 # First stable release at 1.x.x
-full_version = "0.3.0"
+full_version = "0.3.1"
 version = full_version
 # Full version for display in various places.
 release = full_version
