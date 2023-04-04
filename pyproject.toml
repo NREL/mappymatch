@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mappymatch"
-version = "0.3.0"
+version = "0.3.1"
 description = "Package for mapmatching."
 readme = "README.md"
 authors = [{ name = "National Renewable Energy Laboratory" }]
@@ -55,6 +55,8 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/NREL/mappymatch"
 
+[tool.setuptools.packages.find]
+include = ["mappymatch*"]  # package names should match these glob patterns (["*"] by default)
 
 [tool.black]
 exclude = '''
@@ -106,7 +108,7 @@ skip_empty = true
 
 [tool.tbump.version]
 # Make sure this matches current_version before using tbump
-current = "0.3.0"
+current = "0.3.1"
 # Example of a semver regexp.
 regex = '''
   (?P<major>\d+)

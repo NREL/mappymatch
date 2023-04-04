@@ -5,7 +5,7 @@ import logging
 import requests
 
 from mappymatch.constructs.match import Match
-from mappymatch.constructs.road import Road
+from mappymatch.constructs.road import Road, RoadId
 from mappymatch.constructs.trace import Trace
 from mappymatch.matchers.matcher_interface import MatcherInterface, MatchResult
 from mappymatch.utils.crs import LATLON_CRS
@@ -48,16 +48,14 @@ def parse_osrm_json(j: dict, trace: Trace) -> list[Match]:
         nodes = annotation.get("nodes")
         if not nodes:
             raise ValueError("leg has no osm node information")
-        link_id = f"({nodes[0]},{nodes[1]})"
         origin_junction_id = f"{nodes[0]}"
         destination_junction_id = f"{nodes[0]}"
 
         # TODO: we need to get geometry, distance info from OSRM if available
+        road_id = RoadId(origin_junction_id, destination_junction_id, 0)
         road = Road(
-            road_id=link_id,
+            road_id=road_id,
             geom=None,
-            origin_junction_id=origin_junction_id,
-            dest_junction_id=destination_junction_id,
         )
         match = Match(
             road=road, coordinate=trace.coords[i], distance=float("infinity")

@@ -19,12 +19,12 @@ class TestLCSSAddMatchForStationary(TestCase):
         """This will test the "null case" which is to say, no stationary points"""
         # Road(id: str|int, geom: LineString, metadata: dict)
         roads = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road(234, LineString(), "a", "b"),
+            Road("first st", LineString()),
+            Road("second st", LineString()),
+            Road("main st", LineString()),
+            Road("second str", LineString()),
+            Road(123, LineString()),
+            Road(234, LineString()),
         ]
 
         lat_longs = [
@@ -53,12 +53,12 @@ class TestLCSSAddMatchForStationary(TestCase):
     def test_add_matches_one_stationary_point_at_beginning(self):
         """Test adding a single stationary point at the beginning"""
         roads = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road(234, LineString(), "a", "b"),
+            Road("first st", LineString()),
+            Road("second st", LineString()),
+            Road("main st", LineString()),
+            Road("second str", LineString()),
+            Road(123, LineString()),
+            Road(234, LineString()),
         ]
 
         lat_longs = [
@@ -95,12 +95,12 @@ class TestLCSSAddMatchForStationary(TestCase):
         """Test adding a single stationary point at the end"""
         # Road(id: str|int, geom: LineString, metadata: dict)
         roads = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road(234, LineString(), "a", "b"),
+            Road("first st", LineString()),
+            Road("second st", LineString()),
+            Road("main st", LineString()),
+            Road("second str", LineString()),
+            Road(123, LineString()),
+            Road(234, LineString()),
         ]
 
         lat_longs = [
@@ -137,12 +137,12 @@ class TestLCSSAddMatchForStationary(TestCase):
         """Test adding a single stationary point in the middle"""
         # Road(id: str|int, geom: LineString, metadata: dict)
         roads = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road(234, LineString(), "a", "b"),
+            Road("first st", LineString()),
+            Road("second st", LineString()),
+            Road("main st", LineString()),
+            Road("second str", LineString()),
+            Road(123, LineString()),
+            Road(234, LineString()),
         ]
 
         lat_longs = [
@@ -194,12 +194,12 @@ class TestLCSSAddMatchForStationary(TestCase):
         """Test adding multiple stationary points"""
         # Road(id: str|int, geom: LineString, metadata: dict)
         roads = [
-            Road("first st", LineString(), "a", "b"),
-            Road("second st", LineString(), "a", "b"),
-            Road("main st", LineString(), "a", "b"),
-            Road("second str", LineString(), "a", "b"),
-            Road(123, LineString(), "a", "b"),
-            Road(234, LineString(), "a", "b"),
+            Road("first st", LineString()),
+            Road("second st", LineString()),
+            Road("main st", LineString()),
+            Road("second str", LineString()),
+            Road(123, LineString()),
+            Road(234, LineString()),
         ]
 
         lat_longs = [

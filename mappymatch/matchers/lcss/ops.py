@@ -1,15 +1,12 @@
 import logging
-import time
 from copy import deepcopy
 from typing import Any, List, NamedTuple
-
-import numpy as np
 
 from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.match import Match
 from mappymatch.constructs.road import Road
 from mappymatch.constructs.trace import Trace
-from mappymatch.maps.map_interface import MapInterface, PathWeight
+from mappymatch.maps.map_interface import MapInterface
 from mappymatch.matchers.lcss.constructs import (
     TrajectoryScheme,
     TrajectorySegment,
@@ -17,55 +14,6 @@ from mappymatch.matchers.lcss.constructs import (
 from mappymatch.matchers.lcss.utils import merge
 
 log = logging.getLogger(__name__)
-
-
-def score(trace: Trace, path: List[Road], distance_epsilon: float) -> float:
-    """
-    Computes the similarity score between a trace and a path
-
-    Args:
-        trace: the trace to compare
-        path: the path to compare
-        distance_epsilon: the distance epsilon
-
-    Returns:
-        the similarity score
-    """
-    s = time.time()
-    m = len(trace.coords)
-    n = len(path)
-
-    if m < 2:
-        return 0
-    elif n < 1:
-        return 0
-
-    C = [[0 for i in range(n + 1)] for j in range(m + 1)]
-
-    f = trace._frame
-    distances = np.array([f.distance(r.geom).values for r in path])
-
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-
-            # dt = road_to_coord_dist(road, coord)
-            dt = distances[j - 1][i - 1]
-
-            if dt < distance_epsilon:
-                point_similarity = 1 - dt / distance_epsilon
-            else:
-                point_similarity = 0
-
-            C[i][j] = max(
-                (C[i - 1][j - 1] + point_similarity), C[i][j - 1], C[i - 1][j]
-            )
-
-    sim_score = C[m][n] / float(min(m, n))
-
-    e = time.time()
-    print(f"SCORE: size: {m * n} \t\t time: {round(e - s, 2)} seconds")
-
-    return sim_score
 
 
 def new_path(
@@ -88,9 +36,7 @@ def new_path(
     origin = trace.coords[0]
     destination = trace.coords[-1]
 
-    new_path = road_map.shortest_path(
-        origin, destination, weight=PathWeight.TIME
-    )
+    new_path = road_map.shortest_path(origin, destination)
 
     return new_path
 

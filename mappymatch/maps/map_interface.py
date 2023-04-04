@@ -1,20 +1,13 @@
 from __future__ import annotations
 
 from abc import ABCMeta, abstractmethod
-from enum import Enum
-from typing import List
+from typing import Callable, List, Optional, Union
 
 from mappymatch.constructs.coordinate import Coordinate
-from mappymatch.constructs.road import Road
+from mappymatch.constructs.road import Road, RoadId
 
-
-class PathWeight(Enum):
-    """
-    An enum representing the weight of a path
-    """
-
-    DISTANCE = 0
-    TIME = 0
+DEFAULT_DISTANCE_WEIGHT = "kilometers"
+DEFAULT_TIME_WEIGHT = "minutes"
 
 
 class MapInterface(metaclass=ABCMeta):
@@ -24,12 +17,46 @@ class MapInterface(metaclass=ABCMeta):
 
     @property
     @abstractmethod
+    def distance_weight(self) -> str:
+        """
+        Get the distance weight
+
+        Returns:
+            The distance weight
+        """
+        return DEFAULT_DISTANCE_WEIGHT
+
+    @property
+    @abstractmethod
+    def time_weight(self) -> str:
+        """
+        Get the time weight
+
+        Returns:
+            The time weight
+        """
+        return DEFAULT_TIME_WEIGHT
+
+    @property
+    @abstractmethod
     def roads(self) -> List[Road]:
         """
         Get a list of all the roads in the map
 
         Returns:
             A list of all the roads in the map
+        """
+
+    @abstractmethod
+    def road_by_id(self, road_id: RoadId) -> Optional[Road]:
+        """
+        Get a road by its id
+
+        Args:
+            road_id: The id of the road to get
+
+        Returns:
+            The road with the given id or None if it does not exist
         """
 
     @abstractmethod
@@ -52,7 +79,7 @@ class MapInterface(metaclass=ABCMeta):
         self,
         origin: Coordinate,
         destination: Coordinate,
-        weight: PathWeight = PathWeight.TIME,
+        weight: Union[str, Callable] = DEFAULT_TIME_WEIGHT,
     ) -> List[Road]:
         """
         Computes the shortest path on the road network
