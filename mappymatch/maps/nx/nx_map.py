@@ -74,16 +74,20 @@ class NxMap(MapInterface):
 
         self._build_rtree()
 
+    def _has_road_id(self, road_id: RoadId) -> bool:
+        return self.g.has_edge(*road_id)
+
     def _build_road(
         self,
-        origin_id: Union[str, int],
-        destination_id: Union[str, int],
-        key: Union[str, int],
-        edge_data: Dict[str, Any],
+        road_id: RoadId,
     ) -> Road:
         """
-        Build a road from an origin, destination and networkx edge data
+        Build a road from a road id, pulling the edge data from the graph
+
+        Be sure to check if the road id (_has_road_id) is in the graph before calling this method
         """
+        edge_data = self.g.get_edge_data(*road_id)
+
         metadata = edge_data.get(self._metadata_key)
 
         if metadata is None:
@@ -94,8 +98,6 @@ class NxMap(MapInterface):
         metadata[self._dist_weight] = edge_data.get(self._dist_weight)
         metadata[self._time_weight] = edge_data.get(self._time_weight)
 
-        road_id = RoadId(origin_id, destination_id, key)
-
         road = Road(
             road_id,
             edge_data[self._geom_key],
@@ -105,21 +107,21 @@ class NxMap(MapInterface):
         return road
 
     def _build_rtree(self):
-        road_lookup = {}
 
         idx = rt.index.Index()
         for i, gtuple in enumerate(self.g.edges(data=True, keys=True)):
             u, v, k, d = gtuple
-            road = self._build_road(u, v, k, d)
+            road_id = RoadId(u, v, k)
+            # road = self._build_road(u, v, k, d)
             geom = d[self._geom_key]
             box = geom.bounds
 
-            idx.insert(i, box, obj=road.road_id)
+            idx.insert(i, box, obj=road_id)
 
-            road_lookup[road.road_id] = road
+            # road_lookup[road.road_id] = road
 
         self.rtree = idx
-        self._road_lookup: Dict[RoadId, Road] = road_lookup
+        # self._road_lookup: Dict[RoadId, Road] = road_lookup
 
     def __str__(self):
         output_lines = [
@@ -150,7 +152,10 @@ class NxMap(MapInterface):
         Returns:
             The road with the given id, or None if it does not exist
         """
-        return self._road_lookup.get(road_id)
+        if self._has_road_id(road_id):
+            return self._build_road(road_id)
+        else:
+            return None
 
     def set_road_attributes(self, attributes: Dict[RoadId, Dict[str, Any]]):
         """
@@ -167,7 +172,11 @@ class NxMap(MapInterface):
 
     @property
     def roads(self) -> List[Road]:
-        return list(self._road_lookup.values())
+        roads = [
+            self._build_road(RoadId(u, v, k))
+            for u, v, k in self.g.edges(keys=True)
+        ]
+        return roads
 
     @classmethod
     def from_file(cls, file: Union[str, Path]) -> NxMap:
@@ -305,12 +314,12 @@ class NxMap(MapInterface):
             nearest_id = nearest_candidates[0]
         else:
             distances = [
-                self._road_lookup[i].geom.distance(coord.geom)
+                self._build_road(i).geom.distance(coord.geom)
                 for i in nearest_candidates
             ]
             nearest_id = nearest_candidates[np.argmin(distances)]
 
-        road = self._road_lookup[nearest_id]
+        road = self._build_road(nearest_id)
 
         return road
 
@@ -382,7 +391,7 @@ class NxMap(MapInterface):
 
             road_id = RoadId(road_start_node, road_end_node, road_key)
 
-            road = self._road_lookup[road_id]
+            road = self._build_road(road_id)
 
             path.append(road)
 
