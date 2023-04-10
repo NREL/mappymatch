@@ -327,7 +327,7 @@ class NxMap(MapInterface):
         self,
         origin: Coordinate,
         destination: Coordinate,
-        weight: Union[str, Callable] = DEFAULT_TIME_WEIGHT,
+        weight: Optional[Union[str, Callable]] = None,
     ) -> List[Road]:
         """
         Computes the shortest path between an origin and a destination
@@ -348,6 +348,9 @@ class NxMap(MapInterface):
             raise ValueError(
                 f"crs of destination {destination.crs} must match crs of map {self.crs}"
             )
+
+        if weight is None:
+            weight = self._time_weight
 
         origin_road = self.nearest_road(origin)
         dest_road = self.nearest_road(destination)

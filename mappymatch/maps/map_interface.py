@@ -79,7 +79,7 @@ class MapInterface(metaclass=ABCMeta):
         self,
         origin: Coordinate,
         destination: Coordinate,
-        weight: Union[str, Callable] = DEFAULT_TIME_WEIGHT,
+        weight: Optional[Union[str, Callable]] = None,
     ) -> List[Road]:
         """
         Computes the shortest path on the road network
