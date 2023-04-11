@@ -4,7 +4,6 @@
 #
 #    pip-compile
 #
---extra-index-url https://github.nrel.gov/pages/MBAP/mbap-pypi/
 
 attrs==21.4.0
     # via fiona

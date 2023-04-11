@@ -4,7 +4,6 @@
 #
 #    pip-compile requirements-dev.in
 #
---extra-index-url https://github.nrel.gov/pages/MBAP/mbap-pypi/
 
 -e file:.
     # via
