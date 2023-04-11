@@ -29,6 +29,7 @@ dependencies = [
   "matplotlib",
   "osmnx",
   "networkx<3",
+  "igraph",
   "folium",
   "requests",
   "polyline",

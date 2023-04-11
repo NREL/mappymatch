@@ -4,6 +4,8 @@
 #
 #    pip-compile requirements-tests.in
 #
+--extra-index-url https://github.nrel.gov/pages/MBAP/mbap-pypi/
+
 -e file:.
     # via -r requirements-tests.in
 attrs==21.4.0
@@ -65,6 +67,10 @@ idna==3.3
     # via
     #   -c requirements.txt
     #   requests
+igraph==0.10.4
+    # via
+    #   -c requirements.txt
+    #   mappymatch
 iniconfig==1.1.1
     # via pytest
 jinja2==3.1.2
@@ -134,6 +140,10 @@ platformdirs==2.5.2
     # via black
 pluggy==1.0.0
     # via pytest
+polyline==2.0.0
+    # via
+    #   -c requirements.txt
+    #   mappymatch
 py==1.11.0
     # via pytest
 pyparsing==3.0.9
@@ -182,6 +192,10 @@ six==1.16.0
     #   -c requirements.txt
     #   fiona
     #   python-dateutil
+texttable==1.6.7
+    # via
+    #   -c requirements.txt
+    #   igraph
 tomli==2.0.1
     # via
     #   black

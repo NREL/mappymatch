@@ -4,6 +4,8 @@
 #
 #    pip-compile requirements-dev.in
 #
+--extra-index-url https://github.nrel.gov/pages/MBAP/mbap-pypi/
+
 -e file:.
     # via
     #   -c requirements-tests.txt
@@ -109,6 +111,10 @@ idna==3.3
     #   -c requirements-tests.txt
     #   -c requirements.txt
     #   requests
+igraph==0.10.4
+    # via
+    #   -c requirements.txt
+    #   mappymatch
 importlib-metadata==4.12.0
     # via
     #   keyring
@@ -224,6 +230,10 @@ pluggy==1.0.0
     # via
     #   -c requirements-tests.txt
     #   pytest
+polyline==2.0.0
+    # via
+    #   -c requirements.txt
+    #   mappymatch
 pre-commit==2.19.0
     # via mappymatch
 py==1.11.0
@@ -310,6 +320,10 @@ six==1.16.0
     #   virtualenv
 tabulate==0.8.10
     # via interrogate
+texttable==1.6.7
+    # via
+    #   -c requirements.txt
+    #   igraph
 toml==0.10.2
     # via
     #   interrogate
