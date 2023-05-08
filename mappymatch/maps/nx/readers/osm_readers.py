@@ -158,6 +158,9 @@ def compress(g) -> nx.MultiDiGraph:
         "speed_kph",
         "osmid",
         "street_count",
+        "junction",
+        "bridge",
+        "tunnel",
         "y",
         "x",
     ]

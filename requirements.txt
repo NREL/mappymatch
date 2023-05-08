@@ -36,6 +36,8 @@ geopandas==0.11.0
     #   osmnx
 idna==3.3
     # via requests
+igraph==0.10.4
+    # via mappymatch (setup.py)
 jinja2==3.1.2
     # via
     #   branca
@@ -74,6 +76,8 @@ pandas==1.4.3
     #   osmnx
 pillow==9.2.0
     # via matplotlib
+polyline==2.0.0
+    # via mappymatch (setup.py)
 pyparsing==3.0.9
     # via
     #   matplotlib
@@ -107,6 +111,8 @@ six==1.16.0
     # via
     #   fiona
     #   python-dateutil
+texttable==1.6.7
+    # via igraph
 urllib3==1.26.9
     # via requests
 
