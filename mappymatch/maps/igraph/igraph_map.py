@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import igraph as ig
 import networkx as nx
@@ -102,6 +102,9 @@ class IGraphMap(MapInterface):
         self._node_id_name = node_id_name
         self._edge_id_name = edge_id_name
 
+        # store the names of any additional added attributes
+        self._additional_attribute_names: Set[str] = set()
+
         self._build_rtree()
 
         # build mapping from mappymatch road id to igraph edge id
@@ -138,6 +141,9 @@ class IGraphMap(MapInterface):
 
         metadata[self._dist_weight] = edge_data.get(self._dist_weight)
         metadata[self._time_weight] = edge_data.get(self._time_weight)
+
+        for attr in self._additional_attribute_names:
+            metadata[attr] = edge_data.get(attr)
 
         road = Road(
             RoadId(source_node_id, target_node_id, road_key),
@@ -208,6 +214,7 @@ class IGraphMap(MapInterface):
             if edge_id is None:
                 raise ValueError(f"Road id {road_id} not found in graph")
             for attr, val in attrs.items():
+                self._additional_attribute_names.add(attr)
                 if attr == self._geom_key:
                     geom_updated = True
                 self.g.es[edge_id][attr] = val

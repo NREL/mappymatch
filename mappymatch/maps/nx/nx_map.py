@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import networkx as nx
 import numpy as np
@@ -72,6 +72,8 @@ class NxMap(MapInterface):
         self._metadata_key = metadata_key
         self._crs_key = crs_key
 
+        self._addtional_attribute_names: Set[str] = set()
+
         self._build_rtree()
 
     def _has_road_id(self, road_id: RoadId) -> bool:
@@ -98,6 +100,9 @@ class NxMap(MapInterface):
         metadata[self._dist_weight] = edge_data.get(self._dist_weight)
         metadata[self._time_weight] = edge_data.get(self._time_weight)
 
+        for attr_name in self._addtional_attribute_names:
+            metadata[attr_name] = edge_data.get(attr_name)
+
         road = Road(
             road_id,
             edge_data[self._geom_key],
@@ -107,7 +112,6 @@ class NxMap(MapInterface):
         return road
 
     def _build_rtree(self):
-
         idx = rt.index.Index()
         for i, gtuple in enumerate(self.g.edges(data=True, keys=True)):
             u, v, k, d = gtuple
@@ -167,6 +171,10 @@ class NxMap(MapInterface):
         Returns:
             None
         """
+        for attrs in attributes.values():
+            for attr_name in attrs.keys():
+                self._addtional_attribute_names.add(attr_name)
+
         nx.set_edge_attributes(self.g, attributes)
         self._build_rtree()
 
