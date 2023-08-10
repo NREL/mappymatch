@@ -9,8 +9,6 @@ from shapely.geometry import Point
 
 from mappymatch.utils.crs import LATLON_CRS
 
-CoordinateId: Any
-
 
 class Coordinate(NamedTuple):
     """
@@ -24,7 +22,7 @@ class Coordinate(NamedTuple):
         y: The y value of this coordinate
     """
 
-    coordinate_id: CoordinateId
+    coordinate_id: Any
     geom: Point
     crs: CRS
 

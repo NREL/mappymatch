@@ -154,7 +154,6 @@ class IGraphMap(MapInterface):
         return road
 
     def _build_rtree(self):
-
         idx = rt.index.Index()
 
         for e in self.g.es:
