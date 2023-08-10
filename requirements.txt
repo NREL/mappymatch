@@ -9,7 +9,7 @@ attrs==21.4.0
     # via fiona
 branca==0.5.0
     # via folium
-certifi==2022.6.15
+certifi==2023.7.22
     # via
     #   fiona
     #   pyproj
