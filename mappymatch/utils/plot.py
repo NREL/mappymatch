@@ -39,7 +39,7 @@ def plot_geofence(geofence, m=None):
     return m
 
 
-def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
+def plot_trace(trace, m=None, point_color="yellow", line_color=None):
     """
     Plot a trace.
 
@@ -47,7 +47,7 @@ def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
         trace: The trace.
         m: the folium map to plot on
         point_color: The color the points will be plotted in.
-        line_color: The color for lines.
+        line_color: The color for lines. If None, no lines will be plotted.
 
     Returns:
         An updated folium map with a plot of trace.
@@ -62,12 +62,19 @@ def plot_trace(trace, m=None, point_color="yellow", line_color="green"):
 
     for i, c in enumerate(trace.coords):
         folium.Circle(
-            location=(c.y, c.x), radius=5, color=point_color, tooltip=i
+            location=(c.y, c.x),
+            radius=5,
+            color=point_color,
+            tooltip=i,
+            fill=True,
+            fill_opacity=0.8,
+            fill_color=point_color,
         ).add_to(m)
 
-    folium.PolyLine(
-        [(p.y, p.x) for p in trace.coords], color=line_color
-    ).add_to(m)
+    if line_color is not None:
+        folium.PolyLine(
+            [(p.y, p.x) for p in trace.coords], color=line_color
+        ).add_to(m)
 
     return m
 
@@ -193,28 +200,42 @@ def plot_match_distances(matches: MatchResult):
     plt.show()
 
 
-def plot_path(path: List[Road], crs: CRS):
+def plot_path(
+    path: List[Road],
+    crs: CRS,
+    m=None,
+    line_color="red",
+    line_weight=10,
+    line_opacity=0.8,
+):
     """
     Plot a list of roads.
 
     Args:
         path: The path to plot.
         crs: The crs of the path.
+        m: The folium map to add to.
+        line_color: The color of the line.
+        line_weight: The weight of the line.
+        line_opacity: The opacity of the line.
     """
     road_df = pd.DataFrame([{"geom": r.geom} for r in path])
     road_gdf = gpd.GeoDataFrame(road_df, geometry=road_df.geom, crs=crs)
     road_gdf = road_gdf.to_crs(LATLON_CRS)
 
-    mid_i = int(len(road_gdf) / 2)
-    mid_coord = road_gdf.iloc[mid_i].geometry.coords[0]
+    if m is None:
+        mid_i = int(len(road_gdf) / 2)
+        mid_coord = road_gdf.iloc[mid_i].geometry.coords[0]
 
-    fmap = folium.Map(location=[mid_coord[1], mid_coord[0]], zoom_start=11)
+        m = folium.Map(location=[mid_coord[1], mid_coord[0]], zoom_start=11)
 
     for i, road in enumerate(road_gdf.itertuples()):
         folium.PolyLine(
             [(lat, lon) for lon, lat in road.geometry.coords],
-            color="red",
+            color=line_color,
             tooltip=i,
-        ).add_to(fmap)
+            weight=line_weight,
+            opacity=line_opacity,
+        ).add_to(m)
 
-    return fmap
+    return m
