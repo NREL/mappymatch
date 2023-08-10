@@ -74,7 +74,7 @@ pandas==1.4.3
     #   geopandas
     #   mappymatch (setup.py)
     #   osmnx
-pillow==9.2.0
+pillow==9.3.0
     # via matplotlib
 polyline==2.0.0
     # via mappymatch (setup.py)
