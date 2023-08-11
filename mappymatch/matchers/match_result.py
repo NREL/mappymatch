@@ -24,3 +24,19 @@ class MatchResult:
         df = df.fillna(np.NAN)
 
         return df
+
+    def path_to_dataframe(self) -> pd.DataFrame:
+        """
+        Returns a dataframe with the resulting estimated trace path through the road network.
+        The dataframe is empty if there was no path.
+
+        Returns:
+            A pandas dataframe
+        """
+        if self.path is None:
+            return pd.DataFrame()
+
+        df = pd.DataFrame([r.to_flat_dict() for r in self.path])
+        df = df.fillna(np.NAN)
+
+        return df

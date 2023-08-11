@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional, Union
 
 import folium
 import geopandas as gpd
@@ -7,14 +7,16 @@ import pandas as pd
 from pyproj import CRS
 from shapely.geometry import Point
 
+from mappymatch.constructs.geofence import Geofence
 from mappymatch.constructs.match import Match
 from mappymatch.constructs.road import Road
+from mappymatch.constructs.trace import Trace
 from mappymatch.maps.nx.nx_map import NxMap
 from mappymatch.matchers.matcher_interface import MatchResult
 from mappymatch.utils.crs import LATLON_CRS, XY_CRS
 
 
-def plot_geofence(geofence, m=None):
+def plot_geofence(geofence: Geofence, m: Optional[folium.Map] = None):
     """
     Plot geofence.
 
@@ -39,7 +41,12 @@ def plot_geofence(geofence, m=None):
     return m
 
 
-def plot_trace(trace, m=None, point_color="yellow", line_color=None):
+def plot_trace(
+    trace: Trace,
+    m: Optional[folium.Map] = None,
+    point_color: str = "black",
+    line_color: Optional[str] = "green",
+):
     """
     Plot a trace.
 
@@ -79,17 +86,19 @@ def plot_trace(trace, m=None, point_color="yellow", line_color=None):
     return m
 
 
-def plot_matches(matches: List[Match], crs=XY_CRS):
+def plot_matches(matches: Union[MatchResult, List[Match]], crs=XY_CRS):
     """
     Plots a trace and the relevant matches on a folium map.
 
     Args:
-    matches: The matches.
-    road_map: The road map.
+    matches: A list of matches or a MatchResult.
+    crs: what crs to plot in. Defaults to XY_CRS.
 
     Returns:
         A folium map with trace and matches plotted.
     """
+    if isinstance(matches, MatchResult):
+        matches = matches.matches
 
     def _match_to_road(m):
         """Private function."""
@@ -142,7 +151,7 @@ def plot_matches(matches: List[Match], crs=XY_CRS):
     return fmap
 
 
-def plot_map(tmap: NxMap, m=None):
+def plot_map(tmap: NxMap, m: Optional[folium.Map] = None):
     """
     Plot the roads on an NxMap.
 
@@ -203,7 +212,7 @@ def plot_match_distances(matches: MatchResult):
 def plot_path(
     path: List[Road],
     crs: CRS,
-    m=None,
+    m: Optional[folium.Map] = None,
     line_color="red",
     line_weight=10,
     line_opacity=0.8,

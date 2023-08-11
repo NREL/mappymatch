@@ -199,13 +199,14 @@ class NxMap(MapInterface):
         """
         p = Path(file)
         if p.suffix == ".pickle":
-            g = nx.readwrite.read_gpickle(file)
-            return NxMap(g)
+            raise ValueError(
+                "NxMap does not support reading from pickle files, please use .json instead"
+            )
         elif p.suffix == ".json":
             with p.open("r") as f:
                 return NxMap.from_dict(json.load(f))
         else:
-            raise TypeError("NxMap only supports pickle and json files")
+            raise TypeError("NxMap only supports reading from json files")
 
     @classmethod
     def from_geofence(
@@ -246,24 +247,26 @@ class NxMap(MapInterface):
         outfile = Path(outfile)
 
         if outfile.suffix == ".pickle":
-            nx.write_gpickle(self.g, str(outfile))
+            raise ValueError(
+                "NxMap does not support writing to pickle files, please use .json instead"
+            )
         elif outfile.suffix == ".json":
             graph_dict = self.to_dict()
             with open(outfile, "w") as f:
                 json.dump(graph_dict, f)
         else:
-            raise TypeError(
-                "NxMap only supports writing to pickle and json files"
-            )
+            raise TypeError("NxMap only supports writing to json files")
 
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> NxMap:
         """
         Build a NxMap instance from a dictionary
         """
+        geom_key = d["graph"].get("geometry_key", DEFAULT_GEOMETRY_KEY)
+
         for link in d["links"]:
-            geom_wkt = link["geom"]
-            link["geom"] = wkt.loads(geom_wkt)
+            geom_wkt = link[geom_key]
+            link[geom_key] = wkt.loads(geom_wkt)
 
         crs_key = d["graph"].get("crs_key", DEFAULT_CRS_KEY)
         crs = CRS.from_wkt(d["graph"][crs_key])
@@ -281,8 +284,8 @@ class NxMap(MapInterface):
 
         # convert geometries to well know text
         for link in graph_dict["links"]:
-            geom = link["geom"]
-            link["geom"] = geom.wkt
+            geom = link[self._geom_key]
+            link[self._geom_key] = geom.wkt
 
         # convert crs to well known text
         crs_key = graph_dict["graph"].get("crs_key", DEFAULT_CRS_KEY)
