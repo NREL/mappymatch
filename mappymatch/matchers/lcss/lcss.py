@@ -152,7 +152,6 @@ class LCSSMatcher(MatcherInterface):
         trace_batch: List[Trace],
         processes: int = 1,
     ) -> List[MatchResult]:
-
         if processes > 1:
             results = [self.match_trace(t) for t in trace_batch]
         else:

@@ -1,4 +1,0 @@
--c requirements.txt
--c requirements-tests.txt
--e file:.[tests]
--e file:.[dev]
