@@ -57,7 +57,7 @@ class Geofence:
     def from_trace(
         cls,
         trace: Trace,
-        padding: float = 15,
+        padding: float = 1e3,
         crs: CRS = LATLON_CRS,
         buffer_res: int = 2,
     ) -> Geofence:

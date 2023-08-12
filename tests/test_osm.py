@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 import networkx as nx
+import osmnx as ox
 
 from mappymatch.maps.nx.readers.osm_readers import (
     NetworkType,
@@ -11,9 +12,9 @@ from tests import get_test_dir
 
 class TestOSMap(TestCase):
     def test_osm_networkx_graph_drive(self):
-        gfile = get_test_dir() / "test_assets" / "osmnx_drive_graph.pickle"
+        gfile = get_test_dir() / "test_assets" / "osmnx_drive_graph.graphml"
 
-        osmnx_graph = nx.readwrite.read_gpickle(gfile)
+        osmnx_graph = ox.load_graphml(gfile)
 
         cleaned_graph = parse_osmnx_graph(osmnx_graph, NetworkType.DRIVE)
 

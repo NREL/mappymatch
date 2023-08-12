@@ -181,6 +181,12 @@ To preview the documentation locally:
 Maintainer Information 
 ---------------------------------------- 
 
+Adding a new package dependency 
+________________________________________ 
+
+To add a new package dependency, add it to the ``dependency`` list in the ``/pyproject.toml`` file.
+
+
 Updating Version Locations 
 ________________________________________ 
 

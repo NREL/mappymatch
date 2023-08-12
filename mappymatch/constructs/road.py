@@ -49,7 +49,7 @@ class Road(NamedTuple):
         """
         d = self._asdict()
         d["origin_junction_id"] = self.road_id.start
-        d["origin_destination_id"] = self.road_id.end
+        d["destination_junction_id"] = self.road_id.end
         d["road_key"] = self.road_id.key
 
         return d
