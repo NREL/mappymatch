@@ -10,7 +10,7 @@ import requests
 from shapely.geometry import LineString
 
 from mappymatch.constructs.match import Match
-from mappymatch.constructs.road import Road
+from mappymatch.constructs.road import Road, RoadId
 from mappymatch.constructs.trace import Trace
 from mappymatch.matchers.matcher_interface import MatcherInterface, MatchResult
 from mappymatch.utils.crs import LATLON_CRS
@@ -45,6 +45,7 @@ def build_path_from_result(
     path = []
     for edge in edges:
         way_id = edge["way_id"]
+        road_id = RoadId(start=None, end=None, key=way_id)
         start_point_i = edge["begin_shape_index"]
         end_point_i = edge["end_shape_index"]
         start_point = shape[start_point_i]
@@ -59,7 +60,7 @@ def build_path_from_result(
             "length_miles": length,
         }
 
-        road = Road(road_id=way_id, geom=geom, metadata=metadata)
+        road = Road(road_id=road_id, geom=geom, metadata=metadata)
 
         path.append(road)
 

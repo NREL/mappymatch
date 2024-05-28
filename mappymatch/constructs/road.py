@@ -6,9 +6,9 @@ from shapely.geometry import LineString
 
 
 class RoadId(NamedTuple):
-    start: Union[int, str]
-    end: Union[int, str]
-    key: Union[int, str]
+    start: Optional[Union[int, str]]
+    end: Optional[Union[int, str]]
+    key: Optional[Union[int, str]]
 
     def to_string(self) -> str:
         return f"{self.start},{self.end},{self.key}"
