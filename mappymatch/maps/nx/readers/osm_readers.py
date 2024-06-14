@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging as log
 from enum import Enum
+from typing import Optional
 
 import networkx as nx
 from shapely.geometry import LineString
@@ -31,7 +32,10 @@ class NetworkType(Enum):
 
 
 def nx_graph_from_osmnx(
-    geofence: Geofence, network_type: NetworkType, xy: bool = True
+    geofence: Geofence,
+    network_type: NetworkType,
+    xy: bool = True,
+    custom_filter: Optional[str] = None,
 ) -> nx.MultiDiGraph:
     """
     Build a networkx graph from OSM data
@@ -40,6 +44,7 @@ def nx_graph_from_osmnx(
         geofence: the geofence to clip the graph to
         network_type: the network type to use for the graph
         xy: whether to use xy coordinates or lat/lon
+        custom_filter: a custom filter to pass to osmnx
 
     Returns:
         a networkx graph of the OSM network
@@ -53,9 +58,11 @@ def nx_graph_from_osmnx(
     ox.settings.log_console = False
 
     raw_graph = ox.graph_from_polygon(
-        geofence.geometry, network_type=network_type.value
+        geofence.geometry,
+        network_type=network_type.value,
+        custom_filter=custom_filter,
     )
-    return parse_osmnx_graph(raw_graph, network_type)
+    return parse_osmnx_graph(raw_graph, network_type, xy=xy)
 
 
 def parse_osmnx_graph(
