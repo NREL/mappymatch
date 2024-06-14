@@ -214,6 +214,7 @@ class NxMap(MapInterface):
         geofence: Geofence,
         xy: bool = True,
         network_type: NetworkType = NetworkType.DRIVE,
+        custom_filter: Optional[str] = None,
     ) -> NxMap:
         """
         Read an OSM network graph into a NxMap
@@ -222,6 +223,7 @@ class NxMap(MapInterface):
             geofence: the geofence to clip the graph to
             xy: whether to use xy coordinates or lat/lon
             network_type: the network type to use for the graph
+            custom_filter: a custom filter to pass to osmnx like '["highway"~"motorway|primary"]'
 
         Returns:
             a NxMap
@@ -232,7 +234,10 @@ class NxMap(MapInterface):
             )
 
         nx_graph = nx_graph_from_osmnx(
-            geofence=geofence, network_type=network_type, xy=xy
+            geofence=geofence,
+            network_type=network_type,
+            xy=xy,
+            custom_filter=custom_filter,
         )
 
         return NxMap(nx_graph)
