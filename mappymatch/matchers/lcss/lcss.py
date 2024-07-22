@@ -1,6 +1,5 @@
 import functools as ft
 import logging
-from multiprocessing import Pool
 
 from shapely.geometry import Point
 
@@ -155,7 +154,11 @@ class LCSSMatcher(MatcherInterface):
         if processes <= 1:
             results = [self.match_trace(t) for t in trace_batch]
         else:
-            with Pool(processes=processes) as p:
-                results = p.map(self.match_trace, trace_batch)
+            raise NotImplementedError(
+                "Using `processes>1` is not available due to a known issue with rtree serialization."
+                "See https://github.com/Toblerity/rtree/issues/87 for more information."
+            )
+            # with Pool(processes=processes) as p:
+            #     results = p.map(self.match_trace, trace_batch)
 
         return results
