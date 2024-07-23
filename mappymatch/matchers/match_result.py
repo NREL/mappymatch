@@ -21,7 +21,7 @@ class MatchResult:
             A pandas dataframe
         """
         df = pd.DataFrame([m.to_flat_dict() for m in self.matches])
-        df = df.fillna(np.NAN)
+        df = df.fillna(np.nan)
 
         return df
 
@@ -37,6 +37,6 @@ class MatchResult:
             return pd.DataFrame()
 
         df = pd.DataFrame([r.to_flat_dict() for r in self.path])
-        df = df.fillna(np.NAN)
+        df = df.fillna(np.nan)
 
         return df
