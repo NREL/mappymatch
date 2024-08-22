@@ -20,7 +20,6 @@ from mappymatch.matchers.matcher_interface import (
     MatchResult,
     Trace,
 )
-from mappymatch.utils.crs import XY_CRS
 
 log = logging.getLogger(__name__)
 
@@ -74,12 +73,12 @@ class LCSSMatcher(MatcherInterface):
                     o = Coordinate(
                         coordinate_id=None,
                         geom=Point(end_road.geom.coords[-1]),
-                        crs=XY_CRS,
+                        crs=new_traces.crs,
                     )
                     d = Coordinate(
                         coordinate_id=None,
                         geom=Point(start_road.geom.coords[0]),
-                        crs=XY_CRS,
+                        crs=new_traces.crs,
                     )
                     path = self.road_map.shortest_path(o, d)
                     new_path = a.path + path + b.path
