@@ -40,7 +40,7 @@ requires-python = ">=3.9"
 # Used to run CI. 
 tests = ["black", "ruff", "mypy>=0.981", "types-requests", "pytest"]
 # Used to build the docs.
-docs = ["sphinx==4.5.0", "sphinx_rtd_theme==1.0.0", "sphinxemoji==0.2.0"]
+docs = ["sphinx>=8.1", "sphinx_rtd_theme>=3.0", "sphinxemoji>=0.3.1"]
 # Tests + docs + other.
 dev = [
   "mappymatch[tests]",
