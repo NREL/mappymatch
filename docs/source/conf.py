@@ -21,7 +21,7 @@ copyright = f"{year}, National Renewable Energy Laboratory"
 author = "National Renewable Energy Laboratory"
 # Initial releases at 0.x.x
 # First stable release at 1.x.x
-full_version = "0.4.1"
+full_version = "0.4.5"
 version = full_version
 # Full version for display in various places.
 release = full_version
@@ -56,7 +56,6 @@ templates_path = ["_templates"]
 #
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
-    "display_version": True,
     "style_external_links": True,
     "style_nav_header_background": "#9B59B6",
 }

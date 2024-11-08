@@ -1,8 +1,16 @@
 Install
 ================== 
 
-From Source (recommended) 
+From PyPI (recommended)
+---------
+
+.. code-block::
+
+  pip install mappymatch 
+
+From Source  
 -------------------------
+
 Clone the repo::
 
    git clone https://github.com/NREL/mappymatch.git && cd mappymatch
@@ -15,12 +23,6 @@ To activate the mappymatch environment::
 
    conda activate mappymatch
 
-From PyPI
----------
-
-.. code-block::
-
-  pip install mappymatch 
 
 .. warning::
 

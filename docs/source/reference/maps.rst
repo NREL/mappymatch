@@ -16,11 +16,6 @@ NxMap
 .. autoclass:: mappymatch.maps.nx.nx_map.NxMap
     :members:
 
-Utility Functions 
-----------------------
-.. autofunction:: mappymatch.maps.nx.nx_map.parse_osmnx_graph 
-.. autofunction:: mappymatch.maps.nx.nx_map.compress
-
 Map interface 
 ------------------- 
 
