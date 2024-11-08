@@ -15,7 +15,7 @@ classifiers = [
   "License :: Other/Proprietary License",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.12",
   "Topic :: Scientific/Engineering",
 ]
 keywords = ["GPS", "map", "match"]
@@ -34,7 +34,7 @@ dependencies = [
   "requests",
   "polyline",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 
 [project.optional-dependencies]
 # Used to run CI. 
@@ -77,7 +77,7 @@ exclude = '''
 '''
 include = '\.pyi?$'
 line-length = 79
-target-version = ['py38']
+target-version = ['py39']
 
 [tool.ruff]
 line-length = 79
