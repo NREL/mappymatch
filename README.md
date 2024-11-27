@@ -20,7 +20,7 @@ Currently supported map formats are:
 pip install mappymatch
 ```
 
-If you have trouble with that, check out [the docs](https://mappymatch.readthedocs.io/en/latest/general/install.html) for more detailed install instructions.
+If you have trouble with that, check out [the docs](https://nrel.github.io/mappymatch/install.html) for more detailed install instructions.
 
 ## Example Usage
 
@@ -60,4 +60,4 @@ df = matches.matches_to_dataframe()
 
 ## Example Notebooks
 
-Example JupyterLab notebooks making use of mappymatch can be found in the [mappymatch examples repository](https://github.com/NREL/mappymatch-examples).
+Check out the [LCSS Example](https://nrel.github.io/mappymatch/lcss-example.html) for an example of working with the package.
