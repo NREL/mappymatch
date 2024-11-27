@@ -299,9 +299,7 @@ class IGraphMap(MapInterface):
 
         self.g.write_pickle(str(outfile))
 
-    def _nearest_edge_index(
-        self, coord: Coordinate, buffer: float = 10.0
-    ) -> int:
+    def _nearest_edge_index(self, coord: Coordinate, buffer: float = 10.0) -> int:
         """
         An internal method to find the nearest edge to a coordinate
 
@@ -368,14 +366,10 @@ class IGraphMap(MapInterface):
             weight = self._time_weight
 
         if callable(weight):
-            raise NotImplementedError(
-                "IGraphMap does not support custom weights"
-            )
+            raise NotImplementedError("IGraphMap does not support custom weights")
 
         if weight not in self.g.es.attributes():
-            raise ValueError(
-                f"weight {weight} is not a valid attribute of the graph"
-            )
+            raise ValueError(f"weight {weight} is not a valid attribute of the graph")
 
         if origin.crs != self.crs:
             raise ValueError(

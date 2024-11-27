@@ -1,0 +1,59 @@
+# Book settings
+# Learn more at https://jupyterbook.org/customize/config.html
+
+title: mappymatch
+author: National Renewable Energy Laboratory
+
+# Force re-execution of notebooks on each build.
+# See https://jupyterbook.org/content/execute.html
+execute:
+  execute_notebooks: force
+  timeout: 300
+
+# Define the name of the latex output file for PDF builds
+latex:
+  latex_documents:
+    targetname: mappymatch.tex
+
+# Information about where the book exists on the web
+repository:
+  url: https://github.com/NREL/mappymatch # Online location of your book
+  path_to_book: docs # Optional path to your book, relative to the repository root
+  branch: main # Which branch of the repository should be used when creating links (optional)
+
+# Add GitHub buttons to your book
+# See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
+html:
+  use_issues_button: true
+  use_repository_button: true
+
+# Sphinx for API doc generation
+sphinx:
+  extra_extensions:
+    - "sphinx.ext.autodoc"
+    - "sphinx.ext.autosummary"
+    - "sphinx.ext.viewcode"
+    - "sphinx_autodoc_typehints"
+    - "sphinxcontrib.autoyaml"
+    - "sphinxcontrib.mermaid"
+  config:
+    html_theme: sphinx_book_theme
+    language: "python"
+    html_context:
+      default_mode: light
+    nb_execution_show_tb: true # Shows the stack trace in stdout; its suppressed otherwise.
+    nb_execution_raise_on_error: true # Stops the Sphinx build if there is an error in a notebook. See https://github.com/executablebooks/jupyter-book/issues/2011
+    suppress_warnings:
+      - etoc.toctree # autodoc output contains toctrees, so suppress this warning. See https://github.com/executablebooks/sphinx-external-toc/issues/36
+    autoyaml_level: 3
+    autosummary_generate: true
+
+    # Autodoc config reference
+    # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#configuration
+    autodoc_default_options:
+      members: true
+      member-order: bysource
+      undoc-members: true
+      private-members: false
+    autodoc_typehints: both
+    mermaid_version: "10.8"

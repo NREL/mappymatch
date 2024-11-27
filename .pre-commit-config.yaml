@@ -1,11 +1,13 @@
-repos: 
--   repo: https://github.com/psf/black
-    rev: 22.10.0
-    hooks:
-    -   id: black 
-        args: [--config, pyproject.toml]
--   repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.188
-    hooks:
-      - id: ruff
-        
+repos:
+    - repo: https://github.com/charliermarsh/ruff-pre-commit
+      rev: v0.8.0
+      hooks:
+          - id: ruff
+          - id: ruff-format
+
+    - repo: https://github.com/pre-commit/mirrors-mypy
+      rev: "v1.13.0"
+      hooks:
+          - id: mypy
+            additional_dependencies:
+                [matplotlib, pandas-stubs, pytest, types-requests]

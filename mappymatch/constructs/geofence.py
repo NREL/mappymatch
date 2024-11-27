@@ -83,9 +83,7 @@ class Geofence:
         polygon = trace_line_string.buffer(padding, buffer_res)
 
         if trace.crs != crs:
-            project = Transformer.from_crs(
-                trace.crs, crs, always_xy=True
-            ).transform
+            project = Transformer.from_crs(trace.crs, crs, always_xy=True).transform
             polygon = transform(project, polygon)
             return Geofence(crs=crs, geometry=polygon)
 
