@@ -46,9 +46,7 @@ class TestLCSSMatcherDropStationaryPoints(TestCase):
         )
 
         resulting_trace = drop_stationary_points(trace, stationary_index)
-        self.assertEqual(
-            len(expected_trace.coords), len(resulting_trace.coords)
-        )
+        self.assertEqual(len(expected_trace.coords), len(resulting_trace.coords))
         for expected_coord, resulted_coord in zip(
             expected_trace.coords, resulting_trace.coords
         ):
@@ -90,9 +88,7 @@ class TestLCSSMatcherDropStationaryPoints(TestCase):
         )
 
         resulting_trace = drop_stationary_points(trace, stationary_index)
-        self.assertEqual(
-            len(expected_trace.coords), len(resulting_trace.coords)
-        )
+        self.assertEqual(len(expected_trace.coords), len(resulting_trace.coords))
         for expected_coord, resulted_coord in zip(
             expected_trace.coords, resulting_trace.coords
         ):
@@ -134,9 +130,7 @@ class TestLCSSMatcherDropStationaryPoints(TestCase):
         )
 
         resulting_trace = drop_stationary_points(trace, stationary_index)
-        self.assertEqual(
-            len(expected_trace.coords), len(resulting_trace.coords)
-        )
+        self.assertEqual(len(expected_trace.coords), len(resulting_trace.coords))
         for expected_coord, resulted_coord in zip(
             expected_trace.coords, resulting_trace.coords
         ):
@@ -208,9 +202,7 @@ class TestLCSSMatcherDropStationaryPoints(TestCase):
         )
 
         resulting_trace = drop_stationary_points(trace, stationary_index)
-        self.assertEqual(
-            len(expected_trace.coords), len(resulting_trace.coords)
-        )
+        self.assertEqual(len(expected_trace.coords), len(resulting_trace.coords))
         for expected_coord, resulted_coord in zip(
             expected_trace.coords, resulting_trace.coords
         ):
@@ -257,9 +249,7 @@ class TestLCSSMatcherDropStationaryPoints(TestCase):
         )
 
         resulting_trace = drop_stationary_points(trace, stationary_index)
-        self.assertEqual(
-            len(expected_trace.coords), len(resulting_trace.coords)
-        )
+        self.assertEqual(len(expected_trace.coords), len(resulting_trace.coords))
         for expected_coord, resulted_coord in zip(
             expected_trace.coords, resulting_trace.coords
         ):
@@ -307,9 +297,7 @@ class TestLCSSMatcherDropStationaryPoints(TestCase):
         )
 
         resulting_trace = drop_stationary_points(trace, stationary_index)
-        self.assertEqual(
-            len(expected_trace.coords), len(resulting_trace.coords)
-        )
+        self.assertEqual(len(expected_trace.coords), len(resulting_trace.coords))
         for expected_coord, resulted_coord in zip(
             expected_trace.coords, resulting_trace.coords
         ):
@@ -362,9 +350,7 @@ class TestLCSSMatcherDropStationaryPoints(TestCase):
         )
 
         resulting_trace = drop_stationary_points(trace, stationary_index)
-        self.assertEqual(
-            len(expected_trace.coords), len(resulting_trace.coords)
-        )
+        self.assertEqual(len(expected_trace.coords), len(resulting_trace.coords))
         for expected_coord, resulted_coord in zip(
             expected_trace.coords, resulting_trace.coords
         ):

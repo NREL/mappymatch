@@ -208,12 +208,8 @@ class TestLCSSMatcherMerge(TestCase):
             Road("second str", LineString()),
         ]
 
-        expected_segment_1 = TrajectorySegment(
-            expected_trace_1, expected_road_1
-        )
-        expected_segment_2 = TrajectorySegment(
-            expected_trace_2, expected_road_2
-        )
+        expected_segment_1 = TrajectorySegment(expected_trace_1, expected_road_1)
+        expected_segment_2 = TrajectorySegment(expected_trace_2, expected_road_2)
 
         expected_list = [
             expected_segment_1,
@@ -234,15 +230,11 @@ class TestLCSSMatcherMerge(TestCase):
             for expected_trace, resulted_trace in zip(
                 expected_trajectory.trace, resulted_trajectory.trace
             ):
-                self.assertEqual(
-                    len(expected_trace.coords), len(resulted_trace.coords)
-                )
+                self.assertEqual(len(expected_trace.coords), len(resulted_trace.coords))
                 for expected_coord, resulted_coord in zip(
                     expected_trace.coords, resulted_trace.coords
                 ):
                     self.assertEqual(expected_coord.geom, resulted_coord.geom)
 
             # confirm that the paths are the same
-            self.assertListEqual(
-                expected_trajectory.path, resulted_trajectory.path
-            )
+            self.assertListEqual(expected_trajectory.path, resulted_trajectory.path)

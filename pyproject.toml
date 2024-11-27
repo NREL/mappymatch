@@ -1,33 +1,36 @@
 [build-system]
-requires = ["setuptools>=63.0.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "mappymatch"
-version = "0.5.0"
-description = "Package for mapmatching."
+dynamic = ["version"]
+description = "Pure python package for map-matching."
 readme = "README.md"
 authors = [{ name = "National Renewable Energy Laboratory" }]
 license = { text = "BSD 3-Clause License Copyright (c) 2022, Alliance for Sustainable Energy, LLC" }
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
   "License :: Other/Proprietary License",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Topic :: Scientific/Engineering",
 ]
 keywords = ["GPS", "map", "match"]
 dependencies = [
-  "geopandas",
-  "shapely",
+  "geopandas>=1",
+  "osmnx>=2",
+  "shapely>=2",
   "rtree",
   "pyproj",
   "pandas",
   "numpy",
   "matplotlib",
-  "osmnx",
   "networkx",
   "igraph",
   "folium",
@@ -38,59 +41,63 @@ requires-python = ">=3.9"
 
 [project.optional-dependencies]
 # Used to run CI. 
-tests = ["black", "ruff", "mypy>=0.981", "types-requests", "pytest"]
+tests = ["ruff", "mypy>=1", "types-requests", "pytest"]
 # Used to build the docs.
-docs = ["sphinx>=8.1", "sphinx_rtd_theme>=3.0", "sphinxemoji>=0.3.1"]
+docs = [
+  "jupyter-book>=1",
+  "sphinx-book-theme",
+  "sphinx-autodoc-typehints",
+  "sphinxcontrib-autoyaml",
+  "sphinxcontrib.mermaid",
+]
 # Tests + docs + other.
 dev = [
+  "hatch",
   "mappymatch[tests]",
   "mappymatch[docs]",
   "coverage",
-  "interrogate",
   "pre-commit",
-  "build",
-  "twine",
-  "pip-tools",
 ]
 
 [project.urls]
 Homepage = "https://github.com/NREL/mappymatch"
 
-[tool.setuptools.packages.find]
-include = ["mappymatch*"]  # package names should match these glob patterns (["*"] by default)
+[tool.hatch.version]
+path = "mappymatch/__about__.py"
 
-[tool.black]
-exclude = '''
-/(
-    \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-  | env
-  | venv
-)/
-'''
-include = '\.pyi?$'
-line-length = 79
-target-version = ['py39']
+[tool.hatch.build.targets.sdist]
+exclude = ["tests/", "docs/", "examples/"]
 
 [tool.ruff]
-line-length = 79
-ignore = ["E501"]
-select = ["F", "E", "W", "I001"]
+exclude = [
+  "build/*",
+  "dist/*",
+]
 
-[tool.interrogate]
-fail-under = 10
-exclude = ["tests", "docs", "examples", "resources"]
-paths = ["mappymatch"]
-# Ignore the docs configuration file.
-ignore-regex = ["conf.py"]
+# Same as Black.
+line-length = 88
+indent-width = 4
 
+# Assume Python 3.9
+target-version = "py39"
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = []
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = ["docs/", "build/", "dist/", "py-notebooks/"]
 
 [tool.coverage.run]
 # Ensures coverage for all if, elif, else branches. 
@@ -102,45 +109,3 @@ precision = 1
 fail_under = 50.0
 skip_covered = false
 skip_empty = true
-
-[tool.tbump]
-# Uncomment  this if your project is hosted on GitHub:
-# github_url = "https://github.com/<user or organization>/<project>/"
-
-[tool.tbump.version]
-# Make sure this matches current_version before using tbump
-current = "0.4.1"
-# Example of a semver regexp.
-regex = '''
-  (?P<major>\d+)
-  \.
-  (?P<minor>\d+)
-  \.
-  (?P<patch>\d+)
-  '''
-
-[tool.tbump.git]
-message_template = "Bump to {new_version}"
-tag_template = "v{new_version}"
-
-# For each file to patch, add a [[tool.tbump.file]] config
-# section containing the path of the file, relative to the
-# tbump.toml location.
-[[tool.tbump.file]]
-src = "./pyproject.toml"
-search = 'version = "{current_version}"'
-[[tool.tbump.file]]
-src = "./docs/source/conf.py"
-search = 'full_version = "{current_version}"'
-
-# You can specify a list of commands to
-# run after the files have been patched
-# and before the git commit is made
-# [[tool.tbump.before_commit]]
-
-
-# Or run some commands after the git tag and the branch
-# have been pushed:
-#  [[tool.tbump.after_push]]
-#  name = "publish"
-#  cmd = "./publish.sh"

@@ -1,4 +1,3 @@
-# Add dependencies in alphabetical order.
 name: mappymatch
 channels:
   - conda-forge
@@ -13,10 +12,8 @@ dependencies:
   - pandas
   - pip
   - pip:
-    - .
-  - pyproj 
-  - requests 
+      - .
+  - pyproj
+  - requests
   - rtree
   - shapely
-
-

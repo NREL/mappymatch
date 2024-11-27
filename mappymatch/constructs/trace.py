@@ -42,9 +42,7 @@ class Trace:
 
     def __add__(self, other: Trace) -> Trace:
         if self.crs != other.crs:
-            raise TypeError(
-                "cannot add two traces together with different crs"
-            )
+            raise TypeError("cannot add two traces together with different crs")
         new_frame = pd.concat([self._frame, other._frame])
         return Trace(new_frame)
 
@@ -131,9 +129,7 @@ class Trace:
             The trace built from the pandas dataframe
         """
         frame = GeoDataFrame(
-            geometry=points_from_xy(
-                dataframe[lon_column], dataframe[lat_column]
-            ),
+            geometry=points_from_xy(dataframe[lon_column], dataframe[lat_column]),
             index=dataframe.index,
             crs=LATLON_CRS,
         )

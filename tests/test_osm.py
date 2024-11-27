@@ -12,15 +12,15 @@ from tests import get_test_dir
 
 class TestOSMap(TestCase):
     def test_osm_networkx_graph_drive(self):
+        # This is just a raw osmnx graph pull using the script:
+        # tests/test_assets/pull_osm_map.py
         gfile = get_test_dir() / "test_assets" / "osmnx_drive_graph.graphml"
 
         osmnx_graph = ox.load_graphml(gfile)
 
         cleaned_graph = parse_osmnx_graph(osmnx_graph, NetworkType.DRIVE)
 
-        self.assertEqual(
-            cleaned_graph.graph["network_type"], NetworkType.DRIVE.value
-        )
+        self.assertEqual(cleaned_graph.graph["network_type"], NetworkType.DRIVE.value)
 
         self.assertTrue(
             nx.is_strongly_connected(cleaned_graph),
@@ -33,20 +33,27 @@ class TestOSMap(TestCase):
                 for _, _, d in cleaned_graph.edges(data=True)
             ]
         )
+
         self.assertTrue(has_geom, "All edges should have geometry")
 
-        # Make sure the graph contains this road segment
-        # TODO: this might be a bit unstable since OSM node ids might change
-        e23_ave_node1 = cleaned_graph.nodes[1321042414]
-        e23_ave_node2 = cleaned_graph.nodes[3323569423]
-        self.assertAlmostEqual(e23_ave_node1["lat"], 39.761877, 5)
-        self.assertAlmostEqual(e23_ave_node1["lon"], -104.9775733, 5)
-        self.assertAlmostEqual(e23_ave_node2["lat"], 39.7602886, 5)
-        self.assertAlmostEqual(e23_ave_node2["lon"], -104.9779113, 5)
-        self.assertAlmostEqual(
-            cleaned_graph.get_edge_data(1321042414, 3323569423, 0)[
-                "kilometers"
-            ],
-            0.246787,
-            5,
+        # check to make sure we don't have any extra data stored in the edges
+        expected_edge_keys = ["geometry", "travel_time", "kilometers"]
+        expected_node_keys = []
+
+        edges_have_right_keys = all(
+            [
+                set(d.keys()) == set(expected_edge_keys)
+                for _, _, d in cleaned_graph.edges(data=True)
+            ]
         )
+
+        self.assertTrue(edges_have_right_keys, "Edges have unexpected keys")
+
+        nodes_have_right_keys = all(
+            [
+                set(d.keys()) == set(expected_node_keys)
+                for _, d in cleaned_graph.nodes(data=True)
+            ]
+        )
+
+        self.assertTrue(nodes_have_right_keys, "Nodes have unexpected keys")

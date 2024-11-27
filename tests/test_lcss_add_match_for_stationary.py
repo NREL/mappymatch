@@ -44,9 +44,7 @@ class TestLCSSAddMatchForStationary(TestCase):
 
         stationary_index: list[StationaryIndex] = []
 
-        resulting_matches = add_matches_for_stationary_points(
-            matches, stationary_index
-        )
+        resulting_matches = add_matches_for_stationary_points(matches, stationary_index)
 
         self.assertListEqual(expected_matches, resulting_matches)
 
@@ -77,17 +75,13 @@ class TestLCSSAddMatchForStationary(TestCase):
         expected_matches = deepcopy(matches)
         # now, add the expected points
         m = expected_matches[0]
-        new_m = m.set_coordinate(
-            Coordinate("new", m.coordinate.geom, m.coordinate.crs)
-        )
+        new_m = m.set_coordinate(Coordinate("new", m.coordinate.geom, m.coordinate.crs))
         expected_matches.insert(0, new_m)
 
         # StationaryIndex( i_index: List[int], c_index: List[Any])
         stationary_index = [StationaryIndex([0, 0], [None, "new"])]
 
-        resulting_matches = add_matches_for_stationary_points(
-            matches, stationary_index
-        )
+        resulting_matches = add_matches_for_stationary_points(matches, stationary_index)
 
         self.assertListEqual(expected_matches, resulting_matches)
 
@@ -119,17 +113,13 @@ class TestLCSSAddMatchForStationary(TestCase):
         expected_matches = deepcopy(matches)
         # now, add the expected points
         m = expected_matches[-1]
-        new_m = m.set_coordinate(
-            Coordinate("new", m.coordinate.geom, m.coordinate.crs)
-        )
+        new_m = m.set_coordinate(Coordinate("new", m.coordinate.geom, m.coordinate.crs))
         expected_matches.append(new_m)
 
         # StationaryIndex( i_index: List[int], c_index: List[Any])
         stationary_index = [StationaryIndex([-1, len(matches)], [None, "new"])]
 
-        resulting_matches = add_matches_for_stationary_points(
-            matches, stationary_index
-        )
+        resulting_matches = add_matches_for_stationary_points(matches, stationary_index)
 
         self.assertListEqual(expected_matches, resulting_matches)
 
@@ -161,32 +151,24 @@ class TestLCSSAddMatchForStationary(TestCase):
         expected_matches = deepcopy(matches)
         # now, add the expected points
         m = expected_matches[-1]
-        new_m = m.set_coordinate(
-            Coordinate("new", m.coordinate.geom, m.coordinate.crs)
-        )
+        new_m = m.set_coordinate(Coordinate("new", m.coordinate.geom, m.coordinate.crs))
         expected_matches[-1:-1] = [new_m]
 
         # StationaryIndex( i_index: List[int], c_index: List[Any])
         stationary_index = [StationaryIndex([-1, -1], [None, "new"])]
 
-        resulting_matches = add_matches_for_stationary_points(
-            matches, stationary_index
-        )
+        resulting_matches = add_matches_for_stationary_points(matches, stationary_index)
 
         self.assertListEqual(expected_matches, resulting_matches)
 
         expected_matches = deepcopy(matches)
         indx = len(matches) // 2
         m = expected_matches[indx]
-        new_m = m.set_coordinate(
-            Coordinate("new", m.coordinate.geom, m.coordinate.crs)
-        )
+        new_m = m.set_coordinate(Coordinate("new", m.coordinate.geom, m.coordinate.crs))
         expected_matches.insert(indx, new_m)
         stationary_index = [StationaryIndex([indx, indx], [None, "new"])]
 
-        resulting_matches = add_matches_for_stationary_points(
-            matches, stationary_index
-        )
+        resulting_matches = add_matches_for_stationary_points(matches, stationary_index)
 
         self.assertListEqual(expected_matches, resulting_matches)
 
@@ -212,9 +194,7 @@ class TestLCSSAddMatchForStationary(TestCase):
         ]
         coords = [Coordinate.from_lat_lon(lat, lon) for lat, lon in lat_longs]
         # Match(road, coordinate, distance)
-        matches: list[Match] = [
-            Match(r, c, 0.1) for r, c in zip(roads, coords)
-        ]
+        matches: list[Match] = [Match(r, c, 0.1) for r, c in zip(roads, coords)]
 
         # ensure that the expected matches are different from the matches that will be passed in
         expected_matches = deepcopy(matches)
@@ -223,20 +203,14 @@ class TestLCSSAddMatchForStationary(TestCase):
         m = expected_matches[indx]
         coord_ids = ["alpha", "beta", "gamma"]
         new_matches = [
-            m.set_coordinate(
-                Coordinate(id, m.coordinate.geom, m.coordinate.crs)
-            )
+            m.set_coordinate(Coordinate(id, m.coordinate.geom, m.coordinate.crs))
             for id in coord_ids
         ]
         expected_matches[indx + 1 : indx + 1] = new_matches
 
         # StationaryIndex( i_index: List[int], c_index: List[Any])
-        stationary_index = [
-            StationaryIndex([indx, indx + 1], [None] + coord_ids)
-        ]
+        stationary_index = [StationaryIndex([indx, indx + 1], [None] + coord_ids)]
 
-        resulting_matches = add_matches_for_stationary_points(
-            matches, stationary_index
-        )
+        resulting_matches = add_matches_for_stationary_points(matches, stationary_index)
 
         self.assertListEqual(expected_matches, resulting_matches)

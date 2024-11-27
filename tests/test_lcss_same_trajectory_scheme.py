@@ -16,9 +16,7 @@ class TestLCSSMatcherSameTrajectoryScheme(TestCase):
         """
         # setup inputted trajectory segments
         trace_1_a = Trace.from_dataframe(
-            pd.DataFrame(
-                data={"latitude": [39.655193], "longitude": [-104.919294]}
-            )
+            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
         )
         trace_2_a = Trace.from_dataframe(
             pd.DataFrame(
@@ -38,9 +36,7 @@ class TestLCSSMatcherSameTrajectoryScheme(TestCase):
         list_a = [segment_1_a, segment_2_a]
 
         trace_1_b = Trace.from_dataframe(
-            pd.DataFrame(
-                data={"latitude": [39.655193], "longitude": [-104.919294]}
-            )
+            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
         )
         trace_2_b = Trace.from_dataframe(
             pd.DataFrame(
@@ -67,9 +63,7 @@ class TestLCSSMatcherSameTrajectoryScheme(TestCase):
         """
         # setup inputted trajectory segments
         trace_1_a = Trace.from_dataframe(
-            pd.DataFrame(
-                data={"latitude": [39.655193], "longitude": [-104.919294]}
-            )
+            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
         )
         trace_2_a = Trace.from_dataframe(
             pd.DataFrame(
@@ -89,9 +83,7 @@ class TestLCSSMatcherSameTrajectoryScheme(TestCase):
         list_a = [segment_1_a, segment_2_a]
 
         trace_1_b = Trace.from_dataframe(
-            pd.DataFrame(
-                data={"latitude": [39.655193], "longitude": [-104.919294]}
-            )
+            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
         )
         trace_2_b = Trace.from_dataframe(
             pd.DataFrame(
@@ -118,9 +110,7 @@ class TestLCSSMatcherSameTrajectoryScheme(TestCase):
         """
         # setup inputted trajectory segments
         trace_1_a = Trace.from_dataframe(
-            pd.DataFrame(
-                data={"latitude": [39.655193], "longitude": [-104.919294]}
-            )
+            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
         )
         trace_2_a = Trace.from_dataframe(
             pd.DataFrame(
@@ -140,9 +130,7 @@ class TestLCSSMatcherSameTrajectoryScheme(TestCase):
         list_a = [segment_1_a, segment_2_a]
 
         trace_1_b = Trace.from_dataframe(
-            pd.DataFrame(
-                data={"latitude": [39.655193], "longitude": [-104.919294]}
-            )
+            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
         )
         trace_2_b = Trace.from_dataframe(
             pd.DataFrame(
@@ -169,9 +157,7 @@ class TestLCSSMatcherSameTrajectoryScheme(TestCase):
         """
         # setup inputted trajectory segments
         trace_1_a = Trace.from_dataframe(
-            pd.DataFrame(
-                data={"latitude": [39.655193], "longitude": [-104.919294]}
-            )
+            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
         )
         trace_2_a = Trace.from_dataframe(
             pd.DataFrame(
@@ -191,9 +177,7 @@ class TestLCSSMatcherSameTrajectoryScheme(TestCase):
         list_a = [segment_1_a, segment_2_a]
 
         trace_1_b = Trace.from_dataframe(
-            pd.DataFrame(
-                data={"latitude": [39.655193], "longitude": [-104.919294]}
-            )
+            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
         )
         trace_2_b = Trace.from_dataframe(
             pd.DataFrame(
@@ -220,9 +204,7 @@ class TestLCSSMatcherSameTrajectoryScheme(TestCase):
         """
         # setup inputted trajectory segments
         trace_1_a = Trace.from_dataframe(
-            pd.DataFrame(
-                data={"latitude": [39.655193], "longitude": [-104.919294]}
-            )
+            pd.DataFrame(data={"latitude": [39.655193], "longitude": [-104.919294]})
         )
         trace_2_a = Trace.from_dataframe(
             pd.DataFrame(

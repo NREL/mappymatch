@@ -1,0 +1,21 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: home
+parts:
+  - caption: Quick Start
+    chapters:
+      - file: quick-start
+
+  - caption: Installation
+    chapters:
+      - file: install
+
+  - caption: Example
+    chapters:
+      - file: lcss-example
+
+  - caption: Reference
+    chapters:
+      - file: api-docs
