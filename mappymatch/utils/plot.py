@@ -28,9 +28,7 @@ def plot_geofence(geofence: Geofence, m: Optional[folium.Map] = None):
         The updated folium map with the geofence.
     """
     if not geofence.crs == LATLON_CRS:
-        raise NotImplementedError(
-            "can currently only plot a geofence with lat lon crs"
-        )
+        raise NotImplementedError("can currently only plot a geofence with lat lon crs")
 
     if not m:
         c = geofence.geometry.centroid.coords[0]
@@ -79,9 +77,7 @@ def plot_trace(
         ).add_to(m)
 
     if line_color is not None:
-        folium.PolyLine(
-            [(p.y, p.x) for p in trace.coords], color=line_color
-        ).add_to(m)
+        folium.PolyLine([(p.y, p.x) for p in trace.coords], color=line_color).add_to(m)
 
     return m
 
@@ -124,9 +120,9 @@ def plot_matches(matches: Union[MatchResult, List[Match]], crs=XY_CRS):
 
     coord_df = pd.DataFrame([_match_to_coord(m) for m in matches if m.road])
 
-    coord_gdf = gpd.GeoDataFrame(
-        coord_df, geometry=coord_df.geom, crs=crs
-    ).drop(columns=["geom"])
+    coord_gdf = gpd.GeoDataFrame(coord_df, geometry=coord_df.geom, crs=crs).drop(
+        columns=["geom"]
+    )
     coord_gdf = coord_gdf.to_crs(LATLON_CRS)
 
     mid_i = int(len(coord_gdf) / 2)
@@ -166,9 +162,7 @@ def plot_map(tmap: NxMap, m: Optional[folium.Map] = None):
     # TODO make this generic to all map types, not just NxMap
     roads = list(tmap.g.edges(data=True))
     road_df = pd.DataFrame([r[2] for r in roads])
-    gdf = gpd.GeoDataFrame(
-        road_df, geometry=road_df[tmap._geom_key], crs=tmap.crs
-    )
+    gdf = gpd.GeoDataFrame(road_df, geometry=road_df[tmap._geom_key], crs=tmap.crs)
     if gdf.crs != LATLON_CRS:
         gdf = gdf.to_crs(LATLON_CRS)
 

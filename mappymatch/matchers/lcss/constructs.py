@@ -204,9 +204,7 @@ class TrajectorySegment(NamedTuple):
                 p1 = np.argmax(
                     [coord_to_coord_dist(start, c) for c in self.trace.coords]
                 )
-                p2 = np.argmax(
-                    [coord_to_coord_dist(end, c) for c in self.trace.coords]
-                )
+                p2 = np.argmax([coord_to_coord_dist(end, c) for c in self.trace.coords])
                 assert not isinstance(p1, ndarray)
                 assert not isinstance(p2, ndarray)
                 # To do - np.argmax returns array of indices where the highest value is found.

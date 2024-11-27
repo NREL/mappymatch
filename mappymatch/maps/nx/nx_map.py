@@ -59,9 +59,7 @@ class NxMap(MapInterface):
 
         self.crs = crs
 
-        dist_weight = graph.graph.get(
-            "distance_weight", DEFAULT_DISTANCE_WEIGHT
-        )
+        dist_weight = graph.graph.get("distance_weight", DEFAULT_DISTANCE_WEIGHT)
         time_weight = graph.graph.get("time_weight", DEFAULT_TIME_WEIGHT)
         geom_key = graph.graph.get("geometry_key", DEFAULT_GEOMETRY_KEY)
         metadata_key = graph.graph.get("metadata_key", DEFAULT_METADATA_KEY)
@@ -181,8 +179,7 @@ class NxMap(MapInterface):
     @property
     def roads(self) -> List[Road]:
         roads = [
-            self._build_road(RoadId(u, v, k))
-            for u, v, k in self.g.edges(keys=True)
+            self._build_road(RoadId(u, v, k)) for u, v, k in self.g.edges(keys=True)
         ]
         return roads
 
@@ -316,11 +313,7 @@ class NxMap(MapInterface):
         nearest_candidates = list(
             map(
                 lambda c: c.object,
-                (
-                    self.rtree.nearest(
-                        coord.geom.buffer(buffer).bounds, 1, objects=True
-                    )
-                ),
+                (self.rtree.nearest(coord.geom.buffer(buffer).bounds, 1, objects=True)),
             )
         )
 

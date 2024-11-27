@@ -20,18 +20,9 @@ def parse_osrm_json(j: dict, trace: Trace) -> list[Match]:
     """
     parse the json response from the osrm match service
 
-    we're looking for the osm node ids which should be in the form:
-
-    { 'matchings':
-        [{ 'legs':
-            [{ 'annotations':
-                {'nodes': [node_id, node_id] }
-            }]
-        }]
-    }
-
     :param j: the json object
-    :return:
+
+    :return: a list of matches
     """
     matchings = j.get("matchings")
     if not matchings:
@@ -57,9 +48,7 @@ def parse_osrm_json(j: dict, trace: Trace) -> list[Match]:
             road_id=road_id,
             geom=None,
         )
-        match = Match(
-            road=road, coordinate=trace.coords[i], distance=float("infinity")
-        )
+        match = Match(road=road, coordinate=trace.coords[i], distance=float("infinity"))
         return match
 
     return [_parse_leg(d, i) for i, d in enumerate(legs)]
@@ -97,9 +86,7 @@ class OsrmMatcher(MatcherInterface):
         # remove the trailing semicolon
         coordinate_str = coordinate_str[:-1]
 
-        osrm_request = (
-            self.osrm_api_base + coordinate_str + "?annotations=true"
-        )
+        osrm_request = self.osrm_api_base + coordinate_str + "?annotations=true"
         print(osrm_request)
 
         r = requests.get(osrm_request)

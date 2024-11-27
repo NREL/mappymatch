@@ -8,7 +8,7 @@ import networkx as nx
 from shapely.geometry import LineString
 
 from mappymatch.constructs.geofence import Geofence
-from mappymatch.utils.crs import LATLON_CRS, XY_CRS
+from mappymatch.utils.crs import XY_CRS
 from mappymatch.utils.exceptions import MapException
 
 log.basicConfig(level=log.INFO)
@@ -52,9 +52,7 @@ def nx_graph_from_osmnx(
     try:
         import osmnx as ox
     except ImportError:
-        raise MapException(
-            "osmnx is not installed but is required for this map type"
-        )
+        raise MapException("osmnx is not installed but is required for this map type")
     ox.settings.log_console = False
 
     raw_graph = ox.graph_from_polygon(
@@ -84,17 +82,12 @@ def parse_osmnx_graph(
     try:
         import osmnx as ox
     except ImportError:
-        raise MapException(
-            "osmnx is not installed but is required for this map type"
-        )
+        raise MapException("osmnx is not installed but is required for this map type")
     ox.settings.log_console = False
     g = graph
 
     if xy:
-        g = ox.project_graph(g, XY_CRS)
-        crs = XY_CRS
-    else:
-        crs = LATLON_CRS
+        g = ox.project_graph(g, to_crs=XY_CRS)
 
     g = ox.add_edge_speeds(g)
     g = ox.add_edge_travel_times(g)
@@ -117,22 +110,22 @@ def parse_osmnx_graph(
     no_geom = 0
     for u, v, d in g.edges(data=True):
         if "geometry" not in d:
+            if no_geom < 10:
+                print(d)
             # we'll build a pseudo-geometry using the x, y data from the nodes
             unode = g.nodes[u]
             vnode = g.nodes[v]
-            line = LineString(
-                [(unode["x"], unode["y"]), (vnode["x"], vnode["y"])]
-            )
+            line = LineString([(unode["x"], unode["y"]), (vnode["x"], vnode["y"])])
             d["geometry"] = line
             no_geom += 1
-    if no_geom:
+    if no_geom > 0:
+        total_links = len(g.edges)
         print(
-            f"Warning: found {no_geom} links with no geometry; creating geometries from the node lat/lon"
+            f"Warning: found {no_geom} of {total_links} links with no geometry; "
+            "creating link geometries from the node endpoints"
         )
 
     g = compress(g)
-
-    g.graph["crs"] = crs
 
     # TODO: these should all be sourced from the same location
     g.graph["distance_weight"] = "kilometers"
@@ -143,7 +136,7 @@ def parse_osmnx_graph(
     return g
 
 
-def compress(g) -> nx.MultiDiGraph:
+def compress(g: nx.MultiDiGraph) -> nx.MultiDiGraph:
     """
     a hacky way to delete unnecessary data on the networkx graph
 
@@ -168,6 +161,7 @@ def compress(g) -> nx.MultiDiGraph:
         "junction",
         "bridge",
         "tunnel",
+        "reversed",
         "y",
         "x",
     ]
