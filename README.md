@@ -60,4 +60,4 @@ df = matches.matches_to_dataframe()
 
 ## Example Notebooks
 
-Check out the [LCSS Example](https://nrel.github.io/mappymatch/lcss-example.html) for an example of working with the package.
+Check out the [LCSS Example](https://nrel.github.io/mappymatch/lcss-example.html) for a more detailed example of working with the LCSSMatcher.

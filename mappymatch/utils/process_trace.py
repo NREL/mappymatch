@@ -14,6 +14,9 @@ def split_large_trace(trace: Trace, ideal_size: int) -> list[Trace]:
     Returns:
         A list of split traces.
     """
+    if ideal_size == 0:
+        raise ValueError("ideal_size must be greater than 0")
+
     if len(trace) <= ideal_size:
         return [trace]
     else:
@@ -42,7 +45,6 @@ def remove_bad_start_from_trace(trace: Trace, distance_threshold: float) -> Trac
     """
 
     def _trim_frame(frame):
-        """Pivate no docstring required."""
         for index in range(len(frame)):
             rows = frame.iloc[index : index + 2]
 
