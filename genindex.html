@@ -1,0 +1,1269 @@
+
+<!DOCTYPE html>
+
+
+<html lang="python" data-content_root="./" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; mappymatch</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="_static/documentation_options.js?v=30a733bc"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@10.8/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10.8/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10.8/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="python"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="home.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">mappymatch</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="home.html">
+                    Mappymatch
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick Start</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Example</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="lcss-example.html">LCSS Example</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="api-docs.html">API Documentation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/mappymatch.constructs.html">mappymatch.constructs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.constructs.coordinate.html">mappymatch.constructs.coordinate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.constructs.geofence.html">mappymatch.constructs.geofence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.constructs.match.html">mappymatch.constructs.match</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.constructs.road.html">mappymatch.constructs.road</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.constructs.trace.html">mappymatch.constructs.trace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/mappymatch.maps.html">mappymatch.maps</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/mappymatch.maps.igraph.html">mappymatch.maps.igraph</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/mappymatch.maps.igraph.igraph_map.html">mappymatch.maps.igraph.igraph_map</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.maps.map_interface.html">mappymatch.maps.map_interface</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/mappymatch.maps.nx.html">mappymatch.maps.nx</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/mappymatch.maps.nx.nx_map.html">mappymatch.maps.nx.nx_map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/mappymatch.maps.nx.readers.html">mappymatch.maps.nx.readers</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/mappymatch.matchers.html">mappymatch.matchers</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/mappymatch.matchers.lcss.html">mappymatch.matchers.lcss</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/mappymatch.matchers.lcss.constructs.html">mappymatch.matchers.lcss.constructs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/mappymatch.matchers.lcss.lcss.html">mappymatch.matchers.lcss.lcss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/mappymatch.matchers.lcss.ops.html">mappymatch.matchers.lcss.ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/mappymatch.matchers.lcss.utils.html">mappymatch.matchers.lcss.utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.matchers.line_snap.html">mappymatch.matchers.line_snap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.matchers.match_result.html">mappymatch.matchers.match_result</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.matchers.matcher_interface.html">mappymatch.matchers.matcher_interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.matchers.osrm.html">mappymatch.matchers.osrm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.matchers.valhalla.html">mappymatch.matchers.valhalla</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/mappymatch.utils.html">mappymatch.utils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.utils.crs.html">mappymatch.utils.crs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.utils.exceptions.html">mappymatch.utils.exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.utils.geo.html">mappymatch.utils.geo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.utils.plot.html">mappymatch.utils.plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.utils.process_trace.html">mappymatch.utils.process_trace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/mappymatch.utils.url.html">mappymatch.utils.url</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/NREL/mappymatch" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/NREL/mappymatch/issues/new?title=Issue%20on%20page%20%2Fgenindex.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.add_matches_for_stationary_points">add_matches_for_stationary_points() (in module mappymatch.matchers.lcss.ops)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#mappymatch.maps.nx.readers.osm_readers.NetworkType.ALL">ALL (mappymatch.maps.nx.readers.osm_readers.NetworkType attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#mappymatch.maps.nx.readers.osm_readers.NetworkType.ALL_PRIVATE">ALL_PRIVATE (mappymatch.maps.nx.readers.osm_readers.NetworkType attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#mappymatch.maps.nx.readers.osm_readers.NetworkType.BIKE">BIKE (mappymatch.maps.nx.readers.osm_readers.NetworkType attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.matchers.valhalla.html#mappymatch.matchers.valhalla.build_match_result">build_match_result() (in module mappymatch.matchers.valhalla)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.valhalla.html#mappymatch.matchers.valhalla.build_path_from_result">build_path_from_result() (in module mappymatch.matchers.valhalla)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.StationaryIndex.c_index">c_index (mappymatch.matchers.lcss.ops.StationaryIndex attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#mappymatch.maps.nx.readers.osm_readers.compress">compress() (in module mappymatch.maps.nx.readers.osm_readers)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.utils.html#mappymatch.matchers.lcss.utils.compress">(in module mappymatch.matchers.lcss.utils)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment.compute_cutting_points">compute_cutting_points() (mappymatch.matchers.lcss.constructs.TrajectorySegment method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.utils.geo.html#mappymatch.utils.geo.coord_to_coord_dist">coord_to_coord_dist() (in module mappymatch.utils.geo)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.coordinate.html#mappymatch.constructs.coordinate.Coordinate">Coordinate (class in mappymatch.constructs.coordinate)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.match.html#mappymatch.constructs.match.Match.coordinate">coordinate (mappymatch.constructs.match.Match attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.coordinate.html#mappymatch.constructs.coordinate.Coordinate.coordinate_id">coordinate_id (mappymatch.constructs.coordinate.Coordinate attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.coords">coords (mappymatch.constructs.trace.Trace property)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.coordinate.html#mappymatch.constructs.coordinate.Coordinate.crs">crs (mappymatch.constructs.coordinate.Coordinate attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.crs">(mappymatch.constructs.trace.Trace property)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.match_result.html#mappymatch.matchers.match_result.MatchResult.crs">(mappymatch.matchers.match_result.MatchResult property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment.cutting_points">cutting_points (mappymatch.matchers.lcss.constructs.TrajectorySegment attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.CuttingPoint">CuttingPoint (class in mappymatch.matchers.lcss.constructs)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.match.html#mappymatch.constructs.match.Match.distance">distance (mappymatch.constructs.match.Match attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.distance_weight">distance_weight (mappymatch.maps.igraph.igraph_map.IGraphMap property)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.map_interface.html#mappymatch.maps.map_interface.MapInterface.distance_weight">(mappymatch.maps.map_interface.MapInterface property)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.distance_weight">(mappymatch.maps.nx.nx_map.NxMap property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.downsample">downsample() (mappymatch.constructs.trace.Trace method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#mappymatch.maps.nx.readers.osm_readers.NetworkType.DRIVE">DRIVE (mappymatch.maps.nx.readers.osm_readers.NetworkType attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#mappymatch.maps.nx.readers.osm_readers.NetworkType.DRIVE_SERVICE">DRIVE_SERVICE (mappymatch.maps.nx.readers.osm_readers.NetworkType attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.drop">drop() (mappymatch.constructs.trace.Trace method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.drop_stationary_points">drop_stationary_points() (in module mappymatch.matchers.lcss.ops)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.RoadId.end">end (mappymatch.constructs.road.RoadId attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.find_stationary_points">find_stationary_points() (in module mappymatch.matchers.lcss.ops)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.utils.html#mappymatch.matchers.lcss.utils.forward_merge">forward_merge() (in module mappymatch.matchers.lcss.utils)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.from_csv">from_csv() (mappymatch.constructs.trace.Trace class method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.from_dataframe">from_dataframe() (mappymatch.constructs.trace.Trace class method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.from_dict">from_dict() (mappymatch.maps.nx.nx_map.NxMap class method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.from_file">from_file() (mappymatch.maps.igraph.igraph_map.IGraphMap class method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.from_file">(mappymatch.maps.nx.nx_map.NxMap class method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.from_geo_dataframe">from_geo_dataframe() (mappymatch.constructs.trace.Trace class method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.from_geofence">from_geofence() (mappymatch.maps.igraph.igraph_map.IGraphMap class method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.from_geofence">(mappymatch.maps.nx.nx_map.NxMap class method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.geofence.html#mappymatch.constructs.geofence.Geofence.from_geojson">from_geojson() (mappymatch.constructs.geofence.Geofence class method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.from_geojson">(mappymatch.constructs.trace.Trace class method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.from_gpx">from_gpx() (mappymatch.constructs.trace.Trace class method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.RoadId.from_json">from_json() (mappymatch.constructs.road.RoadId class method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.coordinate.html#mappymatch.constructs.coordinate.Coordinate.from_lat_lon">from_lat_lon() (mappymatch.constructs.coordinate.Coordinate class method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.from_nx_graph">from_nx_graph() (mappymatch.maps.igraph.igraph_map.IGraphMap class method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.from_parquet">from_parquet() (mappymatch.constructs.trace.Trace class method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.RoadId.from_string">from_string() (mappymatch.constructs.road.RoadId class method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.geofence.html#mappymatch.constructs.geofence.Geofence.from_trace">from_trace() (mappymatch.constructs.geofence.Geofence class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.geofence.html#mappymatch.constructs.geofence.Geofence">Geofence (class in mappymatch.constructs.geofence)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.coordinate.html#mappymatch.constructs.coordinate.Coordinate.geom">geom (mappymatch.constructs.coordinate.Coordinate attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.Road.geom">(mappymatch.constructs.road.Road attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.StationaryIndex.i_index">i_index (mappymatch.matchers.lcss.ops.StationaryIndex attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap">IGraphMap (class in mappymatch.maps.igraph.igraph_map)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.index">index (mappymatch.constructs.trace.Trace property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.RoadId.key">key (mappymatch.constructs.road.RoadId attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.utils.geo.html#mappymatch.utils.geo.latlon_to_xy">latlon_to_xy() (in module mappymatch.utils.geo)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.lcss.html#mappymatch.matchers.lcss.lcss.LCSSMatcher">LCSSMatcher (class in mappymatch.matchers.lcss.lcss)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.line_snap.html#mappymatch.matchers.line_snap.LineSnapMatcher">LineSnapMatcher (class in mappymatch.matchers.line_snap)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.utils.exceptions.html#mappymatch.utils.exceptions.MapException">MapException</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.map_interface.html#mappymatch.maps.map_interface.MapInterface">MapInterface (class in mappymatch.maps.map_interface)</a>
+</li>
+      <li>
+    mappymatch.constructs
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.html#module-mappymatch.constructs">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.constructs.coordinate
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.coordinate.html#module-mappymatch.constructs.coordinate">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.constructs.geofence
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.geofence.html#module-mappymatch.constructs.geofence">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.constructs.match
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.match.html#module-mappymatch.constructs.match">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.constructs.road
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.road.html#module-mappymatch.constructs.road">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.constructs.trace
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.trace.html#module-mappymatch.constructs.trace">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.maps
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.html#module-mappymatch.maps">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.maps.igraph
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.igraph.html#module-mappymatch.maps.igraph">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.maps.igraph.igraph_map
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#module-mappymatch.maps.igraph.igraph_map">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.maps.map_interface
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.map_interface.html#module-mappymatch.maps.map_interface">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.maps.nx
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.nx.html#module-mappymatch.maps.nx">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.maps.nx.nx_map
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#module-mappymatch.maps.nx.nx_map">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.maps.nx.readers
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.nx.readers.html#module-mappymatch.maps.nx.readers">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.maps.nx.readers.osm_readers
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#module-mappymatch.maps.nx.readers.osm_readers">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.html#module-mappymatch.matchers">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers.lcss
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.html#module-mappymatch.matchers.lcss">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers.lcss.constructs
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#module-mappymatch.matchers.lcss.constructs">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers.lcss.lcss
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.lcss.html#module-mappymatch.matchers.lcss.lcss">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers.lcss.ops
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#module-mappymatch.matchers.lcss.ops">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers.lcss.utils
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.utils.html#module-mappymatch.matchers.lcss.utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers.line_snap
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.line_snap.html#module-mappymatch.matchers.line_snap">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers.match_result
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.match_result.html#module-mappymatch.matchers.match_result">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers.matcher_interface
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.matcher_interface.html#module-mappymatch.matchers.matcher_interface">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers.osrm
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.osrm.html#module-mappymatch.matchers.osrm">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.matchers.valhalla
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.valhalla.html#module-mappymatch.matchers.valhalla">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.utils
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.utils.html#module-mappymatch.utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.utils.crs
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.utils.crs.html#module-mappymatch.utils.crs">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.utils.exceptions
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.utils.exceptions.html#module-mappymatch.utils.exceptions">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.utils.geo
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.utils.geo.html#module-mappymatch.utils.geo">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    mappymatch.utils.plot
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.utils.plot.html#module-mappymatch.utils.plot">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.utils.process_trace
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.utils.process_trace.html#module-mappymatch.utils.process_trace">module</a>
+</li>
+      </ul></li>
+      <li>
+    mappymatch.utils.url
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.utils.url.html#module-mappymatch.utils.url">module</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.constructs.match.html#mappymatch.constructs.match.Match">Match (class in mappymatch.constructs.match)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.lcss.html#mappymatch.matchers.lcss.lcss.LCSSMatcher.match_trace">match_trace() (mappymatch.matchers.lcss.lcss.LCSSMatcher method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.line_snap.html#mappymatch.matchers.line_snap.LineSnapMatcher.match_trace">(mappymatch.matchers.line_snap.LineSnapMatcher method)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.matcher_interface.html#mappymatch.matchers.matcher_interface.MatcherInterface.match_trace">(mappymatch.matchers.matcher_interface.MatcherInterface method)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.osrm.html#mappymatch.matchers.osrm.OsrmMatcher.match_trace">(mappymatch.matchers.osrm.OsrmMatcher method)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.valhalla.html#mappymatch.matchers.valhalla.ValhallaMatcher.match_trace">(mappymatch.matchers.valhalla.ValhallaMatcher method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.lcss.html#mappymatch.matchers.lcss.lcss.LCSSMatcher.match_trace_batch">match_trace_batch() (mappymatch.matchers.lcss.lcss.LCSSMatcher method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.line_snap.html#mappymatch.matchers.line_snap.LineSnapMatcher.match_trace_batch">(mappymatch.matchers.line_snap.LineSnapMatcher method)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.matcher_interface.html#mappymatch.matchers.matcher_interface.MatcherInterface.match_trace_batch">(mappymatch.matchers.matcher_interface.MatcherInterface method)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.osrm.html#mappymatch.matchers.osrm.OsrmMatcher.match_trace_batch">(mappymatch.matchers.osrm.OsrmMatcher method)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.valhalla.html#mappymatch.matchers.valhalla.ValhallaMatcher.match_trace_batch">(mappymatch.matchers.valhalla.ValhallaMatcher method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.matchers.matcher_interface.html#mappymatch.matchers.matcher_interface.MatcherInterface">MatcherInterface (class in mappymatch.matchers.matcher_interface)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment.matches">matches (mappymatch.matchers.lcss.constructs.TrajectorySegment attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.match_result.html#mappymatch.matchers.match_result.MatchResult.matches">(mappymatch.matchers.match_result.MatchResult attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.matchers.match_result.html#mappymatch.matchers.match_result.MatchResult.matches_to_dataframe">matches_to_dataframe() (mappymatch.matchers.match_result.MatchResult method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.match_result.html#mappymatch.matchers.match_result.MatchResult.matches_to_geodataframe">matches_to_geodataframe() (mappymatch.matchers.match_result.MatchResult method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.match_result.html#mappymatch.matchers.match_result.MatchResult">MatchResult (class in mappymatch.matchers.match_result)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.utils.html#mappymatch.matchers.lcss.utils.merge">merge() (in module mappymatch.matchers.lcss.utils)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.Road.metadata">metadata (mappymatch.constructs.road.Road attribute)</a>
+</li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.html#module-mappymatch.constructs">mappymatch.constructs</a>
+</li>
+        <li><a href="_autosummary/mappymatch.constructs.coordinate.html#module-mappymatch.constructs.coordinate">mappymatch.constructs.coordinate</a>
+</li>
+        <li><a href="_autosummary/mappymatch.constructs.geofence.html#module-mappymatch.constructs.geofence">mappymatch.constructs.geofence</a>
+</li>
+        <li><a href="_autosummary/mappymatch.constructs.match.html#module-mappymatch.constructs.match">mappymatch.constructs.match</a>
+</li>
+        <li><a href="_autosummary/mappymatch.constructs.road.html#module-mappymatch.constructs.road">mappymatch.constructs.road</a>
+</li>
+        <li><a href="_autosummary/mappymatch.constructs.trace.html#module-mappymatch.constructs.trace">mappymatch.constructs.trace</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.html#module-mappymatch.maps">mappymatch.maps</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.igraph.html#module-mappymatch.maps.igraph">mappymatch.maps.igraph</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#module-mappymatch.maps.igraph.igraph_map">mappymatch.maps.igraph.igraph_map</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.map_interface.html#module-mappymatch.maps.map_interface">mappymatch.maps.map_interface</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.nx.html#module-mappymatch.maps.nx">mappymatch.maps.nx</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#module-mappymatch.maps.nx.nx_map">mappymatch.maps.nx.nx_map</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.nx.readers.html#module-mappymatch.maps.nx.readers">mappymatch.maps.nx.readers</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#module-mappymatch.maps.nx.readers.osm_readers">mappymatch.maps.nx.readers.osm_readers</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.html#module-mappymatch.matchers">mappymatch.matchers</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.html#module-mappymatch.matchers.lcss">mappymatch.matchers.lcss</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#module-mappymatch.matchers.lcss.constructs">mappymatch.matchers.lcss.constructs</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.lcss.html#module-mappymatch.matchers.lcss.lcss">mappymatch.matchers.lcss.lcss</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#module-mappymatch.matchers.lcss.ops">mappymatch.matchers.lcss.ops</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.lcss.utils.html#module-mappymatch.matchers.lcss.utils">mappymatch.matchers.lcss.utils</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.line_snap.html#module-mappymatch.matchers.line_snap">mappymatch.matchers.line_snap</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.match_result.html#module-mappymatch.matchers.match_result">mappymatch.matchers.match_result</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.matcher_interface.html#module-mappymatch.matchers.matcher_interface">mappymatch.matchers.matcher_interface</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.osrm.html#module-mappymatch.matchers.osrm">mappymatch.matchers.osrm</a>
+</li>
+        <li><a href="_autosummary/mappymatch.matchers.valhalla.html#module-mappymatch.matchers.valhalla">mappymatch.matchers.valhalla</a>
+</li>
+        <li><a href="_autosummary/mappymatch.utils.html#module-mappymatch.utils">mappymatch.utils</a>
+</li>
+        <li><a href="_autosummary/mappymatch.utils.crs.html#module-mappymatch.utils.crs">mappymatch.utils.crs</a>
+</li>
+        <li><a href="_autosummary/mappymatch.utils.exceptions.html#module-mappymatch.utils.exceptions">mappymatch.utils.exceptions</a>
+</li>
+        <li><a href="_autosummary/mappymatch.utils.geo.html#module-mappymatch.utils.geo">mappymatch.utils.geo</a>
+</li>
+        <li><a href="_autosummary/mappymatch.utils.plot.html#module-mappymatch.utils.plot">mappymatch.utils.plot</a>
+</li>
+        <li><a href="_autosummary/mappymatch.utils.process_trace.html#module-mappymatch.utils.process_trace">mappymatch.utils.process_trace</a>
+</li>
+        <li><a href="_autosummary/mappymatch.utils.url.html#module-mappymatch.utils.url">mappymatch.utils.url</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.utils.url.html#mappymatch.utils.url.multiurljoin">multiurljoin() (in module mappymatch.utils.url)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.nearest_road">nearest_road() (mappymatch.maps.igraph.igraph_map.IGraphMap method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.map_interface.html#mappymatch.maps.map_interface.MapInterface.nearest_road">(mappymatch.maps.map_interface.MapInterface method)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.nearest_road">(mappymatch.maps.nx.nx_map.NxMap method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#mappymatch.maps.nx.readers.osm_readers.NetworkType">NetworkType (class in mappymatch.maps.nx.readers.osm_readers)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.new_path">new_path() (in module mappymatch.matchers.lcss.ops)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#mappymatch.maps.nx.readers.osm_readers.nx_graph_from_osmnx">nx_graph_from_osmnx() (in module mappymatch.maps.nx.readers.osm_readers)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap">NxMap (class in mappymatch.maps.nx.nx_map)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.matchers.osrm.html#mappymatch.matchers.osrm.OsrmMatcher">OsrmMatcher (class in mappymatch.matchers.osrm)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#mappymatch.maps.nx.readers.osm_readers.parse_osmnx_graph">parse_osmnx_graph() (in module mappymatch.maps.nx.readers.osm_readers)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.osrm.html#mappymatch.matchers.osrm.parse_osrm_json">parse_osrm_json() (in module mappymatch.matchers.osrm)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment.path">path (mappymatch.matchers.lcss.constructs.TrajectorySegment attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.matchers.match_result.html#mappymatch.matchers.match_result.MatchResult.path">(mappymatch.matchers.match_result.MatchResult attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.matchers.match_result.html#mappymatch.matchers.match_result.MatchResult.path_to_dataframe">path_to_dataframe() (mappymatch.matchers.match_result.MatchResult method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.match_result.html#mappymatch.matchers.match_result.MatchResult.path_to_geodataframe">path_to_geodataframe() (mappymatch.matchers.match_result.MatchResult method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.utils.plot.html#mappymatch.utils.plot.plot_geofence">plot_geofence() (in module mappymatch.utils.plot)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.utils.plot.html#mappymatch.utils.plot.plot_map">plot_map() (in module mappymatch.utils.plot)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.utils.plot.html#mappymatch.utils.plot.plot_match_distances">plot_match_distances() (in module mappymatch.utils.plot)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.utils.plot.html#mappymatch.utils.plot.plot_matches">plot_matches() (in module mappymatch.utils.plot)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.utils.plot.html#mappymatch.utils.plot.plot_path">plot_path() (in module mappymatch.utils.plot)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.utils.plot.html#mappymatch.utils.plot.plot_trace">plot_trace() (in module mappymatch.utils.plot)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.utils.process_trace.html#mappymatch.utils.process_trace.remove_bad_start_from_trace">remove_bad_start_from_trace() (in module mappymatch.utils.process_trace)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.utils.html#mappymatch.matchers.lcss.utils.reverse_merge">reverse_merge() (in module mappymatch.matchers.lcss.utils)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.Road">Road (class in mappymatch.constructs.road)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.match.html#mappymatch.constructs.match.Match.road">road (mappymatch.constructs.match.Match attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.road_by_id">road_by_id() (mappymatch.maps.igraph.igraph_map.IGraphMap method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.map_interface.html#mappymatch.maps.map_interface.MapInterface.road_by_id">(mappymatch.maps.map_interface.MapInterface method)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.road_by_id">(mappymatch.maps.nx.nx_map.NxMap method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.Road.road_id">road_id (mappymatch.constructs.road.Road attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.RoadId">RoadId (class in mappymatch.constructs.road)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.roads">roads (mappymatch.maps.igraph.igraph_map.IGraphMap property)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.map_interface.html#mappymatch.maps.map_interface.MapInterface.roads">(mappymatch.maps.map_interface.MapInterface property)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.roads">(mappymatch.maps.nx.nx_map.NxMap property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.same_trajectory_scheme">same_trajectory_scheme() (in module mappymatch.matchers.lcss.ops)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment.score">score (mappymatch.matchers.lcss.constructs.TrajectorySegment attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment.score_and_match">score_and_match() (mappymatch.matchers.lcss.constructs.TrajectorySegment method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.match.html#mappymatch.constructs.match.Match.set_coordinate">set_coordinate() (mappymatch.constructs.match.Match method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment.set_cutting_points">set_cutting_points() (mappymatch.matchers.lcss.constructs.TrajectorySegment method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment.set_matches">set_matches() (mappymatch.matchers.lcss.constructs.TrajectorySegment method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.set_road_attributes">set_road_attributes() (mappymatch.maps.igraph.igraph_map.IGraphMap method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.set_road_attributes">(mappymatch.maps.nx.nx_map.NxMap method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment.set_score">set_score() (mappymatch.matchers.lcss.constructs.TrajectorySegment method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.shortest_path">shortest_path() (mappymatch.maps.igraph.igraph_map.IGraphMap method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.map_interface.html#mappymatch.maps.map_interface.MapInterface.shortest_path">(mappymatch.maps.map_interface.MapInterface method)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.shortest_path">(mappymatch.maps.nx.nx_map.NxMap method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.utils.process_trace.html#mappymatch.utils.process_trace.split_large_trace">split_large_trace() (in module mappymatch.utils.process_trace)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.split_trajectory_segment">split_trajectory_segment() (in module mappymatch.matchers.lcss.ops)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.RoadId.start">start (mappymatch.constructs.road.RoadId attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.StationaryIndex">StationaryIndex (class in mappymatch.matchers.lcss.ops)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.time_weight">time_weight (mappymatch.maps.igraph.igraph_map.IGraphMap property)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.map_interface.html#mappymatch.maps.map_interface.MapInterface.time_weight">(mappymatch.maps.map_interface.MapInterface property)</a>
+</li>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.time_weight">(mappymatch.maps.nx.nx_map.NxMap property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.constructs.coordinate.html#mappymatch.constructs.coordinate.Coordinate.to_crs">to_crs() (mappymatch.constructs.coordinate.Coordinate method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.to_crs">(mappymatch.constructs.trace.Trace method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.Road.to_dict">to_dict() (mappymatch.constructs.road.Road method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.to_dict">(mappymatch.maps.nx.nx_map.NxMap method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.to_file">to_file() (mappymatch.maps.igraph.igraph_map.IGraphMap method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.maps.nx.nx_map.html#mappymatch.maps.nx.nx_map.NxMap.to_file">(mappymatch.maps.nx.nx_map.NxMap method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.match.html#mappymatch.constructs.match.Match.to_flat_dict">to_flat_dict() (mappymatch.constructs.match.Match method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.Road.to_flat_dict">(mappymatch.constructs.road.Road method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.constructs.geofence.html#mappymatch.constructs.geofence.Geofence.to_geojson">to_geojson() (mappymatch.constructs.geofence.Geofence method)</a>
+
+      <ul>
+        <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace.to_geojson">(mappymatch.constructs.trace.Trace method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.RoadId.to_json">to_json() (mappymatch.constructs.road.RoadId method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.road.html#mappymatch.constructs.road.RoadId.to_string">to_string() (mappymatch.constructs.road.RoadId method)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.constructs.trace.html#mappymatch.constructs.trace.Trace">Trace (class in mappymatch.constructs.trace)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment.trace">trace (mappymatch.matchers.lcss.constructs.TrajectorySegment attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.CuttingPoint.trace_index">trace_index (mappymatch.matchers.lcss.constructs.CuttingPoint attribute)</a>
+</li>
+      <li><a href="_autosummary/mappymatch.matchers.lcss.constructs.html#mappymatch.matchers.lcss.constructs.TrajectorySegment">TrajectorySegment (class in mappymatch.matchers.lcss.constructs)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.matchers.valhalla.html#mappymatch.matchers.valhalla.ValhallaMatcher">ValhallaMatcher (class in mappymatch.matchers.valhalla)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.maps.nx.readers.osm_readers.html#mappymatch.maps.nx.readers.osm_readers.NetworkType.WALK">WALK (mappymatch.maps.nx.readers.osm_readers.NetworkType attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.coordinate.html#mappymatch.constructs.coordinate.Coordinate.x">x (mappymatch.constructs.coordinate.Coordinate property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.utils.geo.html#mappymatch.utils.geo.xy_to_latlon">xy_to_latlon() (in module mappymatch.utils.geo)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/mappymatch.constructs.coordinate.html#mappymatch.constructs.coordinate.Coordinate.y">y (mappymatch.constructs.coordinate.Coordinate property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Renewable Energy Laboratory
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
