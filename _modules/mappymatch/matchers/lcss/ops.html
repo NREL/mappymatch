@@ -15,8 +15,8 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
+  <!--
+    this give us a css class that will be invisible only if js is disabled
   -->
   <noscript>
     <style>
@@ -26,10 +26,10 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -38,10 +38,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../../_static/documentation_options.js?v=30a733bc"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
@@ -239,9 +239,14 @@ window.addEventListener("load", () => mermaid.run());
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -373,27 +378,27 @@ window.addEventListener("load", () => mermaid.run());
                 <article class="bd-article">
                   
   <h1>Source code for mappymatch.matchers.lcss.ops</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">NamedTuple</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">NamedTuple</span>
 
-<span class="kn">from</span> <span class="nn">mappymatch.constructs.coordinate</span> <span class="kn">import</span> <span class="n">Coordinate</span>
-<span class="kn">from</span> <span class="nn">mappymatch.constructs.match</span> <span class="kn">import</span> <span class="n">Match</span>
-<span class="kn">from</span> <span class="nn">mappymatch.constructs.road</span> <span class="kn">import</span> <span class="n">Road</span>
-<span class="kn">from</span> <span class="nn">mappymatch.constructs.trace</span> <span class="kn">import</span> <span class="n">Trace</span>
-<span class="kn">from</span> <span class="nn">mappymatch.maps.map_interface</span> <span class="kn">import</span> <span class="n">MapInterface</span>
-<span class="kn">from</span> <span class="nn">mappymatch.matchers.lcss.constructs</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.constructs.coordinate</span><span class="w"> </span><span class="kn">import</span> <span class="n">Coordinate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.constructs.match</span><span class="w"> </span><span class="kn">import</span> <span class="n">Match</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.constructs.road</span><span class="w"> </span><span class="kn">import</span> <span class="n">Road</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.constructs.trace</span><span class="w"> </span><span class="kn">import</span> <span class="n">Trace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.maps.map_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">MapInterface</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.matchers.lcss.constructs</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">TrajectoryScheme</span><span class="p">,</span>
     <span class="n">TrajectorySegment</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">mappymatch.matchers.lcss.utils</span> <span class="kn">import</span> <span class="n">merge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.matchers.lcss.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">merge</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="new_path">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.new_path">[docs]</a>
-<span class="k">def</span> <span class="nf">new_path</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">new_path</span><span class="p">(</span>
     <span class="n">road_map</span><span class="p">:</span> <span class="n">MapInterface</span><span class="p">,</span>
     <span class="n">trace</span><span class="p">:</span> <span class="n">Trace</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Road</span><span class="p">]:</span>
@@ -421,7 +426,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="split_trajectory_segment">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.split_trajectory_segment">[docs]</a>
-<span class="k">def</span> <span class="nf">split_trajectory_segment</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_trajectory_segment</span><span class="p">(</span>
     <span class="n">road_map</span><span class="p">:</span> <span class="n">MapInterface</span><span class="p">,</span>
     <span class="n">trajectory_segment</span><span class="p">:</span> <span class="n">TrajectorySegment</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">TrajectorySegment</span><span class="p">]:</span>
@@ -441,7 +446,7 @@ window.addEventListener("load", () => mermaid.run());
     <span class="n">trace</span> <span class="o">=</span> <span class="n">trajectory_segment</span><span class="o">.</span><span class="n">trace</span>
     <span class="n">cutting_points</span> <span class="o">=</span> <span class="n">trajectory_segment</span><span class="o">.</span><span class="n">cutting_points</span>
 
-    <span class="k">def</span> <span class="nf">_short_segment</span><span class="p">(</span><span class="n">ts</span><span class="p">:</span> <span class="n">TrajectorySegment</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_short_segment</span><span class="p">(</span><span class="n">ts</span><span class="p">:</span> <span class="n">TrajectorySegment</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">trace</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -495,7 +500,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="same_trajectory_scheme">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.same_trajectory_scheme">[docs]</a>
-<span class="k">def</span> <span class="nf">same_trajectory_scheme</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">same_trajectory_scheme</span><span class="p">(</span>
     <span class="n">scheme1</span><span class="p">:</span> <span class="n">TrajectoryScheme</span><span class="p">,</span> <span class="n">scheme2</span><span class="p">:</span> <span class="n">TrajectoryScheme</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -519,7 +524,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="StationaryIndex">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.StationaryIndex">[docs]</a>
-<span class="k">class</span> <span class="nc">StationaryIndex</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StationaryIndex</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An index of a stationary point in a trajectory</span>
 
@@ -535,7 +540,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="find_stationary_points">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.find_stationary_points">[docs]</a>
-<span class="k">def</span> <span class="nf">find_stationary_points</span><span class="p">(</span><span class="n">trace</span><span class="p">:</span> <span class="n">Trace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">StationaryIndex</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_stationary_points</span><span class="p">(</span><span class="n">trace</span><span class="p">:</span> <span class="n">Trace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">StationaryIndex</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Find the positional index of all stationary points in a trace</span>
 
@@ -577,7 +582,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="drop_stationary_points">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.drop_stationary_points">[docs]</a>
-<span class="k">def</span> <span class="nf">drop_stationary_points</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">drop_stationary_points</span><span class="p">(</span>
     <span class="n">trace</span><span class="p">:</span> <span class="n">Trace</span><span class="p">,</span> <span class="n">stationary_index</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">StationaryIndex</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Trace</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -599,7 +604,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="add_matches_for_stationary_points">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.matchers.lcss.ops.html#mappymatch.matchers.lcss.ops.add_matches_for_stationary_points">[docs]</a>
-<span class="k">def</span> <span class="nf">add_matches_for_stationary_points</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_matches_for_stationary_points</span><span class="p">(</span>
     <span class="n">matches</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Match</span><span class="p">],</span>
     <span class="n">stationary_index</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">StationaryIndex</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Match</span><span class="p">]:</span>
@@ -690,8 +695,8 @@ By National Renewable Energy Laboratory
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

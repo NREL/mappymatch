@@ -15,8 +15,8 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
+  <!--
+    this give us a css class that will be invisible only if js is disabled
   -->
   <noscript>
     <style>
@@ -26,10 +26,10 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -38,10 +38,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../../_static/documentation_options.js?v=30a733bc"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
@@ -239,9 +239,14 @@ window.addEventListener("load", () => mermaid.run());
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -373,30 +378,30 @@ window.addEventListener("load", () => mermaid.run());
                 <article class="bd-article">
                   
   <h1>Source code for mappymatch.maps.igraph.igraph_map</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">igraph</span> <span class="k">as</span> <span class="nn">ig</span>
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">rtree</span> <span class="k">as</span> <span class="nn">rt</span>
-<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">igraph</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ig</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rtree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span>
 
-<span class="kn">from</span> <span class="nn">mappymatch.constructs.coordinate</span> <span class="kn">import</span> <span class="n">Coordinate</span>
-<span class="kn">from</span> <span class="nn">mappymatch.constructs.geofence</span> <span class="kn">import</span> <span class="n">Geofence</span>
-<span class="kn">from</span> <span class="nn">mappymatch.constructs.road</span> <span class="kn">import</span> <span class="n">Road</span><span class="p">,</span> <span class="n">RoadId</span>
-<span class="kn">from</span> <span class="nn">mappymatch.maps.map_interface</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.constructs.coordinate</span><span class="w"> </span><span class="kn">import</span> <span class="n">Coordinate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.constructs.geofence</span><span class="w"> </span><span class="kn">import</span> <span class="n">Geofence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.constructs.road</span><span class="w"> </span><span class="kn">import</span> <span class="n">Road</span><span class="p">,</span> <span class="n">RoadId</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.maps.map_interface</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">DEFAULT_DISTANCE_WEIGHT</span><span class="p">,</span>
     <span class="n">DEFAULT_TIME_WEIGHT</span><span class="p">,</span>
     <span class="n">MapInterface</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">mappymatch.maps.nx.readers.osm_readers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.maps.nx.readers.osm_readers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">NetworkType</span><span class="p">,</span>
     <span class="n">nx_graph_from_osmnx</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">mappymatch.utils.crs</span> <span class="kn">import</span> <span class="n">CRS</span><span class="p">,</span> <span class="n">LATLON_CRS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mappymatch.utils.crs</span><span class="w"> </span><span class="kn">import</span> <span class="n">CRS</span><span class="p">,</span> <span class="n">LATLON_CRS</span>
 
 <span class="n">DEFAULT_GEOMETRY_KEY</span> <span class="o">=</span> <span class="s2">&quot;geometry&quot;</span>
 <span class="n">DEFAULT_METADATA_KEY</span> <span class="o">=</span> <span class="s2">&quot;metadata&quot;</span>
@@ -407,7 +412,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="IGraphMap">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap">[docs]</a>
-<span class="k">class</span> <span class="nc">IGraphMap</span><span class="p">(</span><span class="n">MapInterface</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IGraphMap</span><span class="p">(</span><span class="n">MapInterface</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A road map that uses an igraph graph to represent its roads.</span>
 
@@ -417,7 +422,7 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">        crs: The coordinate reference system of the map</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">ig</span><span class="o">.</span><span class="n">Graph</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">ig</span><span class="o">.</span><span class="n">Graph</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">graph</span>
 
         <span class="k">if</span> <span class="s2">&quot;crs_key&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">attributes</span><span class="p">():</span>
@@ -494,7 +499,7 @@ window.addEventListener("load", () => mermaid.run());
             <span class="n">road_id</span> <span class="o">=</span> <span class="n">RoadId</span><span class="p">(</span><span class="n">source_node_id</span><span class="p">,</span> <span class="n">target_node_id</span><span class="p">,</span> <span class="n">road_key</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">road_mapping</span><span class="p">[</span><span class="n">road_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">index</span>
 
-    <span class="k">def</span> <span class="nf">_build_road</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_road</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">edge_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Road</span><span class="p">:</span>
@@ -530,7 +535,7 @@ window.addEventListener("load", () => mermaid.run());
 
         <span class="k">return</span> <span class="n">road</span>
 
-    <span class="k">def</span> <span class="nf">_build_rtree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_rtree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">rt</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">Index</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">es</span><span class="p">:</span>
@@ -541,27 +546,27 @@ window.addEventListener("load", () => mermaid.run());
 
         <span class="bp">self</span><span class="o">.</span><span class="n">rtree</span> <span class="o">=</span> <span class="n">idx</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">output_lines</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s2">&quot;Mappymatch IGraphMap object&quot;</span><span class="p">,</span>
             <span class="sa">f</span><span class="s2">&quot;graph: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_lines</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">distance_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">distance_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dist_weight</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">time_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">time_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_weight</span>
 
 <div class="viewcode-block" id="IGraphMap.road_by_id">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.road_by_id">[docs]</a>
-    <span class="k">def</span> <span class="nf">road_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">road_id</span><span class="p">:</span> <span class="n">RoadId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Road</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">road_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">road_id</span><span class="p">:</span> <span class="n">RoadId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Road</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a road by its id</span>
 
@@ -579,7 +584,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="IGraphMap.set_road_attributes">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.set_road_attributes">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_road_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">RoadId</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_road_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">RoadId</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the attributes of the roads in the map</span>
 
@@ -605,14 +610,14 @@ window.addEventListener("load", () => mermaid.run());
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">roads</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Road</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">roads</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Road</span><span class="p">]:</span>
         <span class="n">roads</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_road</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">es</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">roads</span>
 
 <div class="viewcode-block" id="IGraphMap.from_nx_graph">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.from_nx_graph">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_nx_graph</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">nx_graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IGraphMap</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_nx_graph</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">nx_graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IGraphMap</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Build an IGraphMap from a networkx graph</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -629,7 +634,7 @@ window.addEventListener("load", () => mermaid.run());
 <div class="viewcode-block" id="IGraphMap.from_file">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.from_file">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">IGraphMap</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">IGraphMap</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Build a IGraphMap instance from a file</span>
 
@@ -649,7 +654,7 @@ window.addEventListener("load", () => mermaid.run());
 <div class="viewcode-block" id="IGraphMap.from_geofence">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.from_geofence">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_geofence</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_geofence</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">geofence</span><span class="p">:</span> <span class="n">Geofence</span><span class="p">,</span>
         <span class="n">xy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -680,7 +685,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="IGraphMap.to_file">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.to_file">[docs]</a>
-    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the graph to a pickle file</span>
 
@@ -694,7 +699,7 @@ window.addEventListener("load", () => mermaid.run());
         <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">write_pickle</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">outfile</span><span class="p">))</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_nearest_edge_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="n">Coordinate</span><span class="p">,</span> <span class="n">buffer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_nearest_edge_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="n">Coordinate</span><span class="p">,</span> <span class="n">buffer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        An internal method to find the nearest edge to a coordinate</span>
 
@@ -728,7 +733,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="IGraphMap.nearest_road">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.nearest_road">[docs]</a>
-    <span class="k">def</span> <span class="nf">nearest_road</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="n">Coordinate</span><span class="p">,</span> <span class="n">buffer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Road</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nearest_road</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="n">Coordinate</span><span class="p">,</span> <span class="n">buffer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Road</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A helper function to get the nearest road.</span>
 
@@ -745,7 +750,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="IGraphMap.shortest_path">
 <a class="viewcode-back" href="../../../../_autosummary/mappymatch.maps.igraph.igraph_map.html#mappymatch.maps.igraph.igraph_map.IGraphMap.shortest_path">[docs]</a>
-    <span class="k">def</span> <span class="nf">shortest_path</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shortest_path</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">origin</span><span class="p">:</span> <span class="n">Coordinate</span><span class="p">,</span>
         <span class="n">destination</span><span class="p">:</span> <span class="n">Coordinate</span><span class="p">,</span>
@@ -883,8 +888,8 @@ By National Renewable Energy Laboratory
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
