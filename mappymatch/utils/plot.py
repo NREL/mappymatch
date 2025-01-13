@@ -70,7 +70,7 @@ def plot_trace(
             location=(c.y, c.x),
             radius=5,
             color=point_color,
-            tooltip=i,
+            tooltip=str(i),
             fill=True,
             fill_opacity=0.8,
             fill_color=point_color,
