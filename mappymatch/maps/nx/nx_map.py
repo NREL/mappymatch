@@ -114,22 +114,17 @@ class NxMap(MapInterface):
         for i, gtuple in enumerate(self.g.edges(data=True, keys=True)):
             u, v, k, d = gtuple
             road_id = RoadId(u, v, k)
-            # road = self._build_road(u, v, k, d)
             geom = d[self._geom_key]
             box = geom.bounds
 
             idx.insert(i, box, obj=road_id)
 
-            # road_lookup[road.road_id] = road
-
         self.rtree = idx
-        # self._road_lookup: Dict[RoadId, Road] = road_lookup
 
     def __str__(self):
         output_lines = [
-            "Mappymatch NxMap object",
-            f"roads: {len(self._road_lookup)} Road objects",
-            f"graph: {self.g}",
+            "Mappymatch NxMap object:\n",
+            f" - roads: {len(self.g.edges)} Road objects",
         ]
         return "\n".join(output_lines)
 
