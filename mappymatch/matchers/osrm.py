@@ -87,7 +87,6 @@ class OsrmMatcher(MatcherInterface):
         coordinate_str = coordinate_str[:-1]
 
         osrm_request = self.osrm_api_base + coordinate_str + "?annotations=true"
-        print(osrm_request)
 
         r = requests.get(osrm_request)
 

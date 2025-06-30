@@ -107,23 +107,13 @@ def parse_osmnx_graph(
 
     g = nx.MultiDiGraph(g.subgraph(max(sg_components, key=len)))
 
-    no_geom = 0
     for u, v, d in g.edges(data=True):
         if "geometry" not in d:
-            if no_geom < 10:
-                print(d)
             # we'll build a pseudo-geometry using the x, y data from the nodes
             unode = g.nodes[u]
             vnode = g.nodes[v]
             line = LineString([(unode["x"], unode["y"]), (vnode["x"], vnode["y"])])
             d["geometry"] = line
-            no_geom += 1
-    if no_geom > 0:
-        total_links = len(g.edges)
-        print(
-            f"Warning: found {no_geom} of {total_links} links with no geometry; "
-            "creating link geometries from the node endpoints"
-        )
 
     g = compress(g)
 
