@@ -1,0 +1,3 @@
+DEFAULT_GEOMETRY_KEY = "geometry"
+DEFAULT_METADATA_KEY = "metadata"
+DEFAULT_CRS_KEY = "crs"

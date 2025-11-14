@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import pickle
 from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import networkx as nx
@@ -12,6 +13,7 @@ from shapely.strtree import STRtree
 from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.geofence import Geofence
 from mappymatch.constructs.road import Road, RoadId
+from mappymatch.maps.igraph.igraph_map import DEFAULT_METADATA_KEY
 from mappymatch.maps.map_interface import (
     DEFAULT_DISTANCE_WEIGHT,
     DEFAULT_TIME_WEIGHT,
@@ -22,10 +24,7 @@ from mappymatch.maps.nx.readers.osm_readers import (
     nx_graph_from_osmnx,
 )
 from mappymatch.utils.crs import CRS, LATLON_CRS
-
-DEFAULT_GEOMETRY_KEY = "geometry"
-DEFAULT_METADATA_KEY = "metadata"
-DEFAULT_CRS_KEY = "crs"
+from mappymatch.utils.keys import DEFAULT_CRS_KEY, DEFAULT_GEOMETRY_KEY
 
 
 class NxMap(MapInterface):
@@ -191,14 +190,13 @@ class NxMap(MapInterface):
         """
         p = Path(file)
         if p.suffix == ".pickle":
-            raise ValueError(
-                "NxMap does not support reading from pickle files, please use .json instead"
-            )
+            with open(p, "rb") as f:
+                return pickle.load(f)
         elif p.suffix == ".json":
             with p.open("r") as f:
                 return NxMap.from_dict(json.load(f))
         else:
-            raise TypeError("NxMap only supports reading from json files")
+            raise TypeError("NxMap only supports reading from json and pickle files")
 
     @classmethod
     def from_geofence(
@@ -207,6 +205,7 @@ class NxMap(MapInterface):
         xy: bool = True,
         network_type: NetworkType = NetworkType.DRIVE,
         custom_filter: Optional[str] = None,
+        additional_metadata_keys: Optional[set | list] = None,
     ) -> NxMap:
         """
         Read an OSM network graph into a NxMap
@@ -216,6 +215,7 @@ class NxMap(MapInterface):
             xy: whether to use xy coordinates or lat/lon
             network_type: the network type to use for the graph
             custom_filter: a custom filter to pass to osmnx like '["highway"~"motorway|primary"]'
+            additional_metadata_keys: additional keys to preserve in road metadata like '["maxspeed", "highway"]
 
         Returns:
             a NxMap
@@ -225,11 +225,15 @@ class NxMap(MapInterface):
                 f"the geofence must in the epsg:4326 crs but got {geofence.crs.to_authority()}"
             )
 
+        if additional_metadata_keys is not None:
+            additional_metadata_keys = set(additional_metadata_keys)
+
         nx_graph = nx_graph_from_osmnx(
             geofence=geofence,
             network_type=network_type,
             xy=xy,
             custom_filter=custom_filter,
+            additional_metadata_keys=additional_metadata_keys,
         )
 
         return NxMap(nx_graph)
@@ -244,15 +248,14 @@ class NxMap(MapInterface):
         outfile = Path(outfile)
 
         if outfile.suffix == ".pickle":
-            raise ValueError(
-                "NxMap does not support writing to pickle files, please use .json instead"
-            )
+            with open(outfile, "wb") as f:
+                pickle.dump(self, f)
         elif outfile.suffix == ".json":
             graph_dict = self.to_dict()
             with open(outfile, "w") as f:
                 json.dump(graph_dict, f)
         else:
-            raise TypeError("NxMap only supports writing to json files")
+            raise TypeError("NxMap only supports writing to json and pickle files")
 
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> NxMap:
