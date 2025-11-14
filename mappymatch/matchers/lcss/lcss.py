@@ -15,7 +15,6 @@ from mappymatch.matchers.lcss.ops import (
     split_trajectory_segment,
 )
 from mappymatch.matchers.matcher_interface import (
-    List,
     MatcherInterface,
     MatchResult,
     Trace,
@@ -138,20 +137,3 @@ class LCSSMatcher(MatcherInterface):
         )
 
         return MatchResult(matches_w_stationary_points, joined_segment.path)
-
-    def match_trace_batch(
-        self,
-        trace_batch: List[Trace],
-        processes: int = 1,
-    ) -> List[MatchResult]:
-        if processes <= 1:
-            results = [self.match_trace(t) for t in trace_batch]
-        else:
-            raise NotImplementedError(
-                "Using `processes>1` is not available due to a known issue with rtree serialization."
-                "See https://github.com/Toblerity/rtree/issues/87 for more information."
-            )
-            # with Pool(processes=processes) as p:
-            #     results = p.map(self.match_trace, trace_batch)
-
-        return results

@@ -5,10 +5,9 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import networkx as nx
-import numpy as np
-import rtree as rt
 import shapely.wkt as wkt
 from shapely.geometry import Point
+from shapely.strtree import STRtree
 
 from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.geofence import Geofence
@@ -110,16 +109,17 @@ class NxMap(MapInterface):
         return road
 
     def _build_rtree(self):
-        idx = rt.index.Index()
-        for i, gtuple in enumerate(self.g.edges(data=True, keys=True)):
-            u, v, k, d = gtuple
+        geoms = []
+        road_ids = []
+
+        for u, v, k, d in self.g.edges(data=True, keys=True):
             road_id = RoadId(u, v, k)
             geom = d[self._geom_key]
-            box = geom.bounds
+            geoms.append(geom)
+            road_ids.append(road_id)
 
-            idx.insert(i, box, obj=road_id)
-
-        self.rtree = idx
+        self.rtree = STRtree(geoms)
+        self._road_id_mapping = road_ids
 
     def __str__(self):
         output_lines = [
@@ -305,23 +305,11 @@ class NxMap(MapInterface):
             raise ValueError(
                 f"crs of origin {coord.crs} must match crs of map {self.crs}"
             )
-        nearest_candidates = list(
-            map(
-                lambda c: c.object,
-                (self.rtree.nearest(coord.geom.buffer(buffer).bounds, 1, objects=True)),
-            )
-        )
 
-        if len(nearest_candidates) == 0:
+        nearest_idx = self.rtree.nearest(coord.geom)
+        if nearest_idx is None:
             raise ValueError(f"No roads found for {coord}")
-        elif len(nearest_candidates) == 1:
-            nearest_id = nearest_candidates[0]
-        else:
-            distances = [
-                self._build_road(i).geom.distance(coord.geom)
-                for i in nearest_candidates
-            ]
-            nearest_id = nearest_candidates[np.argmin(distances)]
+        nearest_id = self._road_id_mapping[nearest_idx]
 
         road = self._build_road(nearest_id)
 
