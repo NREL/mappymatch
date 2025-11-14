@@ -161,6 +161,9 @@ class IGraphMap(MapInterface):
             geometries.append(geom)
             edge_indices.append(e.index)
 
+        if len(geometries) == 0:
+            raise ValueError("No geometries found in graph; cannot build spatial index")
+
         self.strtree = STRtree(geometries)
         self.edge_indices = edge_indices
 
@@ -299,13 +302,12 @@ class IGraphMap(MapInterface):
 
         self.g.write_pickle(str(outfile))
 
-    def _nearest_edge_index(self, coord: Coordinate, buffer: float = 10.0) -> int:
+    def _nearest_edge_index(self, coord: Coordinate) -> int:
         """
         An internal method to find the nearest edge to a coordinate
 
         Args:
             coord: The coordinate to find the nearest road to
-            buffer: The buffer to search around the coordinate
 
         Returns:
             The nearest edge index to the coordinate
@@ -323,18 +325,17 @@ class IGraphMap(MapInterface):
 
         return nearest_edge_index
 
-    def nearest_road(self, coord: Coordinate, buffer: float = 10.0) -> Road:
+    def nearest_road(self, coord: Coordinate) -> Road:
         """
         A helper function to get the nearest road.
 
         Args:
             coord: The coordinate to find the nearest road to
-            buffer: The buffer to search around the coordinate
 
         Returns:
             The nearest road to the coordinate
         """
-        nearest_edge_index = self._nearest_edge_index(coord, buffer)
+        nearest_edge_index = self._nearest_edge_index(coord)
         return self._build_road(nearest_edge_index)
 
     def shortest_path(

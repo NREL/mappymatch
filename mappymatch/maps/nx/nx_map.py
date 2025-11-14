@@ -117,6 +117,9 @@ class NxMap(MapInterface):
             geoms.append(geom)
             road_ids.append(road_id)
 
+        if len(geoms) == 0:
+            raise ValueError("No geometries found in graph; cannot build spatial index")
+
         self.rtree = STRtree(geoms)
         self._road_id_mapping = road_ids
 
@@ -293,13 +296,12 @@ class NxMap(MapInterface):
 
         return graph_dict
 
-    def nearest_road(self, coord: Coordinate, buffer: float = 10.0) -> Road:
+    def nearest_road(self, coord: Coordinate) -> Road:
         """
         A helper function to get the nearest road.
 
         Args:
             coord: The coordinate to find the nearest road to
-            buffer: The buffer to search around the coordinate
 
         Returns:
             The nearest road to the coordinate
