@@ -10,6 +10,7 @@ from shapely.geometry import LineString
 from mappymatch.constructs.geofence import Geofence
 from mappymatch.utils.crs import XY_CRS
 from mappymatch.utils.exceptions import MapException
+from mappymatch.utils.keys import DEFAULT_METADATA_KEY
 
 log.basicConfig(level=log.INFO)
 
@@ -36,6 +37,7 @@ def nx_graph_from_osmnx(
     network_type: NetworkType,
     xy: bool = True,
     custom_filter: Optional[str] = None,
+    additional_metadata_keys: Optional[set] = None,
 ) -> nx.MultiDiGraph:
     """
     Build a networkx graph from OSM data
@@ -45,6 +47,7 @@ def nx_graph_from_osmnx(
         network_type: the network type to use for the graph
         xy: whether to use xy coordinates or lat/lon
         custom_filter: a custom filter to pass to osmnx
+        additional_metadata_keys: additional keys to preserve in metadata
 
     Returns:
         a networkx graph of the OSM network
@@ -60,13 +63,19 @@ def nx_graph_from_osmnx(
         network_type=network_type.value,
         custom_filter=custom_filter,
     )
-    return parse_osmnx_graph(raw_graph, network_type, xy=xy)
+    return parse_osmnx_graph(
+        raw_graph,
+        network_type,
+        xy=xy,
+        additional_metadata_keys=additional_metadata_keys,
+    )
 
 
 def parse_osmnx_graph(
     graph: nx.MultiDiGraph,
     network_type: NetworkType,
     xy: bool = True,
+    additional_metadata_keys: Optional[set] = None,
 ) -> nx.MultiDiGraph:
     """
     Parse the raw osmnx graph into a graph that we can use with our NxMap
@@ -75,6 +84,7 @@ def parse_osmnx_graph(
         geofence: the geofence to clip the graph to
         xy: whether to use xy coordinates or lat/lon
         network_type: the network type to use for the graph
+        additional_metadata_keys: additional keys to preserve in metadata
 
     Returns:
         a cleaned networkx graph of the OSM network
@@ -115,7 +125,7 @@ def parse_osmnx_graph(
             line = LineString([(unode["x"], unode["y"]), (vnode["x"], vnode["y"])])
             d["geometry"] = line
 
-    g = compress(g)
+    g = compress(g, additional_metadata_keys=additional_metadata_keys)
 
     # TODO: these should all be sourced from the same location
     g.graph["distance_weight"] = "kilometers"
@@ -126,48 +136,55 @@ def parse_osmnx_graph(
     return g
 
 
-def compress(g: nx.MultiDiGraph) -> nx.MultiDiGraph:
+def compress(
+    g: nx.MultiDiGraph, additional_metadata_keys: Optional[set] = None
+) -> nx.MultiDiGraph:
     """
-    a hacky way to delete unnecessary data on the networkx graph
+    Remove unnecessary data from the networkx graph while preserving essential attributes
 
     Args:
         g: the networkx graph to compress
+        additional_metadata_keys: additional keys to preserve in metadata
 
     Returns:
         the compressed networkx graph
     """
-    keys_to_delete = [
-        "oneway",
-        "ref",
-        "access",
-        "lanes",
-        "name",
-        "maxspeed",
-        "highway",
-        "length",
-        "speed_kph",
-        "osmid",
-        "street_count",
-        "junction",
-        "bridge",
-        "tunnel",
-        "reversed",
-        "y",
-        "x",
-    ]
+    # Define attributes to keep for edges
+    edge_keep_keys = {
+        "geometry",
+        "kilometers",
+        "travel_time",
+        DEFAULT_METADATA_KEY,
+    }
 
+    # Define attributes to move to metadata
+    default_metadata_keys = {"osmid", "name"}
+    if additional_metadata_keys:
+        default_metadata_keys.update(additional_metadata_keys)
+
+    # Define attributes to keep for nodes (only what we need)
+    node_keep_keys: set[str] = set()
+
+    # Process edges
     for _, _, d in g.edges(data=True):
-        for k in keys_to_delete:
-            try:
-                del d[k]
-            except KeyError:
-                continue
+        # Initialize metadata dict if needed
+        if DEFAULT_METADATA_KEY not in d:
+            d[DEFAULT_METADATA_KEY] = {}
 
+        # Move specified keys to metadata
+        for key in default_metadata_keys:
+            if key in d:
+                d[DEFAULT_METADATA_KEY][key] = d[key]
+
+        # Delete all keys not in keep list
+        keys_to_remove = [k for k in list(d.keys()) if k not in edge_keep_keys]
+        for key in keys_to_remove:
+            del d[key]
+
+    # Process nodes
     for _, d in g.nodes(data=True):
-        for k in keys_to_delete:
-            try:
-                del d[k]
-            except KeyError:
-                continue
+        keys_to_remove = [k for k in list(d.keys()) if k not in node_keep_keys]
+        for key in keys_to_remove:
+            del d[key]
 
     return g

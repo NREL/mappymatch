@@ -151,6 +151,3 @@ class ValhallaMatcher(MatcherInterface):
         result = build_match_result(trace, matched_points, path)
 
         return result
-
-    def match_trace_batch(self, trace_batch: list[Trace]) -> list[MatchResult]:
-        return [self.match_trace(t) for t in trace_batch]

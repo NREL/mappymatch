@@ -37,7 +37,7 @@ class TestOSMap(TestCase):
         self.assertTrue(has_geom, "All edges should have geometry")
 
         # check to make sure we don't have any extra data stored in the edges
-        expected_edge_keys = ["geometry", "travel_time", "kilometers"]
+        expected_edge_keys = ["geometry", "travel_time", "kilometers", "metadata"]
         expected_node_keys = []
 
         edges_have_right_keys = all(
@@ -55,5 +55,7 @@ class TestOSMap(TestCase):
                 for _, d in cleaned_graph.nodes(data=True)
             ]
         )
+
+        print(list(cleaned_graph.nodes(data=True))[:5])
 
         self.assertTrue(nodes_have_right_keys, "Nodes have unexpected keys")

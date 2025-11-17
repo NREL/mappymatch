@@ -15,36 +15,35 @@ classifiers = [
   "License :: Other/Proprietary License",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering",
 ]
 keywords = ["GPS", "map", "match"]
 dependencies = [
-  "geopandas>=1",
-  "osmnx>=2",
-  "shapely>=2",
-  "rtree",
-  "pyproj",
-  "pandas",
-  "numpy",
-  "matplotlib",
-  "networkx",
-  "igraph",
-  "folium",
-  "requests",
-  "polyline",
+  "geopandas>=1,<2",
+  "osmnx>=2,<3",
+  "shapely>=2,<3",
+  "pyproj>=3,<4",
+  "pandas>=2,<3",
+  "numpy>=2,<3",
+  "matplotlib>=3,<4",
+  "networkx>=3,<4",
+  "igraph>=1.0,<2",
+  "folium>=0.20,<1",
+  "requests>=2,<3",
+  "polyline>=2,<3",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 [project.optional-dependencies]
 # Used to run CI. 
-tests = ["ruff", "mypy>=1", "types-requests", "pytest"]
+tests = ["ruff>=0.14,<1", "mypy>=1,<2", "types-requests", "pytest>=9,<10"]
 # Used to build the docs.
 docs = [
-  "jupyter-book>=1",
+  "jupyter-book>=2",
   "sphinx-book-theme",
   "sphinx-autodoc-typehints",
   "sphinxcontrib-autoyaml",
@@ -52,7 +51,7 @@ docs = [
 ]
 # Tests + docs + other.
 dev = [
-  "hatch",
+  "hatch>=1,<2",
   "mappymatch[tests]",
   "mappymatch[docs]",
   "coverage",
@@ -69,10 +68,7 @@ path = "mappymatch/__about__.py"
 exclude = ["tests/", "docs/", "examples/"]
 
 [tool.ruff]
-exclude = [
-  "build/*",
-  "dist/*",
-]
+exclude = ["build/*", "dist/*"]
 
 # Same as Black.
 line-length = 88
@@ -109,3 +105,23 @@ precision = 1
 fail_under = 50.0
 skip_covered = false
 skip_empty = true
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+[tool.pixi.pypi-dependencies]
+mappymatch = { path = ".", editable = true }
+
+[tool.pixi.environments]
+default = { solve-group = "default" }
+dev = { features = ["dev", "tests", "docs"], solve-group = "default" }
+docs = { features = ["docs"], solve-group = "default" }
+tests = { features = ["tests"], solve-group = "default" }
+
+[tool.pixi.feature.dev.tasks]
+fmt_fix = "ruff format"
+lint_fix = "ruff check --fix"
+typing = "mypy ."
+test = "pytest tests/"
+check = { depends-on = ["fmt_fix", "lint_fix", "typing", "test"] }

@@ -5,9 +5,8 @@ from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import igraph as ig
 import networkx as nx
-import numpy as np
-import rtree as rt
 from shapely.geometry import Point
+from shapely.strtree import STRtree
 
 from mappymatch.constructs.coordinate import Coordinate
 from mappymatch.constructs.geofence import Geofence
@@ -154,15 +153,19 @@ class IGraphMap(MapInterface):
         return road
 
     def _build_rtree(self):
-        idx = rt.index.Index()
+        geometries = []
+        edge_indices = []
 
         for e in self.g.es:
             geom = e.attributes()[self._geom_key]
-            box = geom.bounds
+            geometries.append(geom)
+            edge_indices.append(e.index)
 
-            idx.insert(e.index, box)
+        if len(geometries) == 0:
+            raise ValueError("No geometries found in graph; cannot build spatial index")
 
-        self.rtree = idx
+        self.strtree = STRtree(geometries)
+        self.edge_indices = edge_indices
 
     def __str__(self):
         output_lines = [
@@ -299,13 +302,12 @@ class IGraphMap(MapInterface):
 
         self.g.write_pickle(str(outfile))
 
-    def _nearest_edge_index(self, coord: Coordinate, buffer: float = 10.0) -> int:
+    def _nearest_edge_index(self, coord: Coordinate) -> int:
         """
         An internal method to find the nearest edge to a coordinate
 
         Args:
             coord: The coordinate to find the nearest road to
-            buffer: The buffer to search around the coordinate
 
         Returns:
             The nearest edge index to the coordinate
@@ -314,35 +316,26 @@ class IGraphMap(MapInterface):
             raise ValueError(
                 f"crs of origin {coord.crs} must match crs of map {self.crs}"
             )
-        nearest_candidates = list(
-            self.rtree.nearest(coord.geom.buffer(buffer).bounds, 1),
-        )
 
-        if len(nearest_candidates) == 0:
+        nearest_idx = self.strtree.nearest(coord.geom)
+        if nearest_idx is None:
             raise ValueError(f"No roads found for {coord}")
-        elif len(nearest_candidates) == 1:
-            nearest_id = nearest_candidates[0]
-        else:
-            distances = [
-                self._build_road(i).geom.distance(coord.geom)
-                for i in nearest_candidates
-            ]
-            nearest_id = nearest_candidates[np.argmin(distances)]
 
-        return nearest_id
+        nearest_edge_index = self.edge_indices[nearest_idx]
 
-    def nearest_road(self, coord: Coordinate, buffer: float = 10.0) -> Road:
+        return nearest_edge_index
+
+    def nearest_road(self, coord: Coordinate) -> Road:
         """
         A helper function to get the nearest road.
 
         Args:
             coord: The coordinate to find the nearest road to
-            buffer: The buffer to search around the coordinate
 
         Returns:
             The nearest road to the coordinate
         """
-        nearest_edge_index = self._nearest_edge_index(coord, buffer)
+        nearest_edge_index = self._nearest_edge_index(coord)
         return self._build_road(nearest_edge_index)
 
     def shortest_path(
